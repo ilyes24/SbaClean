@@ -14,14 +14,14 @@ class Post(models.Model):
 
 class Comment(models.Model):
     comment_owner = models.ForeignKey(Citizen, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     description = models.TextField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Reaction(models.Model):
     reaction_owner = models.ForeignKey(Citizen, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='reactions', on_delete=models.CASCADE)
     is_like = models.BooleanField()
 
 

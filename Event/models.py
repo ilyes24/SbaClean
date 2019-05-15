@@ -7,10 +7,7 @@ from User.models import User
 
 
 class Event(models.Model):
-    post = models.ForeignKey(Post, related_name='post', on_delete=models.CASCADE)
-    city = models.ForeignKey(City, related_name='city', on_delete=models.CASCADE)
-    longitude = models.CharField(max_length=255)
-    latitude = models.CharField(max_length=255)
+    post = models.ForeignKey(Post, related_name='event', on_delete=models.CASCADE)
     approved_by = models.ForeignKey(User, related_name='approvedBy', on_delete=models.CASCADE, null=True)
     approved_at = models.DateTimeField(null=True)
     max_participants = models.IntegerField()

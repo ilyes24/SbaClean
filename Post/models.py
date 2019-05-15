@@ -7,6 +7,9 @@ import os
 class Post(models.Model):
     post_owner = models.ForeignKey(Citizen, on_delete=models.CASCADE)
     description = models.TextField(max_length=255)
+    city = models.ForeignKey(City, related_name='city', on_delete=models.CASCADE)
+    longitude = models.CharField(max_length=255)
+    latitude = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

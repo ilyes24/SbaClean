@@ -28,4 +28,5 @@ urlpatterns = [
     path('', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^api/adresses/', include(('Address.urls', 'Adresses'), namespace='api-adresses')),
+    url(r'^api/anomalys/', include(('Anomaly.urls', 'Anomalys'), namespace='api-Anomalys')),
 ]

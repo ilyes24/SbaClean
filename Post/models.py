@@ -1,14 +1,12 @@
 from django.db import models
 from User.models import Citizen
-from Address.models import State
+from Address.models import State, City
 import os
 
 
 class Post(models.Model):
     post_owner = models.ForeignKey(Citizen, on_delete=models.CASCADE)
     description = models.TextField(max_length=255)
-    longitude = models.CharField(max_length=255)
-    latitude = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

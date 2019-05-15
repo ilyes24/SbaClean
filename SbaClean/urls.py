@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^api/adresses/', include(('Address.urls', 'Adresses'), namespace='api-adresses')),
     url(r'^api/posts/', include(('Post.urls', 'Posts'), namespace='api-Posts')),
     url(r'^api/anomalys/', include(('Anomaly.urls', 'Anomalys'), namespace='api-Anomalys')),
+    url(r'^api/events/', include(('Event.urls', 'Events'), namespace='api-Events')),
 ]

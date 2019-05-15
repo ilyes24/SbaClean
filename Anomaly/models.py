@@ -14,6 +14,6 @@ class Anomaly(models.Model):
     consulted_by = models.ForeignKey(User, related_name='consultedBy', on_delete=models.CASCADE, null=True)
     consulted_at = models.DateTimeField(null=True)
 
-    def consulte(self, user):
+    def consult(self, user):
         self.consulted_by = user.id
         self.consulted_at = datetime.datetime.now()

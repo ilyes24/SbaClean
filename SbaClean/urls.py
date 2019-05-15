@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.conf.urls import url
 from django.urls import include, path
 from rest_framework import routers
-from Address import views
 
 router = routers.DefaultRouter()
 
@@ -28,5 +27,6 @@ urlpatterns = [
     path('', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^api/adresses/', include(('Address.urls', 'Adresses'), namespace='api-adresses')),
+    url(r'^api/posts/', include(('Post.urls', 'Posts'), namespace='api-Posts')),
     url(r'^api/anomalys/', include(('Anomaly.urls', 'Anomalys'), namespace='api-Anomalys')),
 ]

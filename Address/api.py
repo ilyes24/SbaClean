@@ -3,7 +3,7 @@ from django.db.models import Q
 from rest_framework import generics, mixins
 
 from .models import City, State
-from .serializer import CitySerializer, StateSerializer
+from .serializers import CitySerializer, StateSerializer
 
 
 class CityAPIView(mixins.CreateModelMixin, generics.ListAPIView):

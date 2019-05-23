@@ -6,5 +6,4 @@ apipatterns = [
 ]
 
 urlpatterns = [
-
 ]

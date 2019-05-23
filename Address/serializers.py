@@ -7,21 +7,12 @@ class StateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = State
-        fields = [
-            'pk',
-            'code',
-            'name',
-            'citys',
-        ]
+        fields = '__all__'
 
 
 class CitySerializer(serializers.ModelSerializer):
+    # state = StateSerializer(read_only=True)
 
     class Meta:
         model = City
-        fields = [
-            'pk',
-            'zip_code',
-            'name',
-            'state'
-        ]
+        fields = '__all__'

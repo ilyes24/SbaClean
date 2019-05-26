@@ -31,14 +31,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third-Party Apps
     'phonenumber_field',
     'rest_framework',
+    'rest_framework.authtoken',
+
+    # Local Apps
     'Accounts',
     'Address',
     'Anomaly',
@@ -59,6 +65,13 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'SbaClean.urls'
 
 AUTH_USER_MODEL = "Accounts.MyUser"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+
 
 TEMPLATES = [
     {

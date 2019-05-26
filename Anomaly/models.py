@@ -8,3 +8,6 @@ class Anomaly(models.Model):
     post = models.ForeignKey(Post, related_name='anomaly', on_delete=models.CASCADE)
     consulted_by = models.ForeignKey(MyUser, related_name='consultedBy', on_delete=models.CASCADE, null=True)
     consulted_at = models.DateTimeField(null=True)
+
+    def owner(self):
+        return self.post.owner

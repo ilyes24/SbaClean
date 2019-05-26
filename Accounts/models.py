@@ -9,6 +9,9 @@ class MyUser(AbstractUser):
     city = models.ForeignKey(City, related_name='city', on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
 
+    def owner(self):
+        return self
+
 
 # is_staff = True                           is_staff = False
 # User -> Mayor                             User -> Citizen

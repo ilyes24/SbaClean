@@ -12,3 +12,6 @@ class Event(models.Model):
     approved_at = models.DateTimeField(null=True)
     max_participants = models.IntegerField()
     starts_at = models.DateTimeField()
+
+    def owner(self):
+        return self.post.owner

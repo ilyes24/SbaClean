@@ -11,6 +11,9 @@ class Post(models.Model):
     longitude = models.CharField(max_length=255)
     latitude = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    def owner(self):
+        return self.post_owner
 
 
 class Comment(models.Model):
@@ -19,11 +22,17 @@ class Comment(models.Model):
     description = models.TextField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def owner(self):
+        return self.comment_owner
+
 
 class Reaction(models.Model):
     reaction_owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, related_name='reactions', on_delete=models.CASCADE)
     is_like = models.BooleanField()
+
+    def owner(self):
+        return self.reaction_owner
 
 
 def get_picture_path(instance, filename):

@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, permissions
 
 from Address.models import City, State
 from .serializers import CitySerializer, StateSerializer
@@ -9,13 +9,16 @@ from .serializers import CitySerializer, StateSerializer
 class CityAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = CitySerializer
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
 
     def get_queryset(self):
         qs = City.objects.all()
         query = self.request.GET.get("q")
         if query is not None:
             qs = qs.filter(
-                Q(name__icontains=query) | Q(zip_code__exact=query)
+                Q(name__contains=query) | Q(zip_code__exact=query)
             ).distinct()
         return qs
 
@@ -33,11 +36,18 @@ class CityRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = City.objects.all()
     serializer_class = CitySerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.IsAdminUser
+    ]
 
 
 class StateAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = StateSerializer
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
 
     def get_queryset(self):
         qs = State.objects.all()
@@ -62,3 +72,7 @@ class StateRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = State.objects.all()
     serializer_class = StateSerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.IsAdminUser
+    ]

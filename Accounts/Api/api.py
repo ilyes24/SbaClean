@@ -6,6 +6,7 @@ from Accounts.models import MyUser
 from django.contrib.auth import get_user_model
 
 from .serializers import MyUserSerializer
+from .permissions import IsOwnerOrReadOnly
 
 UserModel = get_user_model()
 
@@ -22,17 +23,20 @@ class CreateUserView(CreateAPIView):
 class ListUserView(ListAPIView):
     lookup_field = 'pk'
     serializer_class = MyUserSerializer
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
 
     def get_queryset(self):
         qs = MyUser.objects.all()
         query = self.request.GET.get("q")
         if query is not None:
             qs = qs.filter(
-                Q(username__iexact=query) |
-                Q(phone_number__iexact=query) |
-                Q(email__iexact=query) |
-                Q(first_name__icontains=query) |
-                Q(last_name__icontains=query)
+                Q(username__exact=query) |
+                Q(phone_number__exact=query) |
+                Q(email__exact=query) |
+                Q(first_name__contains=query) |
+                Q(last_name__contains=query)
             ).distinct()
         return qs
 
@@ -41,3 +45,6 @@ class UserRUView(RetrieveUpdateAPIView):
     lookup_field = 'pk'
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
+    permission_classes = [
+        IsOwnerOrReadOnly
+    ]

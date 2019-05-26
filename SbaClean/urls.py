@@ -20,6 +20,7 @@ from django.conf.urls import url
 api_urlpatterns = [
     path('accounts/', include(('Accounts.urls', 'Accounts'), namespace='api-accounts')),
     path('address/', include(('Address.urls', 'Address'), namespace='api-address')),
+    path('posts/', include(('Post.urls', 'Post'), namespace='api-posts')),
     path('anomalys/', include(('Anomaly.urls', 'Anomaly'), namespace='api-anomaly')),
     path('events/', include(('Event.urls', 'Event'), namespace='api-event')),
 ]

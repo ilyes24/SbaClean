@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-from .models import Event
+from Event.models import Event
 from .serializers import EventSerializer
 from rest_framework import mixins, generics
 

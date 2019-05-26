@@ -27,7 +27,7 @@ class MyUserSerializer(serializers.ModelSerializer):
         return user
 
     def validate_city(self, value):
-        qs = UserModel.objects.filter(city__iexact=value, is_staff__iexact=True, is_active__iexact=True)
+        qs = UserModel.objects.filter(city__exact=value, is_staff__exact=True, is_active__exact=True)
         if self.instance:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():

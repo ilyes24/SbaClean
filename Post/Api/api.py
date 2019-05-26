@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-from .models import Post, Comment, Reaction
+from Post.models import Post, Comment, Reaction
 from .serializers import PostSerializer, CommentSerializer, ReactionSerializer
 from rest_framework import mixins, generics
 

@@ -2,10 +2,10 @@ from django.db.models import Q
 
 from rest_framework import permissions
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateAPIView
-from .models import MyUser
+from Accounts.models import MyUser
 from django.contrib.auth import get_user_model
 
-from .serializer import MyUserSerializer
+from .serializers import MyUserSerializer
 
 UserModel = get_user_model()
 

@@ -2,7 +2,7 @@ from django.db.models import Q
 
 from rest_framework import generics, mixins
 
-from .models import City, State
+from Address.models import City, State
 from .serializers import CitySerializer, StateSerializer
 
 

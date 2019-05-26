@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .api import ListUserView, CreateUserView, UserRUView
+from Accounts.Api.api import ListUserView, CreateUserView, UserRUView
 
 
 api_urlpatterns = [
@@ -9,5 +9,5 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('', include(api_urlpatterns))
+    path('', include(api_urlpatterns)),     # api url patterns
 ]

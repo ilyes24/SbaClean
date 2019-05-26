@@ -1,27 +1,27 @@
 from django.db import models
-from User.models import Citizen
+from Accounts.models import MyUser
 from Address.models import State, City
 import os
 
 
 class Post(models.Model):
-    post_owner = models.ForeignKey(Citizen, on_delete=models.CASCADE)
+    post_owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     description = models.TextField(max_length=255)
-    city = models.ForeignKey(City, related_name='city', on_delete=models.CASCADE)
+    city = models.ForeignKey(City, related_name='location', on_delete=models.CASCADE)
     longitude = models.CharField(max_length=255)
     latitude = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Comment(models.Model):
-    comment_owner = models.ForeignKey(Citizen, on_delete=models.CASCADE)
+    comment_owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     description = models.TextField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Reaction(models.Model):
-    reaction_owner = models.ForeignKey(Citizen, on_delete=models.CASCADE)
+    reaction_owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, related_name='reactions', on_delete=models.CASCADE)
     is_like = models.BooleanField()
 

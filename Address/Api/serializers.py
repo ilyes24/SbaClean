@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import State, City
+from Address.models import State, City
 
 
 class StateSerializer(serializers.ModelSerializer):

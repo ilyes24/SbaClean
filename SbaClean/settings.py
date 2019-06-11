@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+
     # Third-Party Apps
     'phonenumber_field',
     'rest_framework',
@@ -50,6 +51,8 @@ INSTALLED_APPS = [
     'Anomaly',
     'Event',
     'Post',
+    'webapp',
+
 ]
 
 MIDDLEWARE = [

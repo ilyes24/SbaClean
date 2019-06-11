@@ -32,49 +32,69 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
+				<form class="login200-form validate-form">
 					<span class="login100-form-title p-b-43">
-						Connecter Pour Continuer
+						Créez Un Compte
 					</span>
-					
-					
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="email">
-						<span class="focus-input100"></span>
-						<span class="label-input100">Email</span>
+					<div class="wrap-input200 validate-input" data-validate = "nom d'utilisateur est nécessaire">
+						<input class="input200" type="text" name="username">
+						<span class="focus-input200"></span>
+						<span class="label-input200">Nom d'Utilisateur</span>
 					</div>
 					
+					<div class="wrap-input200 validate-input" data-validate = "nom est nécessaire">
+						<input class="input200" type="text" name="nom">
+						<span class="focus-input200"></span>
+						<span class="label-input200">Nom</span>
+					</div>
 					
-					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="pass">
-						<span class="focus-input100"></span>
-						<span class="label-input100">Mot De Passe</span>
+					<div class="wrap-input200 validate-input" data-validate = "Prenom est nécessaire">
+						<input class="input200" type="text" name="prenom">
+						<span class="focus-input200"></span>
+						<span class="label-input200">Prenom</span>
+					</div>
+					<div class="wrap-input200 validate-input" data-validate = "Valide email est nécessaire: ex@abc.xyz">
+						<input class="input200" type="email" name="email">
+						<span class="focus-input200"></span>
+						<span class="label-input200">Email</span>
+					</div>
+					<div class="wrap-input200 validate-input" data-validate = "ville est nécessaire">
+						<input class="input200" type="text" name="ville">
+						<span class="focus-input200"></span>
+						<span class="label-input200">Ville</span>
+					</div>
+					<div class="wrap-input200 validate-input" data-validate = "adresse est nécessaire">
+						<input class="input200" type="text" name="adresse">
+						<span class="focus-input200"></span>
+						<span class="label-input200">Adresse</span>
+					</div>
+					<div class="wrap-input200 validate-input" data-validate = "telephone est nécessaire">
+						<input class="input200" type="text" name="telephone">
+						<span class="focus-input200"></span>
+						<span class="label-input200">telephone</span>
+					</div>
+					<div class="wrap-input200 validate-input" data-validate="mot de passe est nécessaire">
+						<input class="input200" type="password" name="pass">
+						<span class="focus-input200"></span>
+						<span class="label-input200">Mot De Passe</span>
+					</div>
+					<div class="wrap-input200 validate-input" data-validate="confirmer mot de passe">
+						<input class="input200" type="password" name="confPass">
+						<span class="focus-input200"></span>
+						<span class="label-input200">Confirmer Mot De Passe</span>
 					</div>
 
-					<div class="flex-sb-m w-full p-t-3 p-b-32">
-						<div class="contact100-form-checkbox">
-							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-							<label class="label-checkbox100" for="ckb1">
-								Se Souvenir De Moi
-							</label>
-						</div>
-
-						<div>
-							<a href="#" class="txt1">
-								Mot De Passe Oublié?
-							</a>
-						</div>
-					</div>
+					
 			
 
-					<div class="container-login100-form-btn">
+					<div class="container-login100-form-btn p-t-23">
 						<button class="login100-form-btn">
-							Connecter
+							Inscrire
 						</button>
 					</div>
 					<div class="text-center p-t-46 ">
-						<a href="{% url 'register' %}" class="txt3">
-							Inscription 
+						<a href="{% url 'login' %}" class="txt3">
+							Connection
 						</a>
 					</div>
 					
@@ -95,7 +115,7 @@
 				
 
 				<div class="login100-more" style="background: #FAFAFA">
-				<img src="{% static 'img/undraw_online_resume_qyys.svg' %}" class="inner">
+				<img src="{% static 'img/undraw_web_development_w2vv.svg' %}" class="inner2">
 				</div>
 			</div>
 		</div>

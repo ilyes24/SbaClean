@@ -5,6 +5,7 @@ import os
 
 
 class Post(models.Model):
+    title = models.TextField(max_length=255, default='Title')
     post_owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     description = models.TextField(max_length=255)
     city = models.ForeignKey(City, related_name='location', on_delete=models.CASCADE)

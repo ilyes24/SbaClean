@@ -39,6 +39,9 @@ FIRE IT UP!
     method : POST 
     URL : hostname/api-token-auth/
     
+`add Token to the HTTP method header
+[Authorization Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]`
+    
 **List Users**
     
     method : GET

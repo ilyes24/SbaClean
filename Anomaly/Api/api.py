@@ -20,7 +20,10 @@ class AnomalyAPIView(mixins.CreateModelMixin, generics.ListAPIView):
         )
         query = self.request.GET.get("q")
         if query is not None:
-            qs = qs.filter(Q(post__description__contains=query)).distinct()
+            qs = qs.filter(
+                Q(post__description__contains=query) |
+                Q(consulted_at=query)
+            ).distinct()
         return qs
 
     def perform_create(self, serializer):
@@ -41,3 +44,50 @@ class AnomalyRudView(generics.RetrieveUpdateDestroyAPIView):
         permissions.IsAuthenticated,
         IsOwnerOrReadOnly
     ]
+
+
+class AnomalyNonConsultedView(generics.ListAPIView):
+    lookup_field = 'pk'
+    serializer_class = AnomalySerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = Anomaly.objects.filter(
+            post__city=user.city,
+            consulted_at__isnull=True,
+            consulted_by__isnull=True
+
+        )
+        query = self.request.GET.get("q")
+        if query is not None:
+            qs = qs.filter(
+                Q(post__description__contains=query)
+            ).distinct()
+        return qs
+
+
+class AnomalyConsultedView(generics.ListAPIView):
+    lookup_field = 'pk'
+    serializer_class = AnomalySerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = Anomaly.objects.filter(
+            post__city=user.city,
+            consulted_at__isnull=False,
+            consulted_by__isnull=False
+
+        )
+        query = self.request.GET.get("q")
+        if query is not None:
+            qs = qs.filter(
+                Q(post__description__contains=query)
+            ).distinct()
+        return qs
+

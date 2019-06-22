@@ -28,67 +28,86 @@
 <!--===============================================================================================-->
 </head>
 <body style="background-color: #666666;">
-	
+		{% load widget_tweaks %}
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login200-form validate-form">
+					
+				<form class="login200-form validate-form" method="POST" action="{% url 'register' %}">
+					{% csrf_token %}
 					<span class="login100-form-title p-b-43">
 						Créez Un Compte
 					</span>
-					<div class="wrap-input200 validate-input" data-validate = "nom d'utilisateur est nécessaire">
-						<input class="input200" type="text" name="username">
+					<!--<div class="wrap-input200 validate-input" data-validate = "nom d'utilisateur est nécessaire">
+						<input class="input200" type="text" name="username" id="username">
 						<span class="focus-input200"></span>
 						<span class="label-input200">Nom d'Utilisateur</span>
 					</div>
 					
 					<div class="wrap-input200 validate-input" data-validate = "nom est nécessaire">
-						<input class="input200" type="text" name="nom">
+						<input class="input200" type="text" name="nom" id="nom">
 						<span class="focus-input200"></span>
 						<span class="label-input200">Nom</span>
 					</div>
 					
 					<div class="wrap-input200 validate-input" data-validate = "Prenom est nécessaire">
-						<input class="input200" type="text" name="prenom">
+						<input class="input200" type="text" name="prenom" id="prenom">
 						<span class="focus-input200"></span>
 						<span class="label-input200">Prenom</span>
 					</div>
 					<div class="wrap-input200 validate-input" data-validate = "Valide email est nécessaire: ex@abc.xyz">
-						<input class="input200" type="email" name="email">
+						<input class="input200" type="email" name="email" id="email">
 						<span class="focus-input200"></span>
 						<span class="label-input200">Email</span>
 					</div>
 					<div class="wrap-input200 validate-input" data-validate = "ville est nécessaire">
-						<input class="input200" type="text" name="ville">
+						<input class="input200" type="text" name="ville" id="ville">
 						<span class="focus-input200"></span>
 						<span class="label-input200">Ville</span>
 					</div>
 					<div class="wrap-input200 validate-input" data-validate = "adresse est nécessaire">
-						<input class="input200" type="text" name="adresse">
+						<input class="input200" type="text" name="adresse" id="adresse">
 						<span class="focus-input200"></span>
 						<span class="label-input200">Adresse</span>
 					</div>
 					<div class="wrap-input200 validate-input" data-validate = "telephone est nécessaire">
-						<input class="input200" type="text" name="telephone">
+						<input class="input200" type="text" name="telephone" id="telephone">
 						<span class="focus-input200"></span>
 						<span class="label-input200">telephone</span>
 					</div>
 					<div class="wrap-input200 validate-input" data-validate="mot de passe est nécessaire">
-						<input class="input200" type="password" name="pass">
+						<input class="input200" type="password" name="pass" id="pass">
 						<span class="focus-input200"></span>
 						<span class="label-input200">Mot De Passe</span>
 					</div>
 					<div class="wrap-input200 validate-input" data-validate="confirmer mot de passe">
-						<input class="input200" type="password" name="confPass">
+						<input class="input200" type="password" name="confPass" id="confPass">
 						<span class="focus-input200"></span>
 						<span class="label-input200">Confirmer Mot De Passe</span>
-					</div>
+					</div>-->
 
+					{% for field in form.visible_fields %}
 					
-			
+							{% if field.name != "City"  %}
+							<div class="wrap-input200 validate-input" data-validate = "{{ field.name }} est nécessaire" >
+						{% render_field field class="input200" %}
+							{%else%}
+							<div class="validate-input" data-validate = "{{ field.name }} est nécessaire" style="margin-bottom: 10px;" >
+							{% render_field field class="form-control form-control-lg input200" %}
+							{% endif %}
+						<span class="focus-input200"></span>
+						<span class="label-input200">
+							{% if field.name != "City"  %}
+								{{ field.name }}
+							{% endif %}
+						</span>
+						
+					</div>	
 
+					{% endfor %}
+					
 					<div class="container-login100-form-btn p-t-23">
-						<button class="login100-form-btn">
+						<button class="login100-form-btn" type="submit">
 							Inscrire
 						</button>
 					</div>

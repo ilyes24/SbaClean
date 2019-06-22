@@ -97,9 +97,15 @@ ul, li {
 
 
 /*---------------------------------------------*/
-input {
+input{
 	outline: none;
 	border: none;
+}
+select{
+	outline: none;
+  border: none;
+  
+ 
 }
 
 textarea {
@@ -107,7 +113,7 @@ textarea {
   border: none;
 }
 
-textarea:focus, input:focus {
+textarea:focus, input:focus, select:focus {
   border-color: transparent !important;
 }
 
@@ -115,6 +121,11 @@ input:focus::-webkit-input-placeholder { color:transparent; }
 input:focus:-moz-placeholder { color:transparent; }
 input:focus::-moz-placeholder { color:transparent; }
 input:focus:-ms-input-placeholder { color:transparent; }
+
+select:focus::-webkit-select-placeholder { color:transparent; }
+select:focus:-moz-placeholder { color:transparent; }
+select:focus::-moz-placeholder { color:transparent; }
+select:focus:-ms-select-placeholder { color:transparent; }
 
 textarea:focus::-webkit-input-placeholder { color:transparent; }
 textarea:focus:-moz-placeholder { color:transparent; }
@@ -125,6 +136,11 @@ input::-webkit-input-placeholder { color: #999999;}
 input:-moz-placeholder { color: #999999;}
 input::-moz-placeholder { color: #999999;}
 input:-ms-input-placeholder { color: #999999;}
+
+select::-webkit-select-placeholder { color: #999999;}
+select:-moz-placeholder { color: #999999;}
+select::-moz-placeholder { color: #999999;}
+select:-ms-select-placeholder { color: #999999;}
 
 textarea::-webkit-input-placeholder { color: #999999;}
 textarea:-moz-placeholder { color: #999999;}
@@ -350,6 +366,13 @@ iframe {
 }
 
 input.input100 {
+  height: 100%;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+select.input100 {
   height: 100%;
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
@@ -665,6 +688,10 @@ input.input100 {
   border-radius: 10px;
   margin-bottom: 10px;
 }
+.wrap-input {
+
+}
+
 
 .label-input200 {
   font-family: Montserrat-Regular;
@@ -689,6 +716,7 @@ input.input100 {
 .input200 {
   display: block;
   width: 100%;
+  height: 80px !important;
   background: transparent;
   font-family: Montserrat-Regular;
   font-size: 12px;
@@ -698,6 +726,13 @@ input.input100 {
 }
 
 input.input200 {
+  height: 100%;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+select.input200 {
   height: 100%;
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;

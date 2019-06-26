@@ -19,7 +19,6 @@ from rest_framework.authtoken.views import obtain_auth_token
 from django.conf.urls import url
 
 from webapp import views
-
 api_urlpatterns = [
    
     path('accounts/', include(('Accounts.urls', 'Accounts'), namespace='api-accounts')),
@@ -27,13 +26,14 @@ api_urlpatterns = [
     path('posts/', include(('Post.urls', 'Post'), namespace='api-posts')),
     path('anomalys/', include(('Anomaly.urls', 'Anomaly'), namespace='api-anomaly')),
     path('events/', include(('Event.urls', 'Event'), namespace='api-event')),
+    path('mobile/',include('mobile.urls'))
 
 ]
 
 urlpatterns = [
-   path('', views.index),
-   path('login/', views.login,name='login'),
-   path('register/', views.register,name='register'),
+    path('', views.index),
+    path('login/', views.login,name='login'),
+    path('register/', views.register,name='register'),
     path('feed/', views.feed,name='feed'),
     path('admin/', admin.site.urls),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),

@@ -35,7 +35,9 @@ urlpatterns = [
     path('login/', views.login,name='login'),
     path('register/', views.register,name='register'),
     path('feed/', views.feed,name='feed'),
+    path('social-auth/',views.social_auth, name='social_auth'),
     path('admin/', admin.site.urls),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/v1/', include(api_urlpatterns)),
+    path('', include('social_django.urls', namespace='social'))
 ]

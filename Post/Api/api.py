@@ -2,7 +2,7 @@ from django.db.models import Q
 
 from Post.models import Post, Comment, Reaction
 from .serializers import PostSerializer, CommentSerializer, ReactionSerializer
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsPostOwnerOrReadOnly, IsReactionOwnerOrReadOnly, IsOwnerOrReadOnly
 from rest_framework import mixins, generics, permissions
 
 
@@ -76,7 +76,7 @@ class ReactionRudView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ReactionSerializer
     permission_classes = [
         permissions.IsAuthenticated,
-        IsOwnerOrReadOnly
+        IsReactionOwnerOrReadOnly
     ]
 
 
@@ -113,5 +113,5 @@ class PostRudView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
     permission_classes = [
         permissions.IsAuthenticated,
-        IsOwnerOrReadOnly
+        IsPostOwnerOrReadOnly
     ]

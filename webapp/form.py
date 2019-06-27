@@ -8,7 +8,7 @@ class UserRegistreForm(UserCreationForm):
     email=forms.EmailField()
     First_name=forms.CharField(required=True)
     Last_name=forms.CharField(required=True)
-    phone_number=forms.CharField(max_length=12,required=True)
+    phone_number=forms.CharField(max_length=13,required=True)
     Address=forms.CharField(required=True) 
     City=forms.ChoiceField(choices=[(City.id, City.name) for City in City.objects.all()])
    

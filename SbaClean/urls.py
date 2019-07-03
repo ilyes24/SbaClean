@@ -35,6 +35,7 @@ urlpatterns = [
     path('login/', views.login,name='login'),
     path('register/', views.register,name='register'),
     path('feed/', views.feed,name='feed'),
+    path('post_details/', views.feed,name='post_details'),
     path('social-auth/',views.social_auth, name='social_auth'),
     path('admin/', admin.site.urls),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),

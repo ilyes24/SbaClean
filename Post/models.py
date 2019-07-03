@@ -30,7 +30,7 @@ class Comment(models.Model):
 class Reaction(models.Model):
     reaction_owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, related_name='reactions', on_delete=models.CASCADE)
-    is_like = models.BooleanField()
+    is_like = models.BooleanField(null=False)
 
     def owner(self):
         return self.reaction_owner

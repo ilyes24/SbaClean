@@ -6,9 +6,11 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.db import transaction
 from .models import *
+from Post.models import *
 from django.contrib.auth.forms import UserCreationForm
 from .form import *
-
+import random
+import base64
 def index(request):
     context = {}
     return render(request, 'index.html', context)
@@ -18,8 +20,23 @@ def account(request):
     return render(request, 'account.html', context)
 
 def feed(request):
-    context = {}
-    return render(request, 'feed.html', context)
+        user = request.user
+        username = request.user.username
+        posts=Post.objects.all()
+        comments=Comment.objects.all()
+        user_pic=base64.urlsafe_b64encode(username.encode())
+        userId= request.user.id
+        form=UserComment(request.POST)
+        context = {'username':user.username,'user_pic':user_pic,'posts':posts,'userId':userId,'comments':comments,'form':form}
+        form=UserComment(request.POST)
+        if form.is_valid():
+                comment = form.save(commit=False)
+                comment.post = form.cleaned_data.get('Post')
+                # comment.comment_owner=  form.cleaned_data.get('comment_owner') 
+                comment.comment_owner=  request.user 
+                comment.save()
+        context = {'form':form}        
+        return render(request, 'feed.html', context)
 
 def login(request):
     form=UserForm(request.POST)
@@ -48,8 +65,8 @@ def register(request):
                         user = form.save(commit=False)
                         user.city_id = form.cleaned_data.get('City')
                         user.save()
-                        raw_password = form.cleaned_data.get('password1')
-                        raw_user=form.cleaned_data.get('username')
+                        raw_password = request.POST.get('password1')
+                        raw_user=request.POST.get('username')
                         user = authenticate(username=raw_user, password=raw_password)
                         auth_login(request, user)
                         return redirect('feed')

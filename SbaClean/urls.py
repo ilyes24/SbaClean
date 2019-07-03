@@ -35,7 +35,8 @@ urlpatterns = [
    path('login/', views.login,name='login'),
    path('register/', views.register,name='register'),
     path('feed/', views.feed,name='feed'),
-    path('admin/', admin.site.urls),
+     path('post_details/', views.feed,name='post_details'),
+    path('admin/', admin.site.urls), 
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/v1/', include(api_urlpatterns)),
 ]

@@ -38,11 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'widget_tweaks',
+
 
 
     # Third-Party Apps
     'phonenumber_field',
+    'widget_tweaks',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'webapp',
 
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -71,12 +73,13 @@ ROOT_URLCONF = 'SbaClean.urls'
 AUTH_USER_MODEL = "Accounts.MyUser"
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
+   # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #    'rest_framework.authentication.TokenAuthentication',
+    #],
     #'DEFAULT_PERMISSION_CLASSES': [
     #    'rest_framework.permissions.IsAuthenticated',
     #]
+   
 }
 
 

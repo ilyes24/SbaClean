@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<div class="wrap-login100">
+					{% load widget_tweaks %}
+				<form class="login100-form validate-form"  method="POST" action="{% url 'login' %}">
+						{% csrf_token %}
+					<span class="login100-form-title p-b-43">
+						Login
+					</span>
+					{% for field in form.visible_fields %}
+					<div class="wrap-input100 validate-input" data-validate = "Valid {{ field.name }} is required" >
+						{% render_field field class="input100" %}
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.name }}</span>
+					</div>	
+					{% endfor %}
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" type="submit">
+							Se connecter
+						</button>
+					</div>
+					<div class="text-center p-t-46 ">
+						<a href="{% url 'register' %}" class="txt3">
+							Inscription 
+						</a>
+					</div>
+					<div class="text-center p-t-46 p-b-20">
+						<span class="txt2">
+							or sign up using
+						</span>
+					</div>
+					<div class="login100-form-social flex-c-m">
+						<a href="{% url 'social:begin' 'google-oauth2' %}" class="login100-form-social-item flex-c-m bg3 m-r-5">
+							<i class="fa fa-google" aria-hidden="true"></i>
+						</a>
+					</div>
+				</form>
+				<div class="login100-more" style="background: #FAFAFA">
+				<img src="{% static 'img/undraw_online_resume_qyys.svg' %}" class="inner">
+				</div>
+			</div>

@@ -36,10 +36,9 @@ def login(request):
                         auth_login(request,user)
                         return redirect('feed')
                 else:
-                        return HttpResponse("Your account was inactive.")
+                        return HttpResponse("Your account is inactive.")
         else:
-            print("Someone tried to login and failed.")
-            print("They used username: {} and password: {}".format(username,password))
+            print("Login Error.")
             return HttpResponse("Invalid login details given")
     else:
              return render(request, 'login.html', context)

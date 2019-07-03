@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>{% block title %}{% endblock %} - SBAClean</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% load static %}
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'css/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/animsition.min.css' %} ">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %} ">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'css/daterangepicker.css' %} ">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %} ">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %} ">
+<!--===============================================================================================-->
+	{% block stylesheets %}
+	{% endblock %}
+</head>
+<body style="background-color: #666666;">
+
+	{% block content1 %}
+	{% endblock %}
+    {% block content2 %}
+	{% endblock %}
+	{% block content3 %}
+	{% endblock %}	
+	{% block content4 %}
+	{% endblock %}
+    {% block content5 %}
+	{% endblock %}
+
+<!--===============================================================================================-->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'js/popper.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'js/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'js/moment.min.js' %}"></script>
+	<script src="{% static 'js/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'js/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'js/login.js' %}"></script>
+	{% block scripts %}
+	{% endblock %}
+</body>
+</html>

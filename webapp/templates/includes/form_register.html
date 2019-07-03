@@ -1,0 +1,49 @@
+{% load widget_tweaks %}					
+{% load staticfiles %}
+<div class="wrap-login100">
+        <form class="login200-form validate-form" method="POST" action="{% url 'register' %}">
+            {% csrf_token %}
+            <span class="login100-form-title p-b-43">
+                Inscription
+            </span>
+            {% for field in form.visible_fields %}
+                    {% if field.name != "City"  %}
+                    <div class="wrap-input200 validate-input" data-validate = "{{ field.name }} est nécessaire" >
+                {% render_field field class="input200" %}
+                    {%else%}
+                    <div class="validate-input" data-validate = "{{ field.name }} est nécessaire" style="margin-bottom: 10px;" >
+                    {% render_field field class="form-control form-control-lg input200" %}
+                    {% endif %}
+                <span class="focus-input200"></span>
+                <span class="label-input200">
+                    {% if field.name != "City"  %}
+                        {{ field.name }}
+                    {% endif %}
+                </span>
+            </div>	
+            {% endfor %}
+            <div class="container-login100-form-btn p-t-23">
+                <button class="login100-form-btn" type="submit">
+                    S'inscrire
+                </button>
+            </div>
+            <div class="text-center p-t-46 ">
+                <a href="{% url 'login' %}" class="txt3">
+                    Se connecter
+                </a>
+            </div>
+            <div class="text-center p-t-46 p-b-20">
+                <span class="txt2">
+                    ou se connecter via
+                </span>
+            </div>
+            <div class="login100-form-social flex-c-m">
+                <a href="#" class="login100-form-social-item flex-c-m bg3 m-r-5">
+                    <i class="fa fa-google" aria-hidden="true"></i>
+                </a>
+            </div>
+        </form>
+        <div class="login100-more" style="background: #FAFAFA">
+        <img src="{% static 'img/undraw_web_development_w2vv.svg' %}" class="inner2">
+        </div>
+    </div>

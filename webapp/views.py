@@ -9,8 +9,11 @@ from .models import *
 from Post.models import *
 from django.contrib.auth.forms import UserCreationForm
 from .form import *
-import random
 import base64
+from social_django.utils import psa, load_strategy
+from django.contrib.auth import get_user_model
+UserModel = get_user_model()
+
 def index(request):
     context = {}
     return render(request, 'index.html', context)
@@ -50,17 +53,16 @@ def login(request):
                         auth_login(request,user)
                         return redirect('feed')
                 else:
-                        return HttpResponse("Your account was inactive.")
+                        return HttpResponse("Your account is inactive.")
         else:
-            print("Someone tried to login and failed.")
-            print("They used username: {} and password: {}".format(username,password))
+            print("Login Error.")
             return HttpResponse("Invalid login details given")
     else:
              return render(request, 'login.html', context)
     
 def register(request):
+        if (request.method == 'POST'):
                 form=UserRegistreForm(request.POST)
-                context = {'form':form}
                 if form.is_valid():
                         user = form.save(commit=False)
                         user.city_id = form.cleaned_data.get('City')
@@ -71,9 +73,33 @@ def register(request):
                         auth_login(request, user)
                         return redirect('feed')
                 else:
+                        print(form)
+                        return redirect('register')
+        else:
+                partial_token = None
+                if request.GET.get('partial_token'):
+                        strategy = load_strategy()
+                        partial_token = request.GET.get('partial_token')
+                        partial = strategy.partial_load(partial_token)
+                        data = partial.data['kwargs']['details']
+                        form=UserRegistreForm(initial = {'username': data['username'],'email' :data['email'], 'First_name': data['first_name'],'Last_name': data['last_name']})
+                        context = {'form':form}
+                        return render(request, 'register.html', context)
+                else:
                         form=UserRegistreForm()
+                        context = {'form':form}
                         return render(request, 'register.html', context)
         
+def social_auth(request):
+        strategy = load_strategy()
+        partial_token = request.GET.get('partial_token')
+        partial = strategy.partial_load(partial_token)
+
+        email = partial.data['kwargs']['details']['email']
+        user = UserModel.objects.get(email=email)
+        auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('feed')
+
 
 
 def post_details(request):

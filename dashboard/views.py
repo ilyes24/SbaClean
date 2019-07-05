@@ -6,6 +6,6 @@ from django.utils.translation import gettext as _
 from django.db import transaction
 from .models import *
 
-def index(request):
+def dashboard_index(request):
     context = {}
-    return render(request, 'index.html', context)
+    return render(request, 'index_dashboard.html', context)

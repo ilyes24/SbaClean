@@ -54,9 +54,13 @@ INSTALLED_APPS = [
     'Event',
     'Post',
     'webapp',
+    'dashboard',
 
 ]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'webapp/media')
+
+MEDIA_URL = '/media/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

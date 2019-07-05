@@ -1,7 +1,7 @@
 from django.db.models import Q
 
-from Post.models import Post, Comment, Reaction
-from .serializers import PostSerializer, CommentSerializer, ReactionSerializer
+from Post.models import Post, Comment, Reaction, Picture
+from .serializers import PostSerializer, CommentSerializer, ReactionSerializer, PictureSerializer
 from .permissions import IsPostOwnerOrReadOnly, IsReactionOwnerOrReadOnly, IsOwnerOrReadOnly
 from rest_framework import mixins, generics, permissions
 
@@ -114,4 +114,40 @@ class PostRudView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [
         permissions.IsAuthenticated,
         IsPostOwnerOrReadOnly
+    ]
+
+
+class PictureAPIView(mixins.CreateModelMixin, generics.ListAPIView):
+    lookup_field = 'pk'
+    serializer_class = PictureSerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def get_queryset(self):
+        qs = Picture.objects.all()
+        query = self.request.GET.get("q")
+        if query is not None:
+            qs = qs.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query)
+            ).distinct()
+        return qs
+
+    def perform_create(self, serializer):
+        serializer.save(post_owner=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def get_serializer_context(self, *args, **kwargs):
+        return {"request": self.request}
+
+
+class PictureRudView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = 'pk'
+    queryset = Picture.objects.all()
+    serializer_class = PictureSerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
     ]

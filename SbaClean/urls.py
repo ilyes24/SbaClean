@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls.static import static
+
 from webapp import views
 api_urlpatterns = [
    
@@ -25,8 +28,7 @@ api_urlpatterns = [
     path('posts/', include(('Post.urls', 'Post'), namespace='api-posts')),
     path('anomalys/', include(('Anomaly.urls', 'Anomaly'), namespace='api-anomaly')),
     path('events/', include(('Event.urls', 'Event'), namespace='api-event')),
-    path('mobile/',include('mobile.urls'))
-
+    path('mobile/',include('mobile.urls')),
 ]
 
 urlpatterns = [
@@ -42,3 +44,5 @@ urlpatterns = [
     path('', include('social_django.urls', namespace='social')),
     path("logout/", views.logout, name="logout"),
 ]
+    path('', include('dashboard.urls', namespace='dashboard')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

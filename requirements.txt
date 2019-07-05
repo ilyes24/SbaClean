@@ -9,4 +9,5 @@ phonenumbers==8.10.12
 Pillow==6.0.0
 pytz==2019.1
 sqlparse==0.3.0
-social-auth-app-django==1.2.0
+social-auth-app-django==3.1.0
+django-widget-tweaks==1.4.5

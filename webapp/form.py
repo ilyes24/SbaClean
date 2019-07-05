@@ -22,8 +22,6 @@ class UserForm(forms.ModelForm):
         model = MyUser
         fields = ['username','password']       
 class UserComment(forms.ModelForm):
-    # comment_owner= forms.ChoiceField(choices=[(MyUser.id, MyUser.username) for MyUser in MyUser.objects.all()])
-    post=forms.ChoiceField(choices=[(Post.id, Post.title) for Post in Post.objects.all()])
     class Meta():
         model = Comment
-        fields = ['post','description']    
+        fields = ['description']    

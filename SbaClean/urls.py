@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 from django.conf.urls import url
-
 from webapp import views
 api_urlpatterns = [
    
@@ -32,7 +31,7 @@ api_urlpatterns = [
 
 urlpatterns = [
     path('', views.index),
-    path('login/', views.login,name='login'),
+    path('login/', views.login, name='login'),
     path('register/', views.register,name='register'),
     path('feed/', views.feed,name='feed'),
     path('post_details/', views.feed,name='post_details'),
@@ -40,5 +39,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/v1/', include(api_urlpatterns)),
-    path('', include('social_django.urls', namespace='social'))
+    path('', include('social_django.urls', namespace='social')),
+    path("logout/", views.logout, name="logout"),
 ]

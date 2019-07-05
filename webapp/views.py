@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.db import transaction
@@ -25,22 +26,27 @@ def account(request):
 def feed(request):
         user = request.user
         username = request.user.username
+        print(username)
         posts=Post.objects.all()
         comments=Comment.objects.all()
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
-        form=UserComment(request.POST)
-        context = {'username':user.username,'user_pic':user_pic,'posts':posts,'userId':userId,'comments':comments,'form':form}
-        form=UserComment(request.POST)
-        if form.is_valid():
-                comment = form.save(commit=False)
-                comment.post = form.cleaned_data.get('Post')
-                # comment.comment_owner=  form.cleaned_data.get('comment_owner') 
-                comment.comment_owner=  request.user 
-                comment.save()
-        context = {'form':form}        
+        if request.method == 'POST':
+                form=UserComment(request.POST or None)
+                if form.is_valid():
+                        post_id=int(request.POST.get('post_id'))
+                        post=get_object_or_404(Post,id=post_id)
+                        description=request.POST.get('description')
+                        comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
+                        comment.save()
+        else:
+                form=UserComment()            
+        context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'comments':comments,'form':form}         
         return render(request, 'feed.html', context)
-
+def logout(request):
+    auth_logout(request)
+    print(request, "Logged out successfully!")
+    return redirect('/')
 def login(request):
     form=UserForm(request.POST)
     context = {'form':form}

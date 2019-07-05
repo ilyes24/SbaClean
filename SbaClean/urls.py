@@ -26,8 +26,8 @@ api_urlpatterns = [
     path('posts/', include(('Post.urls', 'Post'), namespace='api-posts')),
     path('anomalys/', include(('Anomaly.urls', 'Anomaly'), namespace='api-anomaly')),
     path('events/', include(('Event.urls', 'Event'), namespace='api-event')),
-    path('mobile/',include('mobile.urls'))
-
+    path('mobile/',include('mobile.urls')),
+    path('', include('dashboard.urls')),
 ]
 
 urlpatterns = [

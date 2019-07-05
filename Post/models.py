@@ -40,6 +40,6 @@ def get_picture_path(instance, filename):
     return os.path.join('Posts', str(instance.id), filename)
 
 
-class Pictures(models.Model):
+class Picture(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     photo_path = models.ImageField(upload_to=get_picture_path, blank=True, null=True)

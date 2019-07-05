@@ -1,10 +1,10 @@
-{% extends 'openclass/base.html' %}
+{% extends 'layouts/base_dashboard.html' %}
 {% load staticfiles %}
 
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'openclass/css/moderation.css' %}">
-<title>Moderation - {{config.SITE_NAME}}</title>
+<title>Dashboard - SBAClean</title>
 <div class="container container-custom py-4">
     <div class="row">
         <div class="col-xs-12 col-lg-3 col-md-3">
@@ -26,12 +26,12 @@
                 <th scope="row">{{w.pk}}</th>
                 <td>{{w.title}}</td>
                 <td>{{w.start_date}}</td>
-                <td><a href="{% url 'openclass:attendance' w.pk %}">Manage</a></td>
+                <td><a href="#">Manage</a></td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
-          <a href="{% url 'openclass:moderation_submitted_workshops' %}" class="btn text-white">Manage Submitted Workshops</a>
+          <a href="#" class="btn text-white">Manage Submitted Workshops</a>
           <a class="btn text-white">Manage Questions</a>
         </div>
         <div class="col-xs-12 col-lg-3 col-md-3">

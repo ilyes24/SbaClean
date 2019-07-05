@@ -43,6 +43,5 @@ urlpatterns = [
     path('api/v1/', include(api_urlpatterns)),
     path('', include('social_django.urls', namespace='social')),
     path("logout/", views.logout, name="logout"),
-]
     path('', include('dashboard.urls', namespace='dashboard')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

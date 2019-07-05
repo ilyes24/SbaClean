@@ -9,6 +9,12 @@ def post_comments(request,pk):
 
     return JsonResponse(results)
 
+def post_picture(request,pk):
+    picture = Picture.objects.filter(post = pk).values('id','photo_path','post')
+    results = {'result': picture}
+
+    return JsonResponse(results,safe=False)    
+
 def user_reactions(request,pk):
     reactions = Reaction.objects.filter(reaction_owner = pk).values('id','reaction_owner','is_like','post')
     results =  list(reactions)

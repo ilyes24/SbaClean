@@ -21,6 +21,7 @@ def index(request):
     context = {}
     return render(request, 'index.html', context)
 
+@login_required
 def account(request):
     context = {}
     return render(request, 'account.html', context)
@@ -46,10 +47,13 @@ def feed(request):
                 form=UserComment()            
         context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'comments':comments,'form':form}         
         return render(request, 'feed.html', context)
+
+@login_required
 def logout(request):
     auth_logout(request)
     print(request, "Logged out successfully!")
     return redirect('/')
+
 def login(request):
     form=UserForm(request.POST)
     context = {'form':form}
@@ -109,8 +113,7 @@ def social_auth(request):
         auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('feed')
 
-
-
+@login_required
 def post_details(request):
     context = {}
     return render(request, 'post_details.html', context)

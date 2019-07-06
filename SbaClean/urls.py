@@ -34,6 +34,7 @@ api_urlpatterns = [
 urlpatterns = [
     path('', views.index),
     path('login/', views.login, name='login'),
+    path('accounts/login/', views.login, name='login'),
     path('register/', views.register,name='register'),
     path('feed/', views.feed,name='feed'),
     path('post_details/', views.feed,name='post_details'),

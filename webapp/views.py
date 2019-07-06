@@ -13,6 +13,8 @@ from .form import *
 import base64
 from social_django.utils import psa, load_strategy
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+
 UserModel = get_user_model()
 
 def index(request):
@@ -23,6 +25,7 @@ def account(request):
     context = {}
     return render(request, 'account.html', context)
 
+@login_required
 def feed(request):
         user = request.user
         username = request.user.username

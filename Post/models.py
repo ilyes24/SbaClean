@@ -10,7 +10,7 @@ class Post(models.Model):
     description = models.TextField(max_length=255)
     city = models.ForeignKey(City, related_name='location', on_delete=models.CASCADE)
     longitude = models.CharField(max_length=255)
-    image = models.CharField(max_length=255)
+    image = models.CharField(max_length=255, default='/media/images/default.png')
     latitude = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     

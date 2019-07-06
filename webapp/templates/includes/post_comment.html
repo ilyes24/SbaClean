@@ -38,7 +38,11 @@
                 <div class="job_descp">
                     <p>{{post.description}}</p>
                     <ul>
-                        <li><img width="100%" src="{% static 'img/blog1.jpg' %}" alt=""></li>
+                        {% if post.image == '/media/images/default.png' %}
+                        <li><img width="100%" src="{% static 'img/default.png' %}" alt=""></li>
+                        {% else %}
+                        <li><img width="100%" src="{{post.image}}" alt=""></li>
+                        {% endif %}
                     </ul>	
                 </div>
                 <div class="job-status-bar">

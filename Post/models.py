@@ -10,6 +10,7 @@ class Post(models.Model):
     description = models.TextField(max_length=255)
     city = models.ForeignKey(City, related_name='location', on_delete=models.CASCADE)
     longitude = models.CharField(max_length=255)
+    image = models.CharField(max_length=255, default='/media/images/default.png')
     latitude = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -42,4 +43,4 @@ def get_picture_path(instance, filename):
 
 class Picture(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    photo_path = models.ImageField(upload_to=get_picture_path, blank=True, null=True)
+    photo_path = models.CharField(max_length=255, default='https://summer.pes.edu/wp-content/uploads/2019/02/default-2.jpg')

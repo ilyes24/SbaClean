@@ -1,0 +1,21 @@
+{% load staticfiles %}
+<div class="user-data full-width">
+    <div class="user-profile">
+        <div class="username-dt">
+            <div class="usr-pic">
+                <script>
+                    userpic='{{ user_pic }}';
+                    
+                    var data = new Identicon (userpic).toString();
+                    
+                    document.write('<img src="data:svg+xml;base64,' + data + '">');
+            </script>
+            </div>
+        </div><!--username-dt end-->
+        <div class="user-specs">
+            <h3>{{username}}</h3>
+            <span>Graphic Designer at Self Employed</span>
+        </div>
+    </div><!--user-profile end-->
+    
+</div>

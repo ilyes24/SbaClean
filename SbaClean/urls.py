@@ -32,8 +32,8 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('', views.index, name='home'),
-    path('login/', views.login,name='login'),
+    path('', views.index),
+    path('login/', views.login, name='login'),
     path('register/', views.register,name='register'),
     path('feed/', views.feed,name='feed'),
     path('post_details/', views.feed,name='post_details'),
@@ -42,5 +42,6 @@ urlpatterns = [
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/v1/', include(api_urlpatterns)),
     path('', include('social_django.urls', namespace='social')),
+    path("logout/", views.logout, name="logout"),
     path('', include('dashboard.urls', namespace='dashboard')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

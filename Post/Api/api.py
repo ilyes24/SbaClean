@@ -11,12 +11,15 @@ class CommentAPIView(mixins.CreateModelMixin, generics.ListAPIView):
 
     def get_queryset(self):
         qs = Comment.objects.all()
-        query = self.request.GET.get("q")
-        if query is not None:
-            qs = qs.filter(
-                Q(title__icontains=query) |
-                Q(content__icontains=query)
-            ).distinct()
+        query_owner = self.request.GET.get("owner")
+        query_post = self.request.GET.get("post")
+
+        if query_owner is not None:
+            qs = qs.filter(Q(comment_owner__exact=query_owner)).distinct()
+
+        if query_post is not None:
+            qs = qs.filter(Q(post__exact=query_post)).distinct()
+
         return qs
 
     def perform_create(self, serializer):
@@ -41,12 +44,16 @@ class ReactionAPIView(mixins.CreateModelMixin, generics.ListAPIView):
 
     def get_queryset(self):
         qs = Reaction.objects.all()
-        query = self.request.GET.get("q")
-        if query is not None:
-            qs = qs.filter(
-                Q(title__icontains=query) |
-                Q(content__icontains=query)
-            ).distinct()
+
+        query_owner = self.request.GET.get("owner")
+        query_post = self.request.GET.get("post")
+
+        if query_owner is not None:
+            qs = qs.filter(Q(reaction_owner__exact=query_owner)).distinct()
+
+        if query_post is not None:
+            qs = qs.filter(Q(post__exact=query_post)).distinct()
+
         return qs
 
     def perform_create(self, serializer):
@@ -71,11 +78,24 @@ class PostAPIView(mixins.CreateModelMixin, generics.ListAPIView):
 
     def get_queryset(self):
         qs = Post.objects.all()
-        query = self.request.GET.get("q")
-        if query is not None:
-            qs = qs.filter(
-                Q(title__icontains=query)
-            ).distinct()
+
+        query_owner = self.request.GET.get("owner")
+        query_title = self.request.GET.get("title")
+        query_city = self.request.GET.get("city")
+        query_description = self.request.GET.get("description")
+
+        if query_owner is not None:
+            qs = qs.filter(Q(post_owner__exact=query_owner)).distinct()
+
+        if query_title is not None:
+            qs = qs.filter(Q(title__exact=query_title)).distinct()
+
+        if query_city is not None:
+            qs = qs.filter(Q(city__exact=query_city)).distinct()
+
+        if query_description is not None:
+            qs = qs.filter(Q(description__contains=query_description)).distinct()
+
         return qs
 
     def perform_create(self, serializer):

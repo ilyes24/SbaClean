@@ -94,6 +94,12 @@ FIRE IT UP!
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/posts/post/<pk>
     
+**Filtering Post**
+
+    method : GET
+    URL : hostname/api/v1/posts/post?owner=idOwner&title=title&city=idCity&discription=azerty
+    "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
+    
 **List and Create Comment**
     
     method : GET and POST
@@ -103,7 +109,13 @@ FIRE IT UP!
     
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/posts/comment/<pk>
-    
+
+**Filtering Comment By user and|or post**
+
+    method : GET
+    URL : hostname/api/v1/posts/comment?owner=idOwner&post=idPost
+    "`owner` exact idOwner" "`post` exact idPost"
+
 **List and Create Reaction**
     
     method : GET and POST
@@ -113,6 +125,12 @@ FIRE IT UP!
     
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/posts/reaction/<pk>
+    
+**Filtering Reaction By user and|or post**
+
+    method : GET
+    URL : hostname/api/v1/posts/reaction?owner=idOwner&post=idPost
+    "`owner` exact idOwner" "`post` exact idPost"
 
 **List and Create Anomaly**
     
@@ -124,6 +142,12 @@ FIRE IT UP!
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/anomalys/<pk>
     
+**Filtering Anomaly**
+
+    method : GET
+    URL : hostname/api/v1/anomalys?post=idPost&date=yyyy-mm-dd&owner=idOwner&title=title&city=idCity&discription=azerty
+    "`post` exact idPost" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
+
 **List and Create Event**
     
     method : GET and POST
@@ -133,3 +157,9 @@ FIRE IT UP!
     
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/events/<pk>
+    
+**Filtering Event**
+
+    method : GET
+    URL : hostname/api/v1/events?post=idPost&date=yyyy-mm-dd&owner=idOwner&title=title&city=idCity&discription=azerty
+    "`post` exact idPost" "`date` littelOrEqual to yyyy-mm-dd" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"

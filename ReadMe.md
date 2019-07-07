@@ -163,3 +163,19 @@ FIRE IT UP!
     method : GET
     URL : hostname/api/v1/events?post=idPost&date=yyyy-mm-dd&owner=idOwner&title=title&city=idCity&discription=azerty
     "`post` exact idPost" "`date` littelOrEqual to yyyy-mm-dd" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
+    
+**List and Create EventParticipation**
+    
+    method : GET and POST
+    URL : hostname/api/v1/events/
+
+**Retrieve, Update and Delete a EventParticipation**
+    
+    method : GET, (PUT || PATCH) and DELETE
+    URL : hostname/api/v1/events/<pk>
+    
+**Filtering EventParticipation**
+
+    method : GET
+    URL : hostname/api/v1/events?post=idPost&date=yyyy-mm-dd&owner=idOwner&title=title&city=idCity&discription=azerty
+    "`post` exact idPost" "`date` littelOrEqual to yyyy-mm-dd" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"

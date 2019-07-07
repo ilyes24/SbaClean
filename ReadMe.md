@@ -78,7 +78,7 @@ FIRE IT UP!
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/address/city/<pk>
     
-**Filtering City By `name` and|or `code`**
+**Filtering City By `name` and|or `zip_code`**
 
     method : GET
     URL : hostname/api/v1/address/city?name=XXX&zipcode=00&state=11

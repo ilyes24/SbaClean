@@ -19,15 +19,27 @@ class ListUserView(ListAPIView):
 
     def get_queryset(self):
         qs = MyUser.objects.all()
-        query = self.request.GET.get("q")
-        if query is not None:
-            qs = qs.filter(
-                Q(username__exact=query) |
-                Q(phone_number__exact=query) |
-                Q(email__exact=query) |
-                Q(first_name__contains=query) |
-                Q(last_name__contains=query)
-            ).distinct()
+        query_username = self.request.GET.get("username")
+        query_phone = self.request.GET.get("phone")
+        query_email = self.request.GET.get("email")
+        query_first_name = self.request.GET.get("first_name")
+        query_last_name = self.request.GET.get("last_name")
+
+        if query_username is not None:
+            qs = qs.filter(Q(username__exact=query_username)).distinct()
+
+        if query_phone is not None:
+            qs = qs.filter(Q(phone_number__exact=query_phone)).distinct()
+
+        if query_email is not None:
+            qs = qs.filter(Q(email__exact=query_email)).distinct()
+
+        if query_first_name is not None:
+            qs = qs.filter(Q(first_name__contains=query_first_name)).distinct()
+
+        if query_last_name is not None:
+            qs = qs.filter(Q(last_name__contains=query_last_name)).distinct()
+
         return qs
 
 

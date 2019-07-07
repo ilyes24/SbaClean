@@ -12,11 +12,18 @@ class CityAPIView(mixins.CreateModelMixin, generics.ListAPIView):
 
     def get_queryset(self):
         qs = City.objects.all()
-        query = self.request.GET.get("q")
-        if query is not None:
-            qs = qs.filter(
-                Q(name__contains=query) | Q(zip_code__exact=query)
-            ).distinct()
+        query_name = self.request.GET.get("name")
+        query_code = self.request.GET.get("zipcode")
+        query_state = self.request.GET.get("state")
+        if query_code is not None:
+            qs = qs.filter(Q(zip_code__exact=query_code)).distinct()
+
+        if query_name is not None:
+            qs = qs.filter(Q(name__contains=query_name)).distinct()
+
+        if query_state is not None:
+            qs = qs.filter(Q(state__exact=query_state)).distinct()
+
         return qs
 
     def perform_create(self, serializer):
@@ -41,11 +48,13 @@ class StateAPIView(mixins.CreateModelMixin, generics.ListAPIView):
 
     def get_queryset(self):
         qs = State.objects.all()
-        query = self.request.GET.get("q")
-        if query is not None:
-            qs = qs.filter(
-                Q(name__icontains=query) | Q(code__exact=query)
-            ).distinct()
+        query_name = self.request.GET.get("name")
+        query_code = self.request.GET.get("code")
+        if query_code is not None:
+            qs = qs.filter(Q(code__exact=query_code)).distinct()
+
+        if query_name is not None:
+            qs = qs.filter(Q(name__contains=query_name)).distinct()
         return qs
 
     def perform_create(self, serializer):

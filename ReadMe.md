@@ -62,6 +62,12 @@ FIRE IT UP!
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/address/state/<pk>
     
+**Filtering State By `name` and|or `code`**
+
+    method : GET
+    URL : hostname/api/v1/address/state?name=XXX&code=00
+    "`name` contains XXX" "`zip_code` exact value 00"
+    
 **List and Create City**
     
     method : GET and POST
@@ -71,6 +77,12 @@ FIRE IT UP!
     
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/address/city/<pk>
+    
+**Filtering City By `name` and|or `code`**
+
+    method : GET
+    URL : hostname/api/v1/address/city?name=XXX&zipcode=00&state=11
+    "`name` contains XXX" "`zip_code` exact value 00" "`state` exact value 11"
     
 **List and Create Post**
     

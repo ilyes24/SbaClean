@@ -9,9 +9,6 @@ from rest_framework import mixins, generics, permissions
 class CommentAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = CommentSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
 
     def get_queryset(self):
         qs = Comment.objects.all()
@@ -37,18 +34,11 @@ class CommentRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-        IsOwnerOrReadOnly
-    ]
 
 
 class ReactionAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = ReactionSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
 
     def get_queryset(self):
         qs = Reaction.objects.all()
@@ -74,18 +64,11 @@ class ReactionRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = Reaction.objects.all()
     serializer_class = ReactionSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-        IsReactionOwnerOrReadOnly
-    ]
 
 
 class PostAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = PostSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
 
     def get_queryset(self):
         qs = Post.objects.all()
@@ -110,18 +93,11 @@ class PostRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-        IsPostOwnerOrReadOnly
-    ]
 
 
 class PictureAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = PictureSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
 
     def get_queryset(self):
         qs = Picture.objects.all()
@@ -147,6 +123,3 @@ class PictureRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = Picture.objects.all()
     serializer_class = PictureSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]

@@ -23,9 +23,6 @@ class CreateUserView(CreateAPIView):
 class ListUserView(ListAPIView):
     lookup_field = 'pk'
     serializer_class = MyUserSerializer
-    permission_classes = [
-        permissions.IsAuthenticated
-    ]
 
     def get_queryset(self):
         qs = MyUser.objects.all()

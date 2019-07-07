@@ -9,9 +9,6 @@ from .serializers import CitySerializer, StateSerializer
 class CityAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = CitySerializer
-    # permission_classes = [
-    #     permissions.IsAuthenticated
-    # ]
 
     def get_queryset(self):
         qs = City.objects.all()
@@ -36,18 +33,15 @@ class CityRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = City.objects.all()
     serializer_class = CitySerializer
-    # permission_classes = [
-    #     permissions.IsAuthenticated,
-    #     permissions.IsAdminUser
-    # ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.IsAdminUser
+    ]
 
 
 class StateAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = StateSerializer
-    # permission_classes = [
-    #     permissions.IsAuthenticated
-    # ]
 
     def get_queryset(self):
         qs = State.objects.all()
@@ -72,7 +66,7 @@ class StateRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = State.objects.all()
     serializer_class = StateSerializer
-    # permission_classes = [
-    #     permissions.IsAuthenticated,
-    #     permissions.IsAdminUser
-    # ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.IsAdminUser
+    ]

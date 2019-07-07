@@ -9,9 +9,6 @@ from rest_framework import mixins, generics, permissions
 class AnomalyAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = AnomalySerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
 
     def get_queryset(self):
         user = self.request.user
@@ -40,18 +37,11 @@ class AnomalyRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = Anomaly.objects.all()
     serializer_class = AnomalySerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-        IsOwnerOrReadOnly
-    ]
 
 
 class AnomalyNonConsultedView(generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = AnomalySerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
 
     def get_queryset(self):
         user = self.request.user
@@ -72,9 +62,6 @@ class AnomalyNonConsultedView(generics.ListAPIView):
 class AnomalyConsultedView(generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = AnomalySerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
 
     def get_queryset(self):
         user = self.request.user

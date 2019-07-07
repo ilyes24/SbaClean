@@ -9,9 +9,6 @@ from rest_framework import mixins, generics, permissions
 class EventAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     lookup_field = 'pk'
     serializer_class = EventSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
 
     def get_queryset(self):
         qs = Event.objects.all()
@@ -37,7 +34,3 @@ class EventRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-        IsOwnerOrReadOnly
-    ]

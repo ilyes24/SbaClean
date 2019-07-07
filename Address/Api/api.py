@@ -33,10 +33,6 @@ class CityRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = City.objects.all()
     serializer_class = CitySerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-        permissions.IsAdminUser
-    ]
 
 
 class StateAPIView(mixins.CreateModelMixin, generics.ListAPIView):
@@ -66,7 +62,3 @@ class StateRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = State.objects.all()
     serializer_class = StateSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-        permissions.IsAdminUser
-    ]

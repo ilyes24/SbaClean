@@ -1,9 +1,8 @@
 from django.db.models import Q
+from rest_framework import mixins, generics
 
 from Post.models import Post, Comment, Reaction, Picture
 from .serializers import PostSerializer, CommentSerializer, ReactionSerializer, PictureSerializer
-from .permissions import IsPostOwnerOrReadOnly, IsReactionOwnerOrReadOnly, IsOwnerOrReadOnly
-from rest_framework import mixins, generics, permissions
 
 
 class CommentAPIView(mixins.CreateModelMixin, generics.ListAPIView):

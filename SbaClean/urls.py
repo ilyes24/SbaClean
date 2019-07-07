@@ -13,10 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
-from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -28,21 +28,25 @@ api_urlpatterns = [
     path('posts/', include(('Post.urls', 'Post'), namespace='api-posts')),
     path('anomalys/', include(('Anomaly.urls', 'Anomaly'), namespace='api-anomaly')),
     path('events/', include(('Event.urls', 'Event'), namespace='api-event')),
-    path('mobile/',include('mobile.urls')),
+    path('mobile/', include('mobile.urls')),
 ]
 
 urlpatterns = [
     path('', views.index),
     path('login/', views.login, name='login'),
     path('accounts/login/', views.login, name='login'),
-    path('register/', views.register,name='register'),
-    path('feed/', views.feed,name='feed'),
-    path('post_details/', views.feed,name='post_details'),
-    path('social-auth/',views.social_auth, name='social_auth'),
-    path('admin/', admin.site.urls),
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
-    path('api/v1/', include(api_urlpatterns)),
+    path('register/', views.register, name='register'),
+    path('feed/', views.feed, name='feed'),
+    path('post_details/', views.feed, name='post_details'),
+    path('social-auth/', views.social_auth, name='social_auth'),
     path('', include('social_django.urls', namespace='social')),
     path("logout/", views.logout, name="logout"),
     path('', include('dashboard.urls', namespace='dashboard')),
+
+
+    path('admin/', admin.site.urls),
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('api/v1/', include(api_urlpatterns)),
+    url(r'^rest-auth/', include('rest_auth.urls'))
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

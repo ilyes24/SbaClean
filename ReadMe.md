@@ -145,8 +145,24 @@ FIRE IT UP!
 **Filtering Anomaly**
 
     method : GET
-    URL : hostname/api/v1/anomalys?post=idPost&date=yyyy-mm-dd&owner=idOwner&title=title&city=idCity&discription=azerty
+    URL : hostname/api/v1/anomalys?post=idPost&owner=idOwner&title=title&city=idCity&discription=azerty
     "`post` exact idPost" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
+
+**List and Create Anomaly Signal**
+    
+    method : GET and POST
+    URL : hostname/api/v1/anomalys/signal
+
+**Retrieve, Update and Delete a Anomaly Signal**
+    
+    method : GET, (PUT || PATCH) and DELETE
+    URL : hostname/api/v1/anomalys/signal/<pk>
+    
+**Filtering Anomaly**
+
+    method : GET
+    URL : hostname/api/v1/anomalys/signal?post=idPost&signaledByBy=idUser&owner=idOwner&title=title&city=idCity&discription=azerty
+    "`post` exact idPost" "`signaledBy` exact idUser" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
 
 **List and Create Event**
     

@@ -11,3 +11,8 @@ class Anomaly(models.Model):
 
     def owner(self):
         return self.post.owner
+
+
+class AnomalySignal(models.Model):
+    anomaly = models.ForeignKey(Anomaly, related_name='signaledAnomaly', on_delete=models.CASCADE)
+    user = models.ForeignKey(MyUser, related_name='signaledBy', on_delete=models.CASCADE)

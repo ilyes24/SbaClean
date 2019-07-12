@@ -6,6 +6,7 @@
 					<span class="login100-form-title p-b-43">
 						Login
 					</span>
+					{{errors | safe}}
 					{% for field in form.visible_fields %}
 					<div class="wrap-input100 validate-input" data-validate = "Valid {{ field.name }} is required" >
 						{% render_field field class="input100" %}

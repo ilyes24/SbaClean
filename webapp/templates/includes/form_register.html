@@ -6,6 +6,7 @@
             <span class="login100-form-title p-b-43">
                 Inscription
             </span>
+            {{form.errors}}
             {% for field in form.visible_fields %}
                     {% if field.name != "City"  %}
                     <div class="wrap-input200 validate-input" data-validate = "{{ field.name }} est nécessaire" >

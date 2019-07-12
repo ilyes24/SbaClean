@@ -13,6 +13,11 @@ class Post(models.Model):
     image = models.CharField(max_length=255, default='https://www.eltis.org/sites/default/files/styles/web_quality/public/default_images/photo_default_2.png')
     latitude = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def count_reactions(self):
+        likes_count = Reaction.objects.filter(post = self.id, is_like = True).count()
+        dislikes_count = Reaction.objects.filter(post = self.id, is_like = False).count()
+        return likes_count - dislikes_count
     
     def owner(self):
         return self.post_owner

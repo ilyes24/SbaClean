@@ -1,0 +1,12 @@
+<form method="post" action="{% url 'dashboard:dashboard_anomalie_edit' post.id %}">
+	{% csrf_token %}
+	<input id="action" type="text" name="action" value="edit" hidden>		
+	<input type="text" name="post_id" id="post_id" value="{{post.id}}" hidden>
+	{% for field in form %}
+	    <div class="form-group">	    	
+		    {{field.label}}
+		    {{field}}
+	    </div>
+	{% endfor %}
+	<button class="btn btn-warning" type="submit">Modifier</button>
+</form>

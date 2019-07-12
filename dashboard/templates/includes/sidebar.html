@@ -1,0 +1,20 @@
+{% load staticfiles %}
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="{% static 'img/sidebar-1.jpg' %}">
+      <div class="logo">
+        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+          SBA Clean
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          {% for item in menu %}
+          <li class="nav-item {{item.status}}">
+            <a class="nav-link" href="{% url item.url %}">
+              <i class="material-icons">{{item.icon}}</i>
+              <p>{{item.title}}</p>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>

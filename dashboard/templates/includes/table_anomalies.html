@@ -1,0 +1,41 @@
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title ">Anomalies</h4>
+                  <p class="card-category">Consult, edit or delete.</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th>ID</th>
+                        <th>Category</th>
+                        <th>User</th>
+                        <th>Score</th>
+                        <th>Action</th>
+                      </thead>
+                      <tbody>
+                        {% for p in posts %}
+                        <tr>
+                          <td class="text-primary">{{p.id}}</td>
+                          <td>{{p.title}}</td>
+                          <td class="text-primary">{{p.post_owner.username}}</td>
+                          <td>{{p.count_reactions}}</td>
+                          <td>
+                            <a href="{% url 'dashboard:dashboard_anomalie_edit' p.id %}" class="btn btn-warning text-white">Edit</a>
+                            <form method="POST" action="/dashboard/anomalies">
+                               {% csrf_token %}
+                              <input id="action" type="text" name="action" value="delete" hidden>
+                              <input id="post_id" type="text" name="post_id" value="{{p.id}}" hidden>
+                              <button class="btn btn-danger text-white" type="submit">Delete</button>
+                            </form>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>

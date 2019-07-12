@@ -68,10 +68,11 @@ def login(request):
                 else:
                         return HttpResponse("Your account is inactive.")
         else:
-            print("Login Error.")
-            return HttpResponse("Invalid login details given")
+            errors = '<div class="alert alert-danger" role="alert">Nom d\'utilisateur ou mot de passe incorrect</div>'
+            context = {'form':form, 'errors': errors}
+            return render(request, 'login.html', context)
     else:
-             return render(request, 'login.html', context)
+            return render(request, 'login.html', context)
     
 def register(request):
         if (request.method == 'POST'):
@@ -86,8 +87,8 @@ def register(request):
                         auth_login(request, user)
                         return redirect('feed')
                 else:
-                        print(form)
-                        return redirect('register')
+                        context = {'form':form}
+                        return render(request, 'register.html', context)
         else:
                 partial_token = None
                 if request.GET.get('partial_token'):

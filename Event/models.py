@@ -1,5 +1,3 @@
-import datetime
-
 from django.db import models
 from Address.models import City
 from Post.models import Post
@@ -15,3 +13,8 @@ class Event(models.Model):
 
     def owner(self):
         return self.post.owner
+
+
+class EventParticipation(models.Model):
+    event = models.ForeignKey(Event, related_name='participatedEvent', on_delete=models.CASCADE)
+    user = models.ForeignKey(MyUser, related_name='participatedUser', on_delete=models.CASCADE)

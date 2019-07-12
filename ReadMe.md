@@ -62,6 +62,12 @@ FIRE IT UP!
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/address/state/<pk>
     
+**Filtering State By `name` and|or `code`**
+
+    method : GET
+    URL : hostname/api/v1/address/state?name=XXX&code=00
+    "`name` contains XXX" "`zip_code` exact value 00"
+    
 **List and Create City**
     
     method : GET and POST
@@ -71,6 +77,12 @@ FIRE IT UP!
     
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/address/city/<pk>
+    
+**Filtering City By `name` and|or `zip_code`**
+
+    method : GET
+    URL : hostname/api/v1/address/city?name=XXX&zipcode=00&state=11
+    "`name` contains XXX" "`zip_code` exact value 00" "`state` exact value 11"
     
 **List and Create Post**
     
@@ -82,6 +94,12 @@ FIRE IT UP!
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/posts/post/<pk>
     
+**Filtering Post**
+
+    method : GET
+    URL : hostname/api/v1/posts/post?owner=idOwner&title=title&city=idCity&discription=azerty
+    "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
+    
 **List and Create Comment**
     
     method : GET and POST
@@ -91,7 +109,13 @@ FIRE IT UP!
     
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/posts/comment/<pk>
-    
+
+**Filtering Comment By user and|or post**
+
+    method : GET
+    URL : hostname/api/v1/posts/comment?owner=idOwner&post=idPost
+    "`owner` exact idOwner" "`post` exact idPost"
+
 **List and Create Reaction**
     
     method : GET and POST
@@ -101,6 +125,12 @@ FIRE IT UP!
     
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/posts/reaction/<pk>
+    
+**Filtering Reaction By user and|or post**
+
+    method : GET
+    URL : hostname/api/v1/posts/reaction?owner=idOwner&post=idPost
+    "`owner` exact idOwner" "`post` exact idPost"
 
 **List and Create Anomaly**
     
@@ -112,6 +142,28 @@ FIRE IT UP!
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/anomalys/<pk>
     
+**Filtering Anomaly**
+
+    method : GET
+    URL : hostname/api/v1/anomalys?post=idPost&owner=idOwner&title=title&city=idCity&discription=azerty
+    "`post` exact idPost" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
+
+**List and Create Anomaly Signal**
+    
+    method : GET and POST
+    URL : hostname/api/v1/anomalys/signal
+
+**Retrieve, Update and Delete a Anomaly Signal**
+    
+    method : GET, (PUT || PATCH) and DELETE
+    URL : hostname/api/v1/anomalys/signal/<pk>
+    
+**Filtering Anomaly**
+
+    method : GET
+    URL : hostname/api/v1/anomalys/signal?post=idPost&signaledByBy=idUser&owner=idOwner&title=title&city=idCity&discription=azerty
+    "`post` exact idPost" "`signaledBy` exact idUser" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
+
 **List and Create Event**
     
     method : GET and POST
@@ -121,3 +173,25 @@ FIRE IT UP!
     
     method : GET, (PUT || PATCH) and DELETE
     URL : hostname/api/v1/events/<pk>
+    
+**Filtering Event**
+
+    method : GET
+    URL : hostname/api/v1/events?post=idPost&date=yyyy-mm-dd&owner=idOwner&title=title&city=idCity&discription=azerty
+    "`post` exact idPost" "`date` littelOrEqual to yyyy-mm-dd" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
+    
+**List and Create EventParticipation**
+    
+    method : GET and POST
+    URL : hostname/api/v1/events/participate
+
+**Retrieve, Update and Delete a EventParticipation**
+    
+    method : GET, (PUT || PATCH) and DELETE
+    URL : hostname/api/v1/events/participate<pk>
+    
+**Filtering EventParticipation**
+
+    method : GET
+    URL : hostname/api/v1/events/participate?post=idPost&user=idUser&date=yyyy-mm-dd&owner=idOwner&title=title&city=idCity&discription=azerty
+    "`post` exact idPost" "`user` exact idUser" "`date` littelOrEqual to yyyy-mm-dd" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"

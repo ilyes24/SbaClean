@@ -27,13 +27,13 @@ class MyUserSerializer(serializers.ModelSerializer):
 
         return user
 
-    def validate_city(self, value):
-        #if self.instance.is_staff:
-        qs = UserModel.objects.filter(city__exact=value, is_staff__exact=True, is_active__exact=True)
-        if self.instance:
-            qs = qs.exclude(pk=self.instance.pk)
-        if qs.exists():
-            raise serializers.ValidationError("This city already has a responsible.")
+    def validate(self, value):
+        if value['is_staff']:
+            qs = UserModel.objects.filter(city__exact=value['city'], is_staff__exact=True, is_active__exact=True)
+            qs = qs.exclude(username=value['username'])
+            if qs.count() > 0:
+                raise serializers.ValidationError("This city already has a responsible.")
+
         return value
 
     class Meta:

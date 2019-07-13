@@ -14,7 +14,7 @@
             <nav>
                 <ul>
                     <li>
-                        <a href="index.html" title="">
+                        <a href="{% url 'feed' %}" title="">
                             <span><img src="images/icon1.png" alt=""></span>
                             Acceuil
                         </a>
@@ -32,14 +32,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="profiles.html" title="">
+                        <a href="{% url 'profile' %}" title="">
                             <span><img src="images/icon4.png" alt=""></span>
-                            Profiles
+                            Profile
                         </a>
-                        <ul>
-                            <li><a href="user-profile.html" title="">User Profile</a></li>
-                            <li><a href="my-profile-feed.html" title="">my-profile-feed</a></li>
-                        </ul>
+                       
                     </li>
                     <li>
                         <a href="jobs.html" title="">

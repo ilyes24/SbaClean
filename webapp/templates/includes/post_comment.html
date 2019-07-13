@@ -88,8 +88,11 @@
                                 {% csrf_token %}
                                 <input type="text" name="post_id" id="post_id" value="{{post.id}}" hidden>
                                 {% for field in form.visible_fields %}
-                                    {% render_field field  %}
+                                <div>
+                                    {% render_field field class='autoExpand' rows='3' data-min-rows='3' cols='60' data-min-cols='60' placeholder='Votre Commentaire'  %}
+                                </div>
                                 {% endfor %}
+                                <br>
                                 <button type="submit">Send</button>
                             </form>
                         </div>

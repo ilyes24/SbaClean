@@ -1,0 +1,96 @@
+{% extends 'layouts/base_feed.html' %}
+{% load staticfiles %}
+{% block title %}feed{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/feed.css' %}">
+	{% endblock %}
+
+
+{% block content_header %}
+{% include 'includes/header_feed.html' %}
+{% endblock %}
+
+
+
+
+{% block content_profile %}
+{% load widget_tweaks %}
+<div class="col-lg-12 col-md-8 ">
+        <div class="main-ws-sec">
+            <div class="posts-section">
+                    <div class="post-bar">
+                        <div class="row">
+            <!-- edit form column -->
+            <div class="col-lg-4 text-lg-center">
+                <br><br>
+                <h2 style="font-size: 30px;">Edit Profile</h2>
+                <br><br>
+            </div>
+            <br>
+            {% for message in messages %}
+            <div class="col-lg-12">
+                    {% if message.tags == 'error' %}
+      
+     
+                    <div class="alert alert-danger alert-dismissable"> <a class="panel-close close" data-dismiss="alert">×</a>
+                        {{message}}
+                    </div>
+                     {% else %}
+                     <div class="alert alert-success alert-dismissable"> <a class="panel-close close" data-dismiss="alert">×</a>
+                        {{message}}
+                    </div>
+                    {% endif %}
+
+                </div>
+                {% endfor %}
+                <br>
+                <div class="col-lg-8 push-lg-4 personal-info">
+<form  role="form" method="POST">
+    {% csrf_token %}
+
+{{errors | safe}}
+{% for field in form.visible_fields  %}
+<div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">{{field.name}}</label>
+        <div class="col-lg-9">
+    {% render_field field class="form-control" %}
+</div>
+</div>
+<br>
+{% endfor %}
+<div class="col d-flex justify-content-end">
+        <button class="btn btn-primary" type="submit" name="details">Save Changes</button>
+      </div>
+
+</form>
+<br>
+<form role="form" method="POST">
+        {% csrf_token %}
+    
+    {{errors | safe}}
+    {% for field in form2.visible_fields  %}
+    <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">{{field.name}}</label>
+            <div class="col-lg-9">
+        {% render_field field class="form-control" %}
+    </div>
+    </div>
+    <br>
+    {% endfor %}
+    
+    <div class="col d-flex justify-content-start">
+            <button class="btn btn-primary" type="submit">Save Changes</button>
+          </div>
+    <br>
+    <br>
+    
+    </form>
+    </div>
+   
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+

@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.http import HttpResponse
@@ -8,12 +9,13 @@ from django.utils.translation import gettext as _
 from django.db import transaction
 from .models import *
 from Post.models import *
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 from .form import *
 import base64
 from social_django.utils import psa, load_strategy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 UserModel = get_user_model()
 
@@ -118,4 +120,31 @@ def social_auth(request):
 def post_details(request):
     context = {}
     return render(request, 'post_details.html', context)
+@login_required
+def profile(request):
+    username = request.user.username
+    if 'details' in request.POST:
+      form = EditProfileForm(request.POST, instance=request.user)
+      if form.is_valid():
+        form.save()
+        messages.add_message(request, messages.SUCCESS, 'Sucessfully changed informations.')
+      else:
+        messages.add_message(request, messages.ERROR, 'Could not edit account details.')
+
+      form2 = PasswordChangeForm(user=request.user)
+      args = {'username':username,'form': form, 'form2': form2 }
+      return render(request, 'profile.html', args)
+
+    else:
+      form2 = PasswordChangeForm(user=request.user, data=request.POST)
+      if form2.is_valid():
+        form2.save()
+        update_session_auth_hash(request, form2.user)
+        messages.add_message(request, messages.SUCCESS, 'Sucessfully changed password.')
+      else:
+        messages.add_message(request, messages.ERROR, 'Password change unsuccessful.')
+
+      form = EditProfileForm(instance=request.user)
+      args = {'username':username,'form': form, 'form2': form2 }
+      return render(request, 'profile.html', args) 
 

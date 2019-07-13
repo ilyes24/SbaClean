@@ -3,7 +3,7 @@ from Address.models import *
 from Post.models import *
 from django import forms
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 class UserRegistreForm(UserCreationForm):
     email=forms.EmailField()
@@ -20,8 +20,15 @@ class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     class Meta():
         model = MyUser
-        fields = ['username','password']       
+        fields = ['username','password']  
+
 class UserComment(forms.ModelForm):
     class Meta():
         model = Comment
-        fields = ['description']    
+        fields = ['description']
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = MyUser
+        fields = ['email', 'first_name', 'last_name','phone_number','address' ]

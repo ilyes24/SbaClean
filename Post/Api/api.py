@@ -98,7 +98,7 @@ class PostAPIView(mixins.CreateModelMixin, generics.ListAPIView):
             qs = qs.filter(Q(description__contains=query_description)).distinct()
         
         if query_anomaly is not None:
-            qs = qs.filter(anomaly__gt = 0).distinct()
+            qs = qs.filter(anomaly__gt = 0).filter(Q(title__contains = query_anomaly)).distinct()
 
         return qs
 

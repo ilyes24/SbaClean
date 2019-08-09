@@ -18,6 +18,10 @@ class Post(models.Model):
         likes_count = Reaction.objects.filter(post = self.id, is_like = True).count()
         dislikes_count = Reaction.objects.filter(post = self.id, is_like = False).count()
         return likes_count - dislikes_count
+
+    def count_comments(self):
+        Comments_count = Comment.objects.filter(post = self.id).count()
+        return Comments_count
     
     def owner(self):
         return self.post_owner

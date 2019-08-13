@@ -29,6 +29,11 @@ FIRE IT UP!
     pyhton manage.py runserver
 ## API Road-Map
 
+**SwaggerUI**
+
+    method : GET
+    URL : hostname/api/v1/
+
 **Register**
     
     method : POST

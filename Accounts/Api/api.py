@@ -48,3 +48,43 @@ class UserRUView(RetrieveUpdateAPIView):
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
 
+
+class UserRanking(ListAPIView):
+    lookup_field = 'pk'
+    serializer_class = MyUserSerializer
+
+    def get_queryset(self):
+        qs = MyUser.objects.all()
+        query_limit = self.request.GET.get('limit')
+        query_city = self.request.GET.get('city')
+        query_user = self.request.GET.get('user')
+
+        if query_limit is not None:
+            if query_user is not None:
+                # get the user
+                user = MyUser.objects.get(pk=query_user)
+
+                # get all users of the same city
+                users = MyUser.objects.filter(city=user.city)
+
+                # Then doing the calculations
+                users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
+                    Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
+
+                # And finaly, order the results
+                users = users.order_by('-rank_point')[:query_limit]
+
+                return users
+
+            if query_city is not None:
+                # get all users of the same city
+                users = MyUser.objects.filter(city=query_city)
+
+                # Then doing the calculations
+                users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
+                    Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
+
+                # And finaly, order the results
+                users = users.order_by('-rank_point')[:query_limit]
+
+                return users

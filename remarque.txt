@@ -1,3 +1,0 @@
--dropdown menu ville
--pattern telephone ex:+213557047719.
--pattern password

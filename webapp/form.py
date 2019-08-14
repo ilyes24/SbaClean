@@ -30,7 +30,7 @@ class UserComment(forms.ModelForm):
 class UserPost(forms.ModelForm):
     class Meta():
         model = Post
-        fields = ['title','description', 'post_owner','longitude','latitude','city']
+        fields = ['city']
 
 
 class EditProfileForm(forms.ModelForm):

@@ -43,6 +43,36 @@
 {% endblock %}
 
 {% block scripte %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqGhIGuiWpOPsAEXvuJJ7GblyGbSr_7lk&amp;libraries=places"></script>
+         
+<script>
+  google.maps.event.addDomListener(window, 'load', initialize);
+    function initialize() {
+      var input = document.getElementById('autocomplete_search');
+      var autocomplete = new google.maps.places.Autocomplete(input);
+      autocomplete.addListener('place_changed', function () {
+      var place = autocomplete.getPlace();
+      // place variable will have all the information you are looking for.
+      $('#id_latitude').val(place.geometry['location'].lat());
+      $('#id_longitude').val(place.geometry['location'].lng());
+    });
+  }
+  </script>
+  <script>
+  $(document)
+    .one('focus.autoExpand', 'textarea.autoExpand', function(){
+        var savedValue = this.value;
+        this.value = '';
+        this.baseScrollHeight = this.scrollHeight;
+        this.value = savedValue;
+    })
+    .on('input.autoExpand', 'textarea.autoExpand', function(){
+        var minRows = this.getAttribute('data-min-rows')|0, rows;
+        this.rows = minRows;
+        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+        this.rows = minRows + rows;
+    });
+</script>
 <script>
 // Applied globally on all textareas with the "autoExpand" class
 $(document)

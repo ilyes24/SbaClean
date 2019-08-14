@@ -2,6 +2,17 @@
 {% load widget_tweaks %}
 <div class="col-lg-6 col-md-8 no-pd">
     <div class="main-ws-sec">
+            <div class="post-topbar">
+                    <div class="user-picy">
+                        <img src="images/resources/user-pic.png" alt="">
+                    </div>
+                    <div class="post-st">
+                        <ul>
+                            <li><a class="post_project" href="#" title="">Create Post</a></li>
+                    
+                        </ul>
+                    </div>
+                </div>
         <div class="posts-section">
         {% for post in posts %}
 
@@ -105,15 +116,45 @@
             </div><!--process-comm end-->
         </div><!--posts-section end-->
     </div><!--main-ws-sec end-->
-    <form method="POST">
-        {% csrf_token %}
-        
-        {% for field in form2.visible_fields %}
-        <div>
-            {% render_field field   %}
-        </div>
-        {% endfor %}
-        <br>
-        <button type="submit">Send</button>
-    </form>
+   
 </div>
+<div class="post-popup pst-pj">
+        <div class="post-project">
+            <h3>Post a project</h3>
+            <div class="post-project-fields">
+                <form method="POST">
+                        {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <textarea name="title" class='autoExpand' rows='1' data-min-rows='1' maxlength="255" required="" id="id_title">Title</textarea>
+                        </div>
+                        {% for field in form2.visible_fields  %}
+                        <div class="col-lg-12">
+                                {% render_field field %}
+                        </div>
+                        {% endfor %}
+                        <div class="col-lg-12">
+                        <input type="text" name="latitude" placeholder="latitude" readonly maxlength="255" required="" id="id_latitude">
+                        </div>
+                        <div class="col-lg-12">
+                        <input type="text" name="longitude" placeholder="longitude" readonly maxlength="255" required="" id="id_longitude">
+                        </div>
+                        <div class="col-lg-12">
+                        <input id="autocomplete_search" name="autocomplete_search" type="text" class="form-control" placeholder="Search" />
+                        </div>
+                        <div class="col-lg-12">
+                            <textarea name="description" class='autoExpand' rows='5' data-min-rows='5' maxlength="255" required="" id="id_description" placeholder="Description"></textarea>
+                        </div>
+                       
+                        
+                        <div class="col-lg-12">
+                            <ul>
+                                <li><button class="active" type="submit" value="post">Post</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div><!--post-project-fields end-->
+            <a href="#" title=""><i class="la la-times-circle-o"></i></a>
+        </div><!--post-project end-->
+    </div><!--post-project-popup end-->

@@ -39,13 +39,22 @@ def feed(request):
         userId= request.user.id
         if request.method == 'POST':
                 form=UserComment(request.POST or None)
-                form2=UserPost()
+                form2=UserPost(request.POST or None)
                 if form.is_valid():
-                        post_id=int(request.POST.get('post_id'))
-                        post=get_object_or_404(Post,id=post_id)
+                        if request.POST.get('post_id'):
+                                post_id=int(request.POST.get('post_id'))
+                                post=get_object_or_404(Post,id=post_id)
+                                description=request.POST.get('description')
+                                comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
+                                comment.save()
+                if form2.is_valid():
+                        title = request.POST.get('title')
+                        city = request.POST.get('city')
+                        longitude = request.POST.get('longitude')
+                        latitude = request.POST.get('latitude')
                         description=request.POST.get('description')
-                        comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
-                        comment.save()
+                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
+                        post.save()
         else:
                 form=UserComment()
                 form2=UserPost()            

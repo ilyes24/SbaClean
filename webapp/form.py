@@ -2,7 +2,7 @@ from Accounts.models import MyUser
 from Address.models import *
 from Post.models import *
 from django import forms
-
+from geoposition.fields import GeopositionField
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 class UserRegistreForm(UserCreationForm):
@@ -27,8 +27,13 @@ class UserComment(forms.ModelForm):
         model = Comment
         fields = ['description']
 
+class UserPost(forms.ModelForm):
+    class Meta():
+        model = Post
+        fields = ['title','description', 'post_owner','longitude','latitude','city']
+
 
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = MyUser
-        fields = ['email', 'first_name', 'last_name','phone_number','address' ]
+        fields = ['email', 'first_name', 'last_name','phone_number','address']

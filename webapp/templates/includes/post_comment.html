@@ -105,4 +105,15 @@
             </div><!--process-comm end-->
         </div><!--posts-section end-->
     </div><!--main-ws-sec end-->
+    <form method="POST">
+        {% csrf_token %}
+        
+        {% for field in form2.visible_fields %}
+        <div>
+            {% render_field field   %}
+        </div>
+        {% endfor %}
+        <br>
+        <button type="submit">Send</button>
+    </form>
 </div>

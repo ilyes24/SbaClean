@@ -39,6 +39,7 @@ def feed(request):
         userId= request.user.id
         if request.method == 'POST':
                 form=UserComment(request.POST or None)
+                form2=UserPost()
                 if form.is_valid():
                         post_id=int(request.POST.get('post_id'))
                         post=get_object_or_404(Post,id=post_id)
@@ -46,8 +47,9 @@ def feed(request):
                         comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
                         comment.save()
         else:
-                form=UserComment()            
-        context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'comments':comments,'form':form}         
+                form=UserComment()
+                form2=UserPost()            
+        context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2}         
         return render(request, 'feed.html', context)
 
 @login_required

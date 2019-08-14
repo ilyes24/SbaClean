@@ -48,10 +48,12 @@ INSTALLED_APPS = [
     "geoposition",
     'rest_framework.authtoken',
     'rest_auth',
+    'rest_framework_swagger',
 
     # Local Apps
-    'Accounts',
     'Address',
+    'Accounts',
+
     'Anomaly',
     'Event',
     'Post',

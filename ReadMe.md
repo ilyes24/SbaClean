@@ -29,6 +29,11 @@ FIRE IT UP!
     pyhton manage.py runserver
 ## API Road-Map
 
+**SwaggerUI**
+
+    method : GET
+    URL : hostname/api/v1/
+
 **Register**
     
     method : POST
@@ -195,3 +200,9 @@ FIRE IT UP!
     method : GET
     URL : hostname/api/v1/events/participate?post=idPost&user=idUser&date=yyyy-mm-dd&owner=idOwner&title=title&city=idCity&discription=azerty
     "`post` exact idPost" "`user` exact idUser" "`date` littelOrEqual to yyyy-mm-dd" "`owner` exact idOwner" "`title` exact title" "`city` exact idCity" "`discription` exact azerty"
+
+**Get User Ranking**
+
+    method : GET
+    Parameters : limit, (user|city)
+    URL : hostname/api/v1/accounts/ranking?limit=5&user=1 OR hostname/api/v1/accounts/ranking?limit=5&city=1

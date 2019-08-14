@@ -10,19 +10,16 @@ class Post(models.Model):
     description = models.TextField(max_length=255)
     city = models.ForeignKey(City, related_name='location', on_delete=models.CASCADE)
     longitude = models.CharField(max_length=255)
-    image = models.CharField(max_length=255, default='https://www.eltis.org/sites/default/files/styles/web_quality/public/default_images/photo_default_2.png')
+    image = models.CharField(max_length=255,
+                             default='https://www.eltis.org/sites/default/files/styles/web_quality/public/default_images/photo_default_2.png')
     latitude = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def count_reactions(self):
-        likes_count = Reaction.objects.filter(post = self.id, is_like = True).count()
-        dislikes_count = Reaction.objects.filter(post = self.id, is_like = False).count()
+        likes_count = Reaction.objects.filter(post=self.id, is_like=True).count()
+        dislikes_count = Reaction.objects.filter(post=self.id, is_like=False).count()
         return likes_count - dislikes_count
 
-    def count_comments(self):
-        Comments_count = Comment.objects.filter(post = self.id).count()
-        return Comments_count
-    
     def owner(self):
         return self.post_owner
 
@@ -52,4 +49,5 @@ def get_picture_path(instance, filename):
 
 class Picture(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    photo_path = models.CharField(max_length=255, default='https://summer.pes.edu/wp-content/uploads/2019/02/default-2.jpg')
+    photo_path = models.CharField(max_length=255,
+                                  default='https://summer.pes.edu/wp-content/uploads/2019/02/default-2.jpg')

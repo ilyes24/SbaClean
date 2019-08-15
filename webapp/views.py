@@ -85,8 +85,12 @@ def event(request):
                         longitude = request.POST.get('longitude')
                         latitude = request.POST.get('latitude')
                         description=request.POST.get('description')
+                        max_participants =request.POST.get('max_participants')
+                        starts_at = request.POST.get('starts_at')
                         post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
                         post.save()
+                        event=Event.objects.create(post=post, max_participants=max_participants, starts_at=starts_at)
+                        event.save()
         else:
                 form=UserComment()
                 form2=UserPost()            

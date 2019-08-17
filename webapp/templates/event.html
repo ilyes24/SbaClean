@@ -1,6 +1,6 @@
 {% extends 'layouts/base_feed.html' %}
 {% load staticfiles %}
-{% block title %}feed{% endblock %}
+{% block title %}event{% endblock %}
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/feed.css' %}">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
@@ -24,7 +24,7 @@
 
 
 {% block content_post_comment %}
-{% include 'includes/post_comment.html' %}
+{% include 'includes/event_comment.html' %}
 {% endblock %}
 
 

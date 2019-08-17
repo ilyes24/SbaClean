@@ -19,10 +19,13 @@ from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_swagger.views import get_swagger_view
 
 from webapp import views
+
+schema_view = get_swagger_view(title='SbaClean API')
 api_urlpatterns = [
-   
+    path('', schema_view),
     path('accounts/', include(('Accounts.urls', 'Accounts'), namespace='api-accounts')),
     path('address/', include(('Address.urls', 'Address'), namespace='api-address')),
     path('posts/', include(('Post.urls', 'Post'), namespace='api-posts')),
@@ -37,6 +40,7 @@ urlpatterns = [
     path('accounts/login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     path('feed/', views.feed, name='feed'),
+    path('event/', views.event, name='event'),
     path('profile/', views.profile, name='profile'),
     path('post_details/', views.feed, name='post_details'),
     path('social-auth/', views.social_auth, name='social_auth'),

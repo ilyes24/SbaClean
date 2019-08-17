@@ -1856,9 +1856,17 @@ main {
     padding: 0 15px;
     height: 40px;
 }
-.post-project-fields form textarea {
-    padding: 15px;
-    height: 130px;
+ textarea {
+    display: block;
+    box-sizing: padding-box;
+    overflow: hidden;
+    padding: 10px;
+    width: 250px;
+    font-size: 14px;
+    margin: 50px auto;
+    border-radius: 6px;
+    box-shadow: 2px 2px 8px rgba(black, .3);
+    border: 0;
 }
 .post-project-fields form input,
 .post-project-fields form textarea,
@@ -4188,19 +4196,7 @@ a:hover {
 .mCS-dark.mCSB_scrollTools .mCSB_draggerRail {
     opacity: 0;
 }
-textarea{  
-    display: block;
-    box-sizing: padding-box;
-    overflow: hidden;
-  
-    padding: 10px;
-    width: 350px!important;
-    font-size: 14px;
-    margin: 50px auto;
-    border-radius: 6px;
-    box-shadow: 2px 2px 8px rgba(black, .3);
-    border: 0;
-  }
+
 
 
 
@@ -5284,7 +5280,7 @@ textarea{
 .post_comment_sec form textarea {
     float: left;
     width: 100%;
-    height: 130px;
+   
     border: 1px solid #dce2eb;
     padding: 15px;
     resize: none;

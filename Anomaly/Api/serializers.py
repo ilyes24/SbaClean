@@ -6,7 +6,7 @@ class AnomalySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Anomaly
-        fields = '__all__'
+        fields = ('id', 'consulted_at', "consulted_by", "post")
 
 
 class AnomalySignalSerializer(serializers.ModelSerializer):

@@ -45,12 +45,15 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'widget_tweaks',
     'rest_framework',
+    "geoposition",
     'rest_framework.authtoken',
     'rest_auth',
+    'rest_framework_swagger',
 
     # Local Apps
-    'Accounts',
     'Address',
+    'Accounts',
+
     'Anomaly',
     'Event',
     'Post',
@@ -147,7 +150,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBqGhIGuiWpOPsAEXvuJJ7GblyGbSr_7lk'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 

@@ -9,6 +9,7 @@ from django.utils.translation import gettext as _
 from django.db import transaction
 from .models import *
 from Post.models import *
+from Event.models import *
 from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 from .form import *
 import base64
@@ -39,16 +40,62 @@ def feed(request):
         userId= request.user.id
         if request.method == 'POST':
                 form=UserComment(request.POST or None)
+                form2=UserPost(request.POST or None)
                 if form.is_valid():
-                        post_id=int(request.POST.get('post_id'))
-                        post=get_object_or_404(Post,id=post_id)
+                        if request.POST.get('post_id'):
+                                post_id=int(request.POST.get('post_id'))
+                                post=get_object_or_404(Post,id=post_id)
+                                description=request.POST.get('description')
+                                comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
+                                comment.save()
+                if form2.is_valid():
+                        title = request.POST.get('title')
+                        city = request.POST.get('city')
+                        longitude = request.POST.get('longitude')
+                        latitude = request.POST.get('latitude')
                         description=request.POST.get('description')
-                        comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
-                        comment.save()
+                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
+                        post.save()
         else:
-                form=UserComment()            
-        context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'comments':comments,'form':form}         
+                form=UserComment()
+                form2=UserPost()            
+        context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2}         
         return render(request, 'feed.html', context)
+@login_required
+def event(request):
+        user = request.user
+        username = request.user.username
+        events=Event.objects.all()
+        comments=Comment.objects.all()
+        user_pic=base64.urlsafe_b64encode(username.encode())
+        userId= request.user.id
+        if request.method == 'POST':
+                form=UserComment(request.POST or None)
+                form2=UserPost(request.POST or None)
+                if form.is_valid():
+                        if request.POST.get('post_id'):
+                                post_id=int(request.POST.get('post_id'))
+                                post=get_object_or_404(Post,id=post_id)
+                                description=request.POST.get('description')
+                                comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
+                                comment.save()
+                if form2.is_valid():
+                        title = request.POST.get('title')
+                        city = request.POST.get('city')
+                        longitude = request.POST.get('longitude')
+                        latitude = request.POST.get('latitude')
+                        description=request.POST.get('description')
+                        max_participants =request.POST.get('max_participants')
+                        starts_at = request.POST.get('starts_at')
+                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
+                        post.save()
+                        event=Event.objects.create(post=post, max_participants=max_participants, starts_at=starts_at)
+                        event.save()
+        else:
+                form=UserComment()
+                form2=UserPost()            
+        context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'comments':comments,'form':form,'form2':form2}         
+        return render(request, 'event.html', context)
 
 @login_required
 def logout(request):

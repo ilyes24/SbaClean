@@ -23,6 +23,7 @@ pillow
 pip
 py
 python
+*/migrations/*
 
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/

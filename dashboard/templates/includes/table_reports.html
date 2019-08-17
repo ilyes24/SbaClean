@@ -29,6 +29,7 @@
                           <td>{{u.city}}</td>
                           <td>{{u.address}}</td>
                           <td>
+                            <a href="{% url 'dashboard:dashboard_anomalie_edit' u.id %}" class="btn btn-warning text-white">Edit</a>
                             <form method="post" action="/dashboard/users">
                                {% csrf_token %}
                               <input id="action" type="text" name="action" value="delete" hidden>

@@ -2,33 +2,30 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title ">Anomalies</h4>
+                  <h4 class="card-title ">Commentaires</h4>
                   <p class="card-category">Consult, edit or delete.</p>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table">
                       <thead class=" text-primary">
-                        <th>ID</th>
-                        <th>Nom d'utilisateur</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Numéro</th>
-                        <th>Ville</th>
-                        <th>Adresse</th>
+                        <th>ID du commentaire</th>
+                        <th>Commentaire</th>
+                        <th>Auteur</th>
+                        <th>ID du Post</th>
+                        <th>Titre du Post</th>
                         <th>Action</th>
                       </thead>
                       <tbody>
-                        {% for u in users %}
+                        {% for c in comments %}
                         <tr>
-                          <td class="text-primary">{{u.id}}</td>
-                          <td>{{u.username}}</td>
-                          <td>{{u.last_name}}</td>
-                          <td>{{u.first_name}}</td>
-                          <td class="text-primary">{{u.phone_number}}</td>
-                          <td>{{u.city}}</td>
-                          <td>{{u.address}}</td>
+                          <td class="text-primary">{{c.id}}</td>
+                          <td>{{c.description}}</td>
+                          <td>@{{c.comment_owner.username}} ({{c.comment_owner.first_name}} {{c.comment_owner.last_name}})</td>
+                          <td>{{c.post.id}}</td>
+                          <td>{{c.post.title}}</td>
                           <td>
+                            <a href="{% url 'dashboard:dashboard_anomalie_edit' c.id %}" class="btn btn-warning text-white">Edit</a>
                             <form method="post" action="/dashboard/users">
                                {% csrf_token %}
                               <input id="action" type="text" name="action" value="delete" hidden>

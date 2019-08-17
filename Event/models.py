@@ -10,9 +10,14 @@ class Event(models.Model):
     approved_at = models.DateTimeField(null=True)
     max_participants = models.IntegerField()
     starts_at = models.DateTimeField()
+    status = models.CharField(max_length=255, default="pending")
 
     def owner(self):
         return self.post.owner
+
+    def approve(self):
+        self.status = 'approved'
+        self.save()
 
 
 class EventParticipation(models.Model):

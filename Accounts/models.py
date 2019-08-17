@@ -6,11 +6,16 @@ from Address.models import City
 
 class MyUser(AbstractUser):
     phone_number = models.BigIntegerField(blank=False, unique=True)
-    city = models.ForeignKey(City, related_name='city', on_delete=models.CASCADE)
+    # city = models.ForeignKey(City, related_name='city', on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
+    isbanned = models.BooleanField(default=False)
 
     def owner(self):
         return self
+
+    def ban(self):
+        self.isbanned = True
+        self.save()
 
 
 # is_staff = True                           is_staff = False

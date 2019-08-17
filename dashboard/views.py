@@ -90,20 +90,16 @@ def dashboard_anomalie_edit(request, pid):
 
 def dashboard_users(request):
     menu_active('Utilisateurs')
-    if request.method == 'POST' and request.POST.get('action') == 'delete':
+    if request.method == 'POST' and request.POST.get('action') == 'ban':
         user_id = request.POST.get('user_id')
-        users = MyUser.objects.filter(id=user_id).delete()
+        users = MyUser.objects.filter(id=user_id)[0].ban()
     users = MyUser.objects.all()
     context = {'menu': menu, 'users': users}
     return render(request, 'users.html', context)
 
 def dashboard_users_edit(request):
     menu_active('Utilisateurs')
-    if request.method == 'POST' and request.POST.get('action') == 'delete':
-        user_id = request.POST.get('user_id')
-        users = MyUser.objects.filter(id=user_id).delete()
-    users = MyUser.objects.all()
-    context = {'menu': menu, 'users': users}
+    context = {'menu': menu}
     return render(request, 'users.html', context)
 
 def dashboard_events(request):
@@ -142,10 +138,15 @@ def dashboard_comments_edit(request):
 
 def dashboard_reports(request):
     menu_active('Signalements')
-    if request.method == 'POST' and request.POST.get('action') == 'delete':
+    if request.method == 'POST' and request.POST.get('action') == 'ban':
         user_id = request.POST.get('user_id')
-        users = MyUser.objects.filter(id=user_id).delete()
-    users = MyUser.objects.all()    
+        users = MyUser.objects.filter(id=user_id)[0].ban()
+    if request.method == 'POST' and request.POST.get('action') == 'delete':        
+        post_id = request.POST.get('post_id')
+        anomaly_id = request.POST.get('anomaly_id')
+        post = Post.objects.filter(id=post_id).delete()
+        anomaly = Anomaly.objects.filter(id=anomaly_id).delete()
+    reports = AnomalySignal.objects.all()    
     context = {'menu': menu, 'reports': reports}
     return render(request, 'reports.html', context)
 

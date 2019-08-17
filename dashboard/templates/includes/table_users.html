@@ -2,7 +2,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title ">Anomalies</h4>
+                  <h4 class="card-title ">Utilisateurs</h4>
                   <p class="card-category">Consult, edit or delete.</p>
                 </div>
                 <div class="card-body">
@@ -16,6 +16,7 @@
                         <th>Numéro</th>
                         <th>Ville</th>
                         <th>Adresse</th>
+                        <th>Status</th>
                         <th>Action</th>
                       </thead>
                       <tbody>
@@ -28,12 +29,17 @@
                           <td class="text-primary">{{u.phone_number}}</td>
                           <td>{{u.city}}</td>
                           <td>{{u.address}}</td>
+                          {% if u.isbanned %}
+                          <td>Banni</td>
+                          {% else %}
+                          <td>Actif</td>
+                          {% endif %}
                           <td>
                             <form method="post" action="/dashboard/users">
                                {% csrf_token %}
-                              <input id="action" type="text" name="action" value="delete" hidden>
+                              <input id="action" type="text" name="action" value="ban" hidden>
                               <input id="post_id" type="text" name="user_id" value="{{u.id}}" hidden>
-                              <button class="btn btn-danger text-white" type="submit">Delete</button>
+                              <button class="btn btn-danger text-white" type="submit">Ban</button>
                             </form>
                           </td>
                         </tr>

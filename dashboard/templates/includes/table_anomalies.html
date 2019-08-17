@@ -16,18 +16,18 @@
                         <th>Action</th>
                       </thead>
                       <tbody>
-                        {% for p in posts %}
+                        {% for a in anomalies %}
                         <tr>
-                          <td class="text-primary">{{p.id}}</td>
-                          <td>{{p.title}}</td>
-                          <td class="text-primary">{{p.post_owner.username}}</td>
-                          <td>{{p.count_reactions}}</td>
+                          <td class="text-primary">{{a.post.id}}</td>
+                          <td>{{a.post.title}}</td>
+                          <td class="text-primary">{{a.post.post_owner.username}}</td>
+                          <td>{{a.post.count_reactions}}</td>
                           <td>
-                            <a href="{% url 'dashboard:dashboard_anomalie_edit' p.id %}" class="btn btn-warning text-white">Edit</a>
+                            <a href="{% url 'dashboard:dashboard_anomalie_edit' a.post.id %}" class="btn btn-warning text-white">Edit</a>
                             <form method="POST" action="/dashboard/anomalies">
                                {% csrf_token %}
                               <input id="action" type="text" name="action" value="delete" hidden>
-                              <input id="post_id" type="text" name="post_id" value="{{p.id}}" hidden>
+                              <input id="post_id" type="text" name="post_id" value="{{a.post.id}}" hidden>
                               <button class="btn btn-danger text-white" type="submit">Delete</button>
                             </form>
                           </td>

@@ -17,3 +17,4 @@ class Anomaly(models.Model):
 class AnomalySignal(models.Model):
     anomaly = models.ForeignKey(Anomaly, related_name='signaledAnomaly', on_delete=models.CASCADE)
     user = models.ForeignKey(MyUser, related_name='signaledBy', on_delete=models.CASCADE)
+    reported_at = models.DateTimeField(null=True)

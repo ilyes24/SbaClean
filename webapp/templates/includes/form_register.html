@@ -12,14 +12,15 @@
                     <div class="wrap-input200 validate-input" data-validate = "{{ field.name }} est nécessaire" >
                 {% render_field field class="input200" %}
                     {%else%}
-                    <div class="validate-input" data-validate = "{{ field.name }} est nécessaire" style="margin-bottom: 10px;" >
-                    {% render_field field class="form-control form-control-lg input200" %}
+                    <div class=" select-wrapper validate-input" data-validate = "{{ field.name }} est nécessaire" style="margin-bottom: 10px;" >
+                    {% render_field field class="form-control input200" %}
                     {% endif %}
                 <span class="focus-input200"></span>
                 <span class="label-input200">
                     {% if field.name != "City"  %}
                         {{ field.name }}
                     {% endif %}
+                    
                 </span>
             </div>	
             {% endfor %}

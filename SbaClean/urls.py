@@ -55,3 +55,5 @@ urlpatterns = [
     url(r'^rest-auth/', include('rest_auth.urls'))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = views.error404

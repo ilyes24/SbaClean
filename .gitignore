@@ -23,6 +23,7 @@ pillow
 pip
 py
 python
+**/migrations/**
 
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
@@ -307,3 +308,4 @@ modules.xml
 # Pyre type checker
 
 # End of https://www.gitignore.io/api/git,django,python,pycharm+all
+run_server.bat

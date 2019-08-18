@@ -1,0 +1,47 @@
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title ">Signalements</h4>
+                  <p class="card-category">Consult, edit or delete.</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th>ID</th>
+                        <th>Post (ID)</th>
+                        <th>Auteur</th>
+                        <th>Signalé par</th>
+                        <th>Action</th>
+                      </thead>
+                      <tbody>
+                        {% for r in reports %}
+                        <tr>
+                          <td class="text-primary">{{r.id}}</td>
+                          <td>{{r.anomaly.post.id}}</td>
+                          <td>{{r.anomaly.post.post_owner.username}}</td>
+                          <td>{{r.user.username}}</td>
+                          <td>
+                            <form method="post" action="/dashboard/reports">
+                               {% csrf_token %}
+                              <input id="action" type="text" name="action" value="delete" hidden>
+                              <input id="anomaly_id" type="text" name="anomaly_id" value="{{r.anomaly.id}}" hidden>
+                              <input id="post_id" type="text" name="post_id" value="{{r.anomaly.post.id}}" hidden>
+                              <button class="btn btn-sm btn-danger text-white" type="submit">Delete Post</button>
+                            </form>
+                            <form method="post" action="/dashboard/reports">
+                               {% csrf_token %}
+                              <input id="action" type="text" name="action" value="ban" hidden>
+                              <input id="post_id" type="text" name="user_id" value="{{r.anomaly.post.post_owner.id}}" hidden>
+                              <button class="btn btn-sm btn-danger text-white" type="submit">Ban User</button>
+                            </form>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>

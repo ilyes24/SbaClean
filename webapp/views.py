@@ -195,3 +195,7 @@ def profile(request):
       args = {'username':username,'form': form, 'form2': form2 }
       return render(request, 'profile.html', args) 
 
+
+def error404(request, exception):
+    context = {}
+    return render(request, 'index.html', context)

@@ -20,6 +20,16 @@ class Post(models.Model):
         dislikes_count = Reaction.objects.filter(post=self.id, is_like=False).count()
         return likes_count - dislikes_count
 
+    def get_user(self):
+        user = MyUser.objects.get(id = self.post_owner.id)
+        payload = {
+            "id" : user.pk,
+            "username" : user.username,
+            "email" : user.email,
+            
+        }
+        return payload
+
     def owner(self):
         return self.post_owner
 
@@ -32,6 +42,15 @@ class Comment(models.Model):
 
     def owner(self):
         return self.comment_owner
+    
+    def get_user(self):
+        user = MyUser.objects.get(id = self.comment_owner.id)
+        payload = {
+            "id" : user.pk,
+            "username" : user.username
+        }
+
+        return payload
 
 
 class Reaction(models.Model):

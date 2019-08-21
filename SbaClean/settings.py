@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "geoposition",
     'rest_framework.authtoken',
     'rest_auth',
+    'reset_migrations',
     'rest_framework_swagger',
 
     # Local Apps

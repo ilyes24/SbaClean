@@ -21,8 +21,8 @@
                     <div class="usy-dt">
                         <img src="images/resources/us-pic.png" alt="">
                         <div class="usy-name">
-                            <h3>{{post.post_owner}}</h3>
-                            <span><img src="images/clock.png" alt="">{{post.created_at}}</span>
+                            <h3>{{post.post.post_owner}}</h3>
+                            <span><img src="images/clock.png" alt="">{{post.post.created_at}}</span>
                         </div>
                     </div>
                     <div class="ed-opts">
@@ -39,7 +39,7 @@
                 <div class="epi-sec">
                     <ul class="descp">
                         <li><img src="images/icon8.png" alt=""><span>Epic Coder</span></li>
-                        <li><img src="images/icon9.png" alt=""><span>{{post.city.name}}</span></li>
+                        <li><img src="images/icon9.png" alt=""><span>{{post.post.city.name}}</span></li>
                     </ul>
                     <ul class="bk-links">
                         <li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
@@ -47,12 +47,12 @@
                     </ul>
                 </div>
                 <div class="job_descp">
-                    <p>{{post.description}}</p>
+                    <p>{{post.post.description}}</p>
                     <ul>
-                        {% if post.image == '/media/images/default.png' %}
+                        {% if post.post.image == '/media/images/default.png' %}
                         <li><img width="100%" src="{% static 'img/default.png' %}" alt=""></li>
                         {% else %}
-                        <li><img width="100%" src="{{post.image}}" alt=""></li>
+                        <li><img width="100%" src="{{post.post.image}}" alt=""></li>
                         {% endif %}
                     </ul>	
                 </div>
@@ -61,7 +61,7 @@
                         <li>
                             <a href="#"><i class="la la-heart"></i> Like</a>
                         </li> 
-                        <li><a href="#" title="" ><img src="images/com.png" alt=""> Comment {{post.count_comments}}</a></li>
+                        <li><a href="#" title="" ><img src="images/com.png" alt=""> Comment {{post.post.count_comments}}</a></li>
                     </ul>
                     <a><i class="la la-eye"></i>Views 50</a>
                 </div>
@@ -74,7 +74,7 @@
                         <ul>
                             <li>
                                 {% for comment in comments %}
-                                    {% if comment.post == post %}
+                                    {% if comment.post == post.post %}
                                         <div class="comment-list">
                                             <div class="bg-img">
                                                 <img src="images/resources/bg-img1.png" alt="">
@@ -97,7 +97,7 @@
                         <div class="comment_box">
                             <form method="POST">
                                 {% csrf_token %}
-                                <input type="text" name="post_id" id="post_id" value="{{post.id}}" hidden>
+                                <input type="text" name="post_id" id="post_id" value="{{post.post.id}}" hidden>
                                 {% for field in form.visible_fields %}
                                 <div>
                                     {% render_field field class='autoExpand' rows='3' data-min-rows='3' cols='60' data-min-cols='60' placeholder='Votre Commentaire'  %}
@@ -120,7 +120,7 @@
 </div>
 <div class="post-popup pst-pj">
         <div class="post-project">
-            <h3>Post a project</h3>
+            <h3>Post a Anomaly</h3>
             <div class="post-project-fields">
                 <form method="POST">
                         {% csrf_token %}

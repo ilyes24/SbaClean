@@ -10,6 +10,7 @@ from django.db import transaction
 from .models import *
 from Post.models import *
 from Event.models import *
+from Anomaly.models import *
 from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 from .form import *
 import base64
@@ -34,7 +35,7 @@ def feed(request):
         user = request.user
         username = request.user.username
         print(username)
-        posts=Post.objects.all()
+        posts=Anomaly.objects.all()
         comments=Comment.objects.all()
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
@@ -56,6 +57,8 @@ def feed(request):
                         description=request.POST.get('description')
                         post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
                         post.save()
+                        anomaly=Anomaly.objects.create(post=post,signaled=False)
+                        anomaly.save()
         else:
                 form=UserComment()
                 form2=UserPost()            

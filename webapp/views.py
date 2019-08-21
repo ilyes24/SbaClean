@@ -18,6 +18,8 @@ from social_django.utils import psa, load_strategy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models.aggregates import Count
+from django.db.models import Q
 
 UserModel = get_user_model()
 
@@ -39,6 +41,18 @@ def feed(request):
         comments=Comment.objects.all()
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
+        qs = MyUser.objects.all()
+        query_limit = 5
+
+        if query_limit is not None:
+                # get all users of the same city
+                users = MyUser.objects.filter(city=user.city)
+
+                # Then doing the calculations
+                users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
+                        Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
+                # And finaly, order the results
+                users = users.order_by('-rank_point')[:query_limit]
         if request.method == 'POST':
                 form=UserComment(request.POST or None)
                 form2=UserPost(request.POST or None)
@@ -62,7 +76,7 @@ def feed(request):
         else:
                 form=UserComment()
                 form2=UserPost()            
-        context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2}         
+        context = {'username':username,'user_pic':user_pic,'users':users,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2}         
         return render(request, 'feed.html', context)
 @login_required
 def event(request):

@@ -8,13 +8,13 @@ class MyUser(AbstractUser):
     phone_number = models.BigIntegerField(blank=False, unique=True)
     city = models.ForeignKey(City, related_name='city', on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
-    isbanned = models.BooleanField(default=False)
+    is_banned = models.BooleanField(default=False)
 
     def owner(self):
         return self
 
     def ban(self):
-        self.isbanned = True
+        self.is_banned = True
         self.save()
 
 

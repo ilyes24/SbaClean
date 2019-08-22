@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
-
     # Third-Party Apps
     'phonenumber_field',
     'widget_tweaks',
@@ -48,19 +46,16 @@ INSTALLED_APPS = [
     "geoposition",
     'rest_framework.authtoken',
     'rest_auth',
-    'reset_migrations',
     'rest_framework_swagger',
 
     # Local Apps
     'Address',
     'Accounts',
-
     'Anomaly',
     'Event',
     'Post',
     'webapp',
     'dashboard',
-
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'webapp/media')

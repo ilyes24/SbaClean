@@ -62,10 +62,19 @@
                             <form method="post" action="{% url 'like_post' %}">
                                     {% csrf_token %}
                             
-                            
-                             
+                            {% if post.post in like_creat_nember %}
+                             {% for reaction in reactions %}
+                                {% if post.post == reaction.post %}
+                                    {% if reaction.is_like == True %}
+                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Liked</button>
+                                    {% else %}
+                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Liked</button>
+                                    {% endif%}
+                                {% endif %}
+                             {% endfor %}
+                            {% else %} 
                              <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Liked</button>
-                      
+                            {% endif %}
           
                             
                             
@@ -81,12 +90,19 @@
                         <li>
                                 <form method="post" action="{% url 'dislike_post' %}">
                                         {% csrf_token %}
-                                        
-                                        
-            
-                                           
-                                              
-                                              <button type='submit' name="post_id" id='removed2' class="btn btn-default" value="{{post.post.id}}"><i class="la la-heart"></i> Dislike</button>
+                                {% if post.post in like_creat_nember %}
+                                {% for reaction in reactions %}
+                                    {% if post.post == reaction.post %}
+                                        {% if reaction.is_like == False %}
+                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Disliked</button>
+                                        {% else %}
+                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Disliked</button>
+                                        {% endif%}
+                                    {% endif %}
+                                {% endfor %}
+                                {% else %} 
+                                <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Disliked</button>
+                                {% endif %}
                                               
                                               
                   

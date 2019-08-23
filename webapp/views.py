@@ -43,7 +43,9 @@ def feed(request):
         userId= request.user.id
         qs = MyUser.objects.all()
         query_limit = 5
-        like_creat_nember=len(reactions)
+        like_creat_nember=[]
+        for reaction in reactions:
+                like_creat_nember.append(reaction.post)
 
         if query_limit is not None:
                 # get all users of the same city

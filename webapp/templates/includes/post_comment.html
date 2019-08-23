@@ -49,7 +49,7 @@
                 <div class="job_descp">
                     <p>{{post.post.description}}</p>
                     <ul>
-                        {% if post.post.image == '/media/images/default.png' %}
+                      {% if post.post.image == '/media/images/default.png' %}
                         <li><img width="100%" src="{% static 'img/default.png' %}" alt=""></li>
                         {% else %}
                         <li><img width="100%" src="{{post.post.image}}" alt=""></li>
@@ -59,7 +59,38 @@
                 <div class="job-status-bar">
                     <ul class="like-com">
                         <li>
-                            <a href="#"><i class="la la-heart"></i> Like</a>
+                            <form method="post" action="{% url 'like_post' %}">
+                                    {% csrf_token %}
+                            
+                            
+                             
+                             <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Liked</button>
+                      
+          
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            </form>
+                        </li>
+                        <li>
+                                <form method="post" action="{% url 'dislike_post' %}">
+                                        {% csrf_token %}
+                                        
+                                        
+            
+                                           
+                                              
+                                              <button type='submit' name="post_id" id='removed2' class="btn btn-default" value="{{post.post.id}}"><i class="la la-heart"></i> Dislike</button>
+                                              
+                                              
+                  
+                                </form>
                         </li> 
                         <li><a href="#" title="" ><img src="images/com.png" alt=""> Comment {{post.post.count_comments}}</a></li>
                     </ul>

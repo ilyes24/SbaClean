@@ -20,6 +20,10 @@ class Post(models.Model):
         dislikes_count = Reaction.objects.filter(post=self.id, is_like=False).count()
         return likes_count - dislikes_count
 
+    def count_comments(self):
+        Comments_count = Comment.objects.filter(post = self.id).count()
+        return Comments_count
+    
     def get_user(self):
         user = MyUser.objects.get(id = self.post_owner.id)
         payload = {

@@ -52,7 +52,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/v1/', include(api_urlpatterns)),
-    url(r'^rest-auth/', include('rest_auth.urls'))
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^like/$',views.like_post,name="like_post"),
+    url(r'^dislike/$',views.dislike_post,name="dislike_post")
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -20,7 +20,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models.aggregates import Count
 from django.db.models import Q
-
+from django.db.models.query import QuerySet
 UserModel = get_user_model()
 
 def index(request):
@@ -36,13 +36,14 @@ def account(request):
 def feed(request):
         user = request.user
         username = request.user.username
-        print(username)
         posts=Anomaly.objects.all()
         comments=Comment.objects.all()
+        reactions= Reaction.objects.filter(reaction_owner=request.user)
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
         qs = MyUser.objects.all()
         query_limit = 5
+        like_creat_nember=len(reactions)
 
         if query_limit is not None:
                 # get all users of the same city
@@ -76,7 +77,8 @@ def feed(request):
         else:
                 form=UserComment()
                 form2=UserPost()            
-        context = {'username':username,'user_pic':user_pic,'users':users,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2}         
+        context = {'username':username,'user_pic':user_pic,'users':users,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2,'reactions':reactions,
+        'like_creat_nember':like_creat_nember}         
         return render(request, 'feed.html', context)
 @login_required
 def event(request):
@@ -86,6 +88,18 @@ def event(request):
         comments=Comment.objects.all()
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
+        qs = MyUser.objects.all()
+        query_limit = 5
+
+        if query_limit is not None:
+                # get all users of the same city
+                users = MyUser.objects.filter(city=user.city)
+
+                # Then doing the calculations
+                users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
+                        Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
+                # And finaly, order the results
+                users = users.order_by('-rank_point')[:query_limit]
         if request.method == 'POST':
                 form=UserComment(request.POST or None)
                 form2=UserPost(request.POST or None)
@@ -111,9 +125,42 @@ def event(request):
         else:
                 form=UserComment()
                 form2=UserPost()            
-        context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'comments':comments,'form':form,'form2':form2}         
+        context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2}         
         return render(request, 'event.html', context)
-
+def like_post(request):
+        post=get_object_or_404(Post,id=request.POST.get('post_id'))
+        reaction= Reaction.objects.filter(reaction_owner=request.user,post=post)
+        reaction_nb=len(reaction)
+        if reaction_nb==0 :
+                reaction2=Reaction.objects.create(reaction_owner=request.user,post=post,is_like=True)
+                reaction2.save()
+                
+        else:
+                if reaction.values('is_like')[0].get('is_like')==True:
+                        reaction.delete()
+                else:
+                        reaction.delete()
+                        reaction2=Reaction.objects.create(reaction_owner=request.user,post=post,is_like=True)
+                        reaction2.save()
+                
+        return redirect('feed')
+def dislike_post(request):
+        post=get_object_or_404(Post,id=request.POST.get('post_id'))
+        reaction= Reaction.objects.filter(reaction_owner=request.user,post=post)
+        reaction_nb=len(reaction)
+        if reaction_nb==0 :
+                reaction2=Reaction.objects.create(reaction_owner=request.user,post=post,is_like=False)
+                reaction2.save()
+                
+        else:
+                if reaction.values('is_like')[0].get('is_like')==True:
+                        reaction.delete()
+                        reaction2=Reaction.objects.create(reaction_owner=request.user,post=post,is_like=False)
+                        reaction2.save()
+                else:
+                        reaction.delete()
+                
+        return redirect('feed')
 @login_required
 def logout(request):
     auth_logout(request)

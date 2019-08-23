@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
-from django.http import HttpResponse
+from django.http import *
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -88,10 +88,14 @@ def event(request):
         username = request.user.username
         events=Event.objects.all()
         comments=Comment.objects.all()
+        reactions= Reaction.objects.filter(reaction_owner=request.user)
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
         qs = MyUser.objects.all()
         query_limit = 5
+        like_creat_nember=[]
+        for reaction in reactions:
+                like_creat_nember.append(reaction.post)
 
         if query_limit is not None:
                 # get all users of the same city
@@ -127,7 +131,7 @@ def event(request):
         else:
                 form=UserComment()
                 form2=UserPost()            
-        context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2}         
+        context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember}         
         return render(request, 'event.html', context)
 def like_post(request):
         post=get_object_or_404(Post,id=request.POST.get('post_id'))
@@ -145,7 +149,7 @@ def like_post(request):
                         reaction2=Reaction.objects.create(reaction_owner=request.user,post=post,is_like=True)
                         reaction2.save()
                 
-        return redirect('feed')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 def dislike_post(request):
         post=get_object_or_404(Post,id=request.POST.get('post_id'))
         reaction= Reaction.objects.filter(reaction_owner=request.user,post=post)
@@ -162,7 +166,7 @@ def dislike_post(request):
                 else:
                         reaction.delete()
                 
-        return redirect('feed')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 @login_required
 def logout(request):
     auth_logout(request)

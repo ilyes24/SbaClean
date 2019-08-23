@@ -59,7 +59,54 @@
                 <div class="job-status-bar">
                     <ul class="like-com">
                         <li>
-                            <a href="#"><i class="la la-heart"></i> Like</a>
+                            <form method="post" action="{% url 'like_post' %}">
+                                {% csrf_token %}
+                        
+                        {% if event.post in like_creat_nember %}
+                         {% for reaction in reactions %}
+                            {% if event.post == reaction.post %}
+                                {% if reaction.is_like == True %}
+                                <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Liked</button>
+                                {% else %}
+                                <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Liked</button>
+                                {% endif%}
+                            {% endif %}
+                         {% endfor %}
+                        {% else %} 
+                         <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Liked</button>
+                        {% endif %}
+      
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+
+                        </form>
+                    </li>
+                    <li>
+                            <form method="post" action="{% url 'dislike_post' %}">
+                                    {% csrf_token %}
+                            {% if event.post in like_creat_nember %}
+                            {% for reaction in reactions %}
+                                {% if event.post == reaction.post %}
+                                    {% if reaction.is_like == False %}
+                                    <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Disliked</button>
+                                    {% else %}
+                                    <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Disliked</button>
+                                    {% endif%}
+                                {% endif %}
+                            {% endfor %}
+                            {% else %} 
+                            <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Disliked</button>
+                            {% endif %}
+                                          
+                                          
+              
+                            </form>
                         </li> 
                         <li><a href="#" title="" ><img src="images/com.png" alt=""> Comment {{event.post.count_comments}}</a></li>
                     </ul>

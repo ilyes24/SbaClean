@@ -155,4 +155,5 @@ GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBqGhIGuiWpOPsAEXvuJJ7GblyGbSr_7lk'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'

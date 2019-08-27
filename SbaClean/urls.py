@@ -49,7 +49,7 @@ urlpatterns = [
     # path('', include('dashboard.urls', namespace='dashboard')),
 
 
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/v1/', include(api_urlpatterns)),
     url(r'^rest-auth/', include('rest_auth.urls')),

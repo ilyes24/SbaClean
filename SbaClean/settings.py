@@ -152,5 +152,5 @@ GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBqGhIGuiWpOPsAEXvuJJ7GblyGbSr_7lk'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-
+import django_heroku
 django_heroku.settings(locals())

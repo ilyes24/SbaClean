@@ -36,7 +36,7 @@ def account(request):
 def feed(request):
         user = request.user
         username = request.user.username
-        posts=Anomaly.objects.filter(signaled=True)
+        posts=Anomaly.objects.filter(archived=False)
         comments=Comment.objects.all()
         reactions= Reaction.objects.filter(reaction_owner=request.user)
         user_pic=base64.urlsafe_b64encode(username.encode())
@@ -146,7 +146,7 @@ def event(request):
 def Myposts(request):
         user = request.user
         username = request.user.username
-        posts=Anomaly.objects.filter(signaled=True)
+        posts=Anomaly.objects.filter(archived=False)
         Myposts=Post.objects.filter(post_owner=user)
         comments=Comment.objects.all()
         reactions= Reaction.objects.filter(reaction_owner=request.user)
@@ -203,7 +203,7 @@ def Myposts(request):
 def Myreactions(request):
         user = request.user
         username = request.user.username
-        posts=Anomaly.objects.filter(signaled=True)
+        posts=Anomaly.objects.filter(archived=False)
         Myreactions=Reaction.objects.filter(reaction_owner=user)
         Mycomments=Comment.objects.filter(comment_owner=user)
         valide_comments=[]
@@ -415,3 +415,12 @@ def profile(request):
 def error404(request, exception):
     context = {}
     return render(request, 'index.html', context)
+def handler404(request, exception, template_name="index.html"):
+    response = render_to_response("index.html")
+    response.status_code = 404
+    return response
+def handler500(request, *args, **argv):
+    response = render_to_response('index.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response

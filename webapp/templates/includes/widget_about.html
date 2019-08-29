@@ -1,10 +1,10 @@
 {% load staticfiles %}
-<div class="widget widget-about">
+<div class="widget widget-about animated fadeInUp fast">
     <svg width="80" height="80" data-jdenticon-value="{{user_pic}}"></svg>
-    <h3>Track Time on Workwise</h3>
-    <span>Pay only for the Hours worked</span>
+    <h3>{{user.first_name}} {{user.last_name}}</h3>
+    <span>{{user.email}}</span>
     <div class="sign_link">
-        <h3><a href="#" title="">Sign up</a></h3>
-        <a href="#" title="">Learn More</a>
+        <h3><a href="#" title="">Derniere Connection </a></h3>
+        <span>{{user.last_login}}</span>
     </div>
 </div>

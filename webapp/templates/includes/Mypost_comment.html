@@ -2,27 +2,11 @@
 {% load widget_tweaks %}
 <div class="col-lg-6 col-md-8 no-pd">
     <div class="main-ws-sec">
-            <div class="post-topbar">
-                    <div class="user-picy">
-                       <script>
-                            userpic='{{ user_pic }}';
-                            
-                            var data = new Identicon (userpic).toString();
-                            
-                            document.write('<img style="width:50px; height:50px;" src="data:svg+xml;base64,' + data + '">');
-                    </script>
-                    </div>
-                    <div class="post-st">
-                        <ul>
-                            <li><a data-toggle="modal" data-target="#exampleModalLong" href="#" title="">Creé Anomaly</a></li>
-                    
-                        </ul>
-                    </div>
-                </div>
+       
         <div class="posts-section">
-        {% for post in posts %}
+        {% for post in Myposts %}
 
-            <div class="post-bar animated fadeInUp fast " id="post{{post.post.id}}">
+            <div class="post-bar animated fadeInUp fast" id="post{{reaction.post.id}}">
                 <div class="post_topbar">
                     <div class="usy-dt">
                         <script>
@@ -33,35 +17,28 @@
                             document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
                     </script>
                         <div class="usy-name">
-                            <h3>{{post.post.post_owner}}</h3>
-                            <span><img src="{% static 'img/clock.png' %}" alt="">{{post.post.created_at}}</span>
+                            <h3>{{post.post_owner}}</h3>
+                            <span><img src="{% static 'img/clock.png' %}" alt="">{{post.created_at}}</span>
                         </div>
                     </div>
                     
                 </div>
                 <div class="epi-sec">
                     <ul class="descp">
-                        <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{post.post.city.name}}</span></li>
+                        <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{post.city.name}}</span></li>
                     </ul>
                     <ul class="bk-links">
-                        <li> <form method="post" action="{% url 'signaled' %}">
-                                {% csrf_token %}
-                                <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-warning"><i class="la la-bullhorn"></i> Signaler</button>
-
-                                      
-                                      
-          
-                        </form></li>
+                        
                         
                     </ul>
                 </div>
                 <div class="job_descp">
-                    <p>{{post.post.description}}</p>
+                    <p>{{post.description}}</p>
                     <ul>
-                      {% if post.post.image == '/media/images/default.png' %}
+                      {% if post.image == '/media/images/default.png' %}
                         <li><img width="100%" src="{% static 'img/default.png' %}" alt=""></li>
                         {% else %}
-                        <li><img width="100%" src="{{post.post.image}}" alt=""></li>
+                        <li><img width="100%" src="{{post.image}}" alt=""></li>
                         {% endif %}
                     </ul>	
                 </div>
@@ -71,18 +48,18 @@
                             <form method="post" action="{% url 'like_post' %}">
                                     {% csrf_token %}
                             
-                            {% if post.post in like_creat_nember %}
+                            {% if post in like_creat_nember %}
                              {% for reaction in reactions %}
-                                {% if post.post == reaction.post %}
+                                {% if post == reaction.post %}
                                     {% if reaction.is_like == True %}
-                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Like</button>
+                                    <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-info"><i class="la la-heart"></i> Like</button>
                                     {% else %}
-                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
+                                    <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
                                     {% endif%}
                                 {% endif %}
                              {% endfor %}
                             {% else %} 
-                             <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
+                             <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
                             {% endif %}
           
                             
@@ -99,18 +76,18 @@
                         <li>
                                 <form method="post" action="{% url 'dislike_post' %}">
                                         {% csrf_token %}
-                                {% if post.post in like_creat_nember %}
+                                {% if post in like_creat_nember %}
                                 {% for reaction in reactions %}
-                                    {% if post.post == reaction.post %}
+                                    {% if post == reaction.post %}
                                         {% if reaction.is_like == False %}
-                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Dislike</button>
+                                        <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Dislike</button>
                                         {% else %}
-                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
+                                        <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
                                         {% endif%}
                                     {% endif %}
                                 {% endfor %}
                                 {% else %} 
-                                <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
+                                <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
                                 {% endif %}
                                               
                                               
@@ -120,19 +97,19 @@
                         
                         
                     </ul>
-                    <a href="#" title="" ><img src="{% static 'img/com.png' %}" alt="">Comment {{post.post.count_comments}}</a>
+                    <a href="#" title="" ><img src="{% static 'img/com.png' %}" alt="">Comment {{post.count_comments}}</a>
 
                 </div>
                 <div class="plus-ic">
-                   <button data-toggle="collapse" class="btn btn-circle" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"> <i  class="la la-plus"></i></button>
+                   <button data-toggle="collapse" class="btn btn-circle" href="#collapse{{post.id}}" role="button" aria-expanded="false" aria-controls="collapse{{post.id}}"> <i  class="la la-plus"></i></button>
                 </div>
-                <div class="comment-section collapse" id="collapseExample">
+                <div class="comment-section collapse" id="collapse{{post.id}}">
                    
                     <div class="comment-sec">
                         <ul>
                             <li>
                                 {% for comment in comments %}
-                                    {% if comment.post == post.post %}
+                                    {% if comment.post == post %}
                                         <div class="comment-list">
                                             <div class="bg-img">
                                                  <script>
@@ -167,7 +144,7 @@
                         <div class="comment_box">
                             <form method="POST">
                                 {% csrf_token %}
-                                <input type="text" name="post_id" id="post_id" value="{{post.post.id}}" hidden>
+                                <input type="text" name="post_id" id="post_id" value="{{post.id}}" hidden>
                                 {% for field in form.visible_fields %}
                                 <div>
                                     {% render_field field class='autoExpand' rows='3' data-min-rows='3' cols='60' data-min-cols='60' placeholder='Votre Commentaire'  %}

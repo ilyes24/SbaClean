@@ -43,7 +43,7 @@
 {% endblock %}
 
 {% block scripte %}
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqGhIGuiWpOPsAEXvuJJ7GblyGbSr_7lk&amp;libraries=places"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApOhXtywkHtI5_9m4yq5GffJpGLEUQsfM&amp;libraries=places"></script>
          
 <script>
   google.maps.event.addDomListener(window, 'load', initialize);
@@ -88,5 +88,8 @@ $(document)
         rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
         this.rows = minRows + rows;
     });
+</script>
+<script>
+    document.getElementById('evenement').classList.add("active");
 </script>
 {% endblock %}

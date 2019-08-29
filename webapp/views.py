@@ -36,7 +36,7 @@ def account(request):
 def feed(request):
         user = request.user
         username = request.user.username
-        posts=Anomaly.objects.all()
+        posts=Anomaly.objects.filter(signaled=True)
         comments=Comment.objects.all()
         reactions= Reaction.objects.filter(reaction_owner=request.user)
         user_pic=base64.urlsafe_b64encode(username.encode())
@@ -50,12 +50,16 @@ def feed(request):
         if query_limit is not None:
                 # get all users of the same city
                 users = MyUser.objects.filter(city=user.city)
+                posts2=posts
+                
 
                 # Then doing the calculations
                 users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
                         Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
+                posts2 = posts2.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) )).filter(rank_point__gt=0)
                 # And finaly, order the results
                 users = users.order_by('-rank_point')[:query_limit]
+                posts2=posts2.order_by('-rank_point')[:query_limit]
         if request.method == 'POST':
                 form=UserComment(request.POST or None)
                 form2=UserPost(request.POST or None)
@@ -80,7 +84,7 @@ def feed(request):
                 form=UserComment()
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'users':users,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2,'reactions':reactions,
-        'like_creat_nember':like_creat_nember}         
+        'like_creat_nember':like_creat_nember,'posts2':posts2}         
         return render(request, 'feed.html', context)
 @login_required
 def event(request):
@@ -98,14 +102,18 @@ def event(request):
                 like_creat_nember.append(reaction.post)
 
         if query_limit is not None:
-                # get all users of the same city
+                  # get all users of the same city
                 users = MyUser.objects.filter(city=user.city)
+                posts2=events
+                
 
                 # Then doing the calculations
                 users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
                         Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
+                posts2 = posts2.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) )).filter(rank_point__gt=0)
                 # And finaly, order the results
                 users = users.order_by('-rank_point')[:query_limit]
+                posts2=posts2.order_by('-rank_point')[:query_limit]
         if request.method == 'POST':
                 form=UserComment(request.POST or None)
                 form2=UserPost(request.POST or None)
@@ -131,8 +139,128 @@ def event(request):
         else:
                 form=UserComment()
                 form2=UserPost()            
-        context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember}         
+        context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember,
+        'posts2':posts2}         
         return render(request, 'event.html', context)
+@login_required
+def Myposts(request):
+        user = request.user
+        username = request.user.username
+        posts=Anomaly.objects.filter(signaled=True)
+        Myposts=Post.objects.filter(post_owner=user)
+        comments=Comment.objects.all()
+        reactions= Reaction.objects.filter(reaction_owner=request.user)
+        user_pic=base64.urlsafe_b64encode(username.encode())
+        userId= request.user.id
+        qs = MyUser.objects.all()
+        query_limit = 5
+        like_creat_nember=[]
+        for reaction in reactions:
+                like_creat_nember.append(reaction.post)
+
+        if query_limit is not None:
+                  # get all users of the same city
+                users = MyUser.objects.filter(city=user.city)
+                posts2=posts
+                
+
+                # Then doing the calculations
+                users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
+                        Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
+                posts2 = posts2.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) )).filter(rank_point__gt=0)
+                # And finaly, order the results
+                users = users.order_by('-rank_point')[:query_limit]
+                posts2=posts2.order_by('-rank_point')[:query_limit]
+        if request.method == 'POST':
+                form=UserComment(request.POST or None)
+                form2=UserPost(request.POST or None)
+                if form.is_valid():
+                        if request.POST.get('post_id'):
+                                post_id=int(request.POST.get('post_id'))
+                                post=get_object_or_404(Post,id=post_id)
+                                description=request.POST.get('description')
+                                comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
+                                comment.save()
+                if form2.is_valid():
+                        title = request.POST.get('title')
+                        city = request.POST.get('city')
+                        longitude = request.POST.get('longitude')
+                        latitude = request.POST.get('latitude')
+                        description=request.POST.get('description')
+                        max_participants =request.POST.get('max_participants')
+                        starts_at = request.POST.get('starts_at')
+                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
+                        post.save()
+                        event=Event.objects.create(post=post, max_participants=max_participants, starts_at=starts_at)
+                        event.save()
+        else:
+                form=UserComment()
+                form2=UserPost()            
+        context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember,
+        'posts2':posts2, 'Myposts':Myposts}         
+        return render(request, 'Myposts.html', context)
+@login_required
+def Myreactions(request):
+        user = request.user
+        username = request.user.username
+        posts=Anomaly.objects.filter(signaled=True)
+        Myreactions=Reaction.objects.filter(reaction_owner=user)
+        Mycomments=Comment.objects.filter(comment_owner=user)
+        valide_comments=[]
+        for Vcomment in Myreactions:
+                valide_comments.append(Vcomment.post)
+        comments=Comment.objects.all()
+        reactions= Reaction.objects.filter(reaction_owner=request.user)
+        user_pic=base64.urlsafe_b64encode(username.encode())
+        userId= request.user.id
+        qs = MyUser.objects.all()
+        query_limit = 5
+        like_creat_nember=[]
+        for reaction in reactions:
+                like_creat_nember.append(reaction.post)
+
+        if query_limit is not None:
+                  # get all users of the same city
+                users = MyUser.objects.filter(city=user.city)
+                posts2=posts
+                
+
+                # Then doing the calculations
+                users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
+                        Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
+                posts2 = posts2.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) )).filter(rank_point__gt=0)
+                # And finaly, order the results
+                users = users.order_by('-rank_point')[:query_limit]
+                posts2=posts2.order_by('-rank_point')[:query_limit]
+        if request.method == 'POST':
+                form=UserComment(request.POST or None)
+                form2=UserPost(request.POST or None)
+                if form.is_valid():
+                        if request.POST.get('post_id'):
+                                post_id=int(request.POST.get('post_id'))
+                                post=get_object_or_404(Post,id=post_id)
+                                description=request.POST.get('description')
+                                comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
+                                comment.save()
+                if form2.is_valid():
+                        title = request.POST.get('title')
+                        city = request.POST.get('city')
+                        longitude = request.POST.get('longitude')
+                        latitude = request.POST.get('latitude')
+                        description=request.POST.get('description')
+                        max_participants =request.POST.get('max_participants')
+                        starts_at = request.POST.get('starts_at')
+                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
+                        post.save()
+                        event=Event.objects.create(post=post, max_participants=max_participants, starts_at=starts_at)
+                        event.save()
+        else:
+                form=UserComment()
+                form2=UserPost()            
+        context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember,
+        'posts2':posts2, 'Myreactions':Myreactions,'Mycomments':Mycomments, 'valide_comments':valide_comments}         
+        return render(request, 'Myreactions.html', context)
+
 def like_post(request):
         post=get_object_or_404(Post,id=request.POST.get('post_id'))
         reaction= Reaction.objects.filter(reaction_owner=request.user,post=post)
@@ -150,6 +278,11 @@ def like_post(request):
                         reaction2.save()
                 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+def comment_delete(request):
+        comment=get_object_or_404(Comment,id=request.POST.get('comment_id'))
+        comment.delete()
+                
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
 def dislike_post(request):
         post=get_object_or_404(Post,id=request.POST.get('post_id'))
         reaction= Reaction.objects.filter(reaction_owner=request.user,post=post)
@@ -165,6 +298,13 @@ def dislike_post(request):
                         reaction2.save()
                 else:
                         reaction.delete()
+                
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+def signaled(request):
+        post=get_object_or_404(Post,id=request.POST.get('post_id'))
+        anomaly=get_object_or_404(Anomaly,post=post)
+        anomaly.signaled = True
+        anomaly.save()
                 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 @login_required
@@ -252,7 +392,7 @@ def profile(request):
       args = {'username':username,'form': form, 'form2': form2 }
       return render(request, 'profile.html', args)
 
-    else:
+    elif 'passwordCH' in request.POST:
       form2 = PasswordChangeForm(user=request.user, data=request.POST)
       if form2.is_valid():
         form2.save()
@@ -262,6 +402,12 @@ def profile(request):
         messages.add_message(request, messages.ERROR, 'Password change unsuccessful.')
 
       form = EditProfileForm(instance=request.user)
+      args = {'username':username,'form': form, 'form2': form2 }
+      return render(request, 'profile.html', args)
+    else:
+      messages.add_message(request, messages.SUCCESS, 'Remplire le formulair.')
+      form = EditProfileForm(instance=request.user)
+      form2 = PasswordChangeForm(user=request.user)
       args = {'username':username,'form': form, 'form2': form2 }
       return render(request, 'profile.html', args) 
 

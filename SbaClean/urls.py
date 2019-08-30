@@ -54,15 +54,8 @@ urlpatterns = [
     path('api/v1/', include(api_urlpatterns)),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^like/$',views.like_post,name="like_post"),
-    url(r'^dislike/$',views.dislike_post,name="dislike_post"),
-    url(r'^signaled/$',views.signaled,name="signaled"),
-    url(r'^Myposts/$',views.Myposts,name="Myposts"),
-    url(r'^Myreactions/$',views.Myreactions,name="Myreactions"),
-    url(r'^comment_delete/$',views.comment_delete,name="comment_delete")
-
+    url(r'^dislike/$',views.dislike_post,name="dislike_post")
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
-handler404 =views.handler404
-handler500 =views.handler500
+handler404 = views.error404

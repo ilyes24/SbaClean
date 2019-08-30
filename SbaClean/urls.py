@@ -21,7 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_swagger.views import get_swagger_view
 
-from webapp import views
+#from webapp import views
 
 schema_view = get_swagger_view(title='SbaClean API')
 api_urlpatterns = [
@@ -35,27 +35,27 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('', views.index),
-    path('login/', views.login, name='login'),
-    path('accounts/login/', views.login, name='login'),
-    path('register/', views.register, name='register'),
-    path('feed/', views.feed, name='feed'),
-    path('event/', views.event, name='event'),
-    path('profile/', views.profile, name='profile'),
-    path('post_details/', views.feed, name='post_details'),
-    path('social-auth/', views.social_auth, name='social_auth'),
-    path('', include('social_django.urls', namespace='social')),
-    path("logout/", views.logout, name="logout"),
-    path('', include('dashboard.urls', namespace='dashboard')),
-
-
-    path('admin/', admin.site.urls),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/v1/', include(api_urlpatterns)),
-    url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^like/$',views.like_post,name="like_post"),
-    url(r'^dislike/$',views.dislike_post,name="dislike_post")
+
+
+    # path('', views.index),
+    # path('login/', views.login, name='login'),
+    # path('accounts/login/', views.login, name='login'),
+    # path('register/', views.register, name='register'),
+    # path('feed/', views.feed, name='feed'),
+    # path('event/', views.event, name='event'),
+    # path('profile/', views.profile, name='profile'),
+    # path('post_details/', views.feed, name='post_details'),
+    # path('social-auth/', views.social_auth, name='social_auth'),
+    # path('', include('social_django.urls', namespace='social')),
+    # path("logout/", views.logout, name="logout"),
+    # path('', include('dashboard.urls', namespace='dashboard')),
+    # path('admin/', admin.site.urls),
+    # url(r'^rest-auth/', include('rest_auth.urls')),
+    # url(r'^like/$',views.like_post,name="like_post"),
+    # url(r'^dislike/$',views.dislike_post,name="dislike_post")
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404 = views.error404
+# handler404 = views.error404

@@ -35,10 +35,6 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
-    path('api/v1/', include(api_urlpatterns)),
-
-
     path('', views.index),
     path('login/', views.login, name='login'),
     path('accounts/login/', views.login, name='login'),
@@ -51,11 +47,22 @@ urlpatterns = [
     path('', include('social_django.urls', namespace='social')),
     path("logout/", views.logout, name="logout"),
     path('', include('dashboard.urls', namespace='dashboard')),
+
+
     path('admin/', admin.site.urls),
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('api/v1/', include(api_urlpatterns)),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^like/$',views.like_post,name="like_post"),
-    url(r'^dislike/$',views.dislike_post,name="dislike_post")
+    url(r'^dislike/$',views.dislike_post,name="dislike_post"),
+    url(r'^signaled/$',views.signaled,name="signaled"),
+    url(r'^Myposts/$',views.Myposts,name="Myposts"),
+    url(r'^Myreactions/$',views.Myreactions,name="Myreactions"),
+    url(r'^comment_delete/$',views.comment_delete,name="comment_delete")
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404 = views.error404
+
+handler404 =views.handler404
+handler500 =views.handler500

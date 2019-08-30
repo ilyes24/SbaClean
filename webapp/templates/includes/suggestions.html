@@ -1,18 +1,24 @@
 {% load staticfiles %}
-<div class="widget suggestions full-width">
+<div class="widget suggestions full-width animated fadeInUp fast">
     <div class="sd-title">
-        <h3>Most Viewed People</h3>
+        <h3>Meilleurs utilisateurs</h3>
         <i class="la la-ellipsis-v"></i>
     </div><!--sd-title end-->
     <div class="suggestions-list">
         {% for user in users %}
         <div class="suggestion-usd">
-            <img src="images/resources/s1.png" alt="">
+                <script>
+                        userpic='{{ user_pic }}';
+                        
+                        var data = new Identicon (userpic).toString();
+                        
+                        document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
+                </script>
             <div class="sgt-text">
                 <h4>{{user.username}}</h4>
                 <span> joined:{{user.date_joined}}</span>
             </div>
-            <span><i class="la la-plus"></i></span>
+            
         </div>
         {% endfor %}
         

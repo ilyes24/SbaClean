@@ -58,7 +58,7 @@
 </div>
 <br>
 {% endfor %}
-<div class="col d-flex justify-content-end">
+<div class="col d-flex justify-content-start">
         <button class="btn btn-primary" type="submit" name="details">Save Changes</button>
       </div>
 
@@ -79,7 +79,7 @@
     {% endfor %}
     
     <div class="col d-flex justify-content-start">
-            <button class="btn btn-primary" type="submit">Save Changes</button>
+            <button class="btn btn-primary" type="submit" name="passwordCH">Save Changes</button>
           </div>
     <br>
     <br>
@@ -92,5 +92,8 @@
 </div>
 </div>
 </div>
+<script>
+    document.getElementById('profile').classList.add("active");
+</script>
 {% endblock %}
 

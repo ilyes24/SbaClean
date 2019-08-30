@@ -1,201 +1,33 @@
 {% load staticfiles %}
-<header>
-   <div class="container">
-      <div class="header-data">
-         <div class="logo">
-            <a href="index.html" title=""><img src="{% static 'img/logo.png' %}" alt="SBA Clean" width="200"></a>
-         </div>
-         <!--logo end-->
-         
-         <!--search-bar end-->
-         <nav>
-            <ul>
-               <li>
-                  <a href="{% url 'feed' %}" title="">
-                  <span><img src="{% static 'img/icon1.png' %}" alt=""></span>
-                  Acceuil
-                  </a>
-               </li>
-               <li>
-                  <a href="{% url 'event' %}" title="">
-                  <span><img src="{% static 'img/icon2.png' %}" alt=""></span>
-                  Events
-                  </a>
-               </li>
-               <li>
-                  <a href="projects.html" title="">
-                  <span><img src="{% static 'img/icon3.png' %}" alt=""></span>
-                  Projects
-                  </a>
-               </li>
-               <li>
-                  <a href="{% url 'profile' %}" title="">
-                  <span><img src="{% static 'img/icon4.png' %}" alt=""></span>
-                  Profile
-                  </a>
-               </li>
-               <li>
-                  <a href="jobs.html" title="">
-                  <span><img src="{% static 'img/icon5.png' %}" alt=""></span>
-                  Jobs
-                  </a>
-               </li>
-               <li>
-                  <a href="#" title="" class="not-box-open">
-                  <span><img src="{% static 'img/icon6.png' %}" alt=""></span>
-                  Messages
-                  </a>
-                  <div class="notification-box msg">
-                     <div class="nt-title">
-                        <h4>Setting</h4>
-                        <a href="#" title="">Clear all</a>
-                     </div>
-                     <div class="nott-list">
-                        <div class="notfication-details">
-                           <div class="noty-user-img">
-                              <img src="{% static 'img/user1.png' %}" alt="">
-                           </div>
-                           <div class="notification-info">
-                              <h3><a href="messages.html" title="">Jassica William</a> </h3>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
-                              <span>2 min ago</span>
-                           </div>
-                           <!--notification-info -->
-                        </div>
-                        <div class="notfication-details">
-                           <div class="noty-user-img">
-                              <img src="{% static 'img/user1.png' %}" alt="">
-                           </div>
-                           <div class="notification-info">
-                              <h3><a href="messages.html" title="">Jassica William</a></h3>
-                              <p>Lorem ipsum dolor sit amet.</p>
-                              <span>2 min ago</span>
-                           </div>
-                           <!--notification-info -->
-                        </div>
-                        <div class="notfication-details">
-                           <div class="noty-user-img">
-                              <img src="{% static 'img/user1.png' %}" alt="">
-                           </div>
-                           <div class="notification-info">
-                              <h3><a href="messages.html" title="">Jassica William</a></h3>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt ut labore et dolore magna aliqua.</p>
-                              <span>2 min ago</span>
-                           </div>
-                           <!--notification-info -->
-                        </div>
-                        <div class="view-all-nots">
-                           <a href="messages.html" title="">View All Messsages</a>
-                        </div>
-                     </div>
-                     <!--nott-list end-->
-                  </div>
-                  <!--notification-box end-->
-               </li>
-               <li>
-                  <a href="#" title="" class="not-box-open">
-                  <span><img src="{% static 'img/icon7.png' %}" alt=""></span>
-                  Notification
-                  </a>
-                  <div class="notification-box">
-                     <div class="nt-title">
-                        <h4>Setting</h4>
-                        <a href="#" title="">Clear all</a>
-                     </div>
-                     <div class="nott-list">
-                        <div class="notfication-details">
-                           <div class="noty-user-img">
-                              <img src="{% static 'img/user1.png' %}" alt="">
-                           </div>
-                           <div class="notification-info">
-                              <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                              <span>2 min ago</span>
-                           </div>
-                           <!--notification-info -->
-                        </div>
-                        <div class="notfication-details">
-                           <div class="noty-user-img">
-                              <img src="{% static 'img/resources/ny-img2.png' %}" alt="">
-                           </div>
-                           <div class="notification-info">
-                              <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                              <span>2 min ago</span>
-                           </div>
-                           <!--notification-info -->
-                        </div>
-                        <div class="notfication-details">
-                           <div class="noty-user-img">
-                              <img src="{% static 'img/resources/ny-img3.png' %}" alt="">
-                           </div>
-                           <div class="notification-info">
-                              <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                              <span>2 min ago</span>
-                           </div>
-                           <!--notification-info -->
-                        </div>
-                        <div class="notfication-details">
-                           <div class="noty-user-img">
-                              <img src="{% static 'img/resources/ny-img2.png' %}" alt="">
-                           </div>
-                           <div class="notification-info">
-                              <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                              <span>2 min ago</span>
-                           </div>
-                           <!--notification-info -->
-                        </div>
-                        <div class="view-all-nots">
-                           <a href="#" title="">View All Notification</a>
-                        </div>
-                     </div>
-                     <!--nott-list end-->
-                  </div>
-                  <!--notification-box end-->
-               </li>
-            </ul>
-         </nav>
-         <!--nav end-->
-         <div class="menu-btn">
-            <a href="#" title=""><i class="fa fa-bars"></i></a>
-         </div>
-         <!--menu-btn end-->
-         <div class="user-account">
-            <div class="user-info">
-               <a href="#" title="">{{username}}</a>
-               <i class="la la-sort-down"></i>
-            </div>
-            <div class="user-account-settingss">
-               <h3>Online Status</h3>
-               <ul class="on-off-status">
-                  <li>
-                     <div class="fgt-sec">
-                        <input type="radio" name="cc" id="c5">
-                        <label for="c5">
-                        <span></span>
-                        </label>
-                        <small>Online</small>
-                     </div>
-                  </li>
-                  <li>
-                     <div class="fgt-sec">
-                        <input type="radio" name="cc" id="c6">
-                        <label for="c6">
-                        <span></span>
-                        </label>
-                        <small>Offline</small>
-                     </div>
-                  </li>
-               </ul>
-               <h3>Setting</h3>
-               <ul class="us-links">
-                  <li><a href="profile-account-setting.html" title="">Account Setting</a></li>
-               </ul>
-               <h3 class="tc"><a href="{% url 'logout' %}" title="">Logout</a></h3>
-            </div>
-            <!--user-account-settingss end-->
-         </div>
-      </div>
-      <!--header-data end-->
+<nav class="navbar navbar-expand-lg navbar-dark animated fadeInDown fast" style="background-color: #6195FF;">
+   <a class="navbar-brand" href="#">SbaClean</a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon"></span>
+   </button>
+ 
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+     <ul class="navbar-nav m-auto">
+       <li class="nav-item mx-3" id="anomaly">
+         <a class="nav-link" href="{% url 'feed' %}"> Anomalies <i class="la la-exclamation-circle" ></i></a>
+       </li>
+       <li class="nav-item mx-3" id="evenement">
+         <a class="nav-link" href="{% url 'event' %}">Événements <i class="la la-group"></i></a>
+       </li>
+       <li class="nav-item mx-3" id="posts">
+           <a class="nav-link" href="{% url 'Myposts' %}">Mes posts <i class="la la-edit"></i></a>
+         </li>
+         <li class="nav-item mx-3" id="reactions">
+           <a class="nav-link" href="{% url 'Myreactions' %}">Mes reactions <i class="la la-heart"></i> </a>
+         </li>
+         <li class="nav-item mx-3" id="profile">
+           <a class="nav-link" href="{% url 'profile' %}">Profil <i class="la la-user"></i> </a>
+         </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+         <li class="nav-item ml-5">
+           <a class="nav-link" href="{% url 'logout' %}">Déconnexion <i class="la la-minus-circle"></i> </a>
+         </li>
+     </ul>
+     
    </div>
-</header>
-<!--header end-->
-
+ </nav>

@@ -382,48 +382,7 @@ header {
     font-weight: bold;
 }
 
-nav {
-    float: left;
-    width: 60%;
-    text-align: right;
-    padding-right: 13px;
-}
-nav ul li {
-    display: inline-block;
-    text-align: center;
-    padding: 13px 13px;
-    position: relative;
-}
-nav ul li:hover > ul {
-    opacity: 1;
-    visibility: visible;
-    z-index: 9999;
-}
-nav ul ul {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 200px;
-    background-color: #6195FF;
-    text-align: left;
-    padding: 20px 0 10px 0; 
-    opacity: 0;
-    visibility: hidden;
-}
-nav ul ul li {
-    padding: 0;
-    float: left;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 15px;
-    padding: 0 20px;
-}
-nav ul ul li a:hover {
-    color: #fff;
-}
-nav ul ul li a {
-    font-size: 16px;
-}
+
 .notification-box.msg p {
     line-height: 16px;
     font-size: 12px;
@@ -506,20 +465,7 @@ nav ul ul li a {
     background-color: #6195FF;
     padding: 18px 0;
 }
-nav ul li span {
-    display: block;
-    height: 14px;
-}
-nav ul li span img {
-    float: none;
-}
-nav ul li a {
-    color: #ffffff;
-    font-size: 14px;
-}
-nav > ul > li > a:hover {
-    color: #fff;
-}
+
 
 .user-account {
     float: right;
@@ -1004,10 +950,10 @@ main {
     margin-right: 0;
 }
 .post-st ul li a {
-    color: #b2b2b2;
+    color: #e5e5e5;
     font-size: 16px;
     display: inline-block;
-    background-color: #e5e5e5;
+    background-color:#6195FF ;
     height: 40px;
     padding: 0 15px;
     line-height: 40px;
@@ -1158,15 +1104,7 @@ main {
 .bk-links li:last-child {
     margin-right: 0;
 }
-.bk-links li i {
-    color: #fff;
-    font-size: 24px;
-    width: 30px;
-    height: 30px;
-    background-color: #53d690;
-    text-align: center;
-    line-height: 30px;
-}
+
 .bk-links li i.la-envelope {
     background-color: #6195FF;
 }
@@ -1541,13 +1479,25 @@ main {
     text-align: center;
     margin-bottom: 20px;
 }
+.plus-ic button{
+    background-color: #53d690;
+}
+.btn-circle {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    padding: 4px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 50px;
+  }
 .plus-ic i {
     width: 30px;
     height: 30px;
     line-height: 30px;
-    border: 1px solid #e7e7e7;
+    border: 1px solid #53d690;
     text-align: center;
-    color: #b2b2b2;
+    color: #fff;
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
     -ms-border-radius: 100px;
@@ -1651,7 +1601,7 @@ main {
     border: 1px solid #e5e5e5;
     background-color: #efefef;
     padding-left: 10px;
-    color: #b2b2b2;
+    color: #252222;
     font-size: 14px;
     font-weight: 600;
     line-height: 40px;
@@ -1814,6 +1764,8 @@ main {
     opacity: 1;
     visibility: visible;
     z-index: 999;
+    overflow-y:scroll;
+    max-height: 100vh;
     -webkit-transform: scale(1) translateX(-50%) translateY(-50%);
 }
 .post-project > a {
@@ -1872,7 +1824,7 @@ main {
 .post-project-fields form textarea,
 .post-project-fields form select {
     width: 100%;
-    color: #b2b2b2;
+    color: #252222;
     font-size: 14px;
     border: 1px solid #e5e5e5;
     margin-bottom: 20px;
@@ -1912,16 +1864,16 @@ main {
     color: #fff;
 } 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #b2b2b2;
+  color: #252222;
 }
 ::-moz-placeholder { /* Firefox 19+ */
-  color: #b2b2b2;
+  color: #252222;
 }
 :-ms-input-placeholder { /* IE 10+ */
-  color: #b2b2b2;
+  color: #252222;
 }
 :-moz-placeholder { /* Firefox 18- */
-  color: #b2b2b2;
+  color: #252222;
 }
 
 .price-sec {
@@ -2222,7 +2174,7 @@ select {
 .sign_in_sec form select {
     width: 100%;
     padding: 0 15px 0 40px;
-    color: #b2b2b2;
+    color: #252222;
     font-size: 14px;
     border:1px solid #e5e5e5;
 }
@@ -3108,7 +3060,7 @@ footer {
     width: 100%;
     border: 1px solid #e5e5e5;
     resize: none;
-    color: #b2b2b2;
+    color: #252222;
     font-size: 14px;
 }
 .overview-edit form select {
@@ -3461,7 +3413,7 @@ a:hover {
 }
 .inpt-field.pd-moree input {padding-left: 40px !important;}
 .inpt-field i {
-    color: #b2b2b2;
+    color: #252222;
     font-size: 18px;
     position: absolute;
     top: 50%;
@@ -3595,7 +3547,7 @@ a:hover {
     height: 40px;
     background-color: #fff;
     padding: 0 15px;
-    color: #b2b2b2;
+    color: #252222;
     font-size: 14px;
     border: 1px solid #e5e5e5;
     -webkit-box-shadow: 0 4px 8px rgba(0,0,0,0.20);
@@ -3690,7 +3642,7 @@ a:hover {
     height: 30px;
     background-color: #f2f2f2;
     padding: 0 10px;
-    color: #b2b2b2;
+    color: #252222;
     font-size: 12px;
     font-weight: 600;
     border: 0;
@@ -4266,11 +4218,6 @@ a:hover {
     top: 2px;
     font-weight: 700;
     width: 40px;
-}
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    background-color: inherit;
-    color: #6195FF;
-    border-color: inherit;
 }
 
 

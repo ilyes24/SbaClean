@@ -36,18 +36,18 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('', views.index),
-    path('login/', views.login, name='login'),
-    path('accounts/login/', views.login, name='login'),
-    path('register/', views.register, name='register'),
-    path('feed/', views.feed, name='feed'),
-    path('event/', views.event, name='event'),
-    path('profile/', views.profile, name='profile'),
-    path('post_details/', views.feed, name='post_details'),
-    path('social-auth/', views.social_auth, name='social_auth'),
-    path('', include('social_django.urls', namespace='social')),
-    path("logout/", views.logout, name="logout"),
-    path('', include('dashboard.urls', namespace='dashboard')),
+                  path('', views.index),
+                  path('login/', views.login, name='login'),
+                  path('accounts/login/', views.login, name='login'),
+                  path('register/', views.register, name='register'),
+                  path('feed/', views.feed, name='feed'),
+                  path('event/', views.event, name='event'),
+                  path('profile/', views.profile, name='profile'),
+                  path('post_details/', views.feed, name='post_details'),
+                  path('social-auth/', views.social_auth, name='social_auth'),
+                  path('', include('social_django.urls', namespace='social')),
+                  path("logout/", views.logout, name="logout"),
+                  path('', include('dashboard.urls', namespace='dashboard')),
 
 
     path('admin/', admin.site.urls),
@@ -62,10 +62,7 @@ urlpatterns = [
     url(r'^comment_delete/$',views.comment_delete,name="comment_delete"),
     url(r'^create_comment/$',views.create_comment,name="create_comment")
     
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-handler404 =views.handler404
-handler500 =views.handler500
+handler404 = views.handler404
+handler500 = views.handler500

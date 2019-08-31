@@ -27,6 +27,16 @@ class MyUserSerializer(serializers.ModelSerializer):
 
         return user
 
+    def update(self, instance, validated_data):
+        user = UserModel.objects.get(username=instance)
+        for attr, value in validated_data.items():
+            if attr == 'password':
+                user.set_password(value)
+            else:
+                setattr(user, attr, value)
+        user.save()
+        return user
+
     def validate(self, value):
         if value['is_staff']:
             qs = UserModel.objects.filter(city__exact=value['city'], is_staff__exact=True, is_active__exact=True)

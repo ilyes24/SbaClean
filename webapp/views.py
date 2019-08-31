@@ -3,7 +3,8 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.http import *
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
+from django.template import RequestContext
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.db import transaction
@@ -11,7 +12,7 @@ from .models import *
 from Post.models import *
 from Event.models import *
 from Anomaly.models import *
-from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from .form import *
 import base64
 from social_django.utils import psa, load_strategy
@@ -21,16 +22,20 @@ from django.contrib import messages
 from django.db.models.aggregates import Count
 from django.db.models import Q
 from django.db.models.query import QuerySet
+
 UserModel = get_user_model()
+
 
 def index(request):
     context = {}
     return render(request, 'index.html', context)
 
+
 @login_required
 def account(request):
     context = {}
     return render(request, 'account.html', context)
+
 
 @login_required
 def feed(request):
@@ -314,56 +319,65 @@ def Myreactions(request):
         return render(request, 'Myreactions.html', context)
 
 def like_post(request):
-        post=get_object_or_404(Post,id=request.POST.get('post_id'))
-        reaction= Reaction.objects.filter(reaction_owner=request.user,post=post)
-        reaction_nb=len(reaction)
-        if reaction_nb==0 :
-                reaction2=Reaction.objects.create(reaction_owner=request.user,post=post,is_like=True)
-                reaction2.save()
-                
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    reaction = Reaction.objects.filter(reaction_owner=request.user, post=post)
+    reaction_nb = len(reaction)
+    if reaction_nb == 0:
+        reaction2 = Reaction.objects.create(reaction_owner=request.user, post=post, is_like=True)
+        reaction2.save()
+
+    else:
+        if reaction.values('is_like')[0].get('is_like') == True:
+            reaction.delete()
         else:
-                if reaction.values('is_like')[0].get('is_like')==True:
-                        reaction.delete()
-                else:
-                        reaction.delete()
-                        reaction2=Reaction.objects.create(reaction_owner=request.user,post=post,is_like=True)
-                        reaction2.save()
-                
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+            reaction.delete()
+            reaction2 = Reaction.objects.create(reaction_owner=request.user, post=post, is_like=True)
+            reaction2.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 def comment_delete(request):
-        comment=get_object_or_404(Comment,id=request.POST.get('comment_id'))
-        comment.delete()
-                
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    comment.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 def dislike_post(request):
-        post=get_object_or_404(Post,id=request.POST.get('post_id'))
-        reaction= Reaction.objects.filter(reaction_owner=request.user,post=post)
-        reaction_nb=len(reaction)
-        if reaction_nb==0 :
-                reaction2=Reaction.objects.create(reaction_owner=request.user,post=post,is_like=False)
-                reaction2.save()
-                
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    reaction = Reaction.objects.filter(reaction_owner=request.user, post=post)
+    reaction_nb = len(reaction)
+    if reaction_nb == 0:
+        reaction2 = Reaction.objects.create(reaction_owner=request.user, post=post, is_like=False)
+        reaction2.save()
+
+    else:
+        if reaction.values('is_like')[0].get('is_like') == True:
+            reaction.delete()
+            reaction2 = Reaction.objects.create(reaction_owner=request.user, post=post, is_like=False)
+            reaction2.save()
         else:
-                if reaction.values('is_like')[0].get('is_like')==True:
-                        reaction.delete()
-                        reaction2=Reaction.objects.create(reaction_owner=request.user,post=post,is_like=False)
-                        reaction2.save()
-                else:
-                        reaction.delete()
-                
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+            reaction.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 def signaled(request):
-        post=get_object_or_404(Post,id=request.POST.get('post_id'))
-        anomaly=get_object_or_404(Anomaly,post=post)
-        anomaly.signaled = True
-        anomaly.save()
-                
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    anomaly = get_object_or_404(Anomaly, post=post)
+    anomaly.signaled = True
+    anomaly.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 @login_required
 def logout(request):
     auth_logout(request)
     print(request, "Logged out successfully!")
     return redirect('/')
+
 
 def login(request):
     if request.user :
@@ -422,63 +436,69 @@ def register(request):
                                 return render(request, 'register.html', context)
         
 def social_auth(request):
-        strategy = load_strategy()
-        partial_token = request.GET.get('partial_token')
-        partial = strategy.partial_load(partial_token)
+    strategy = load_strategy()
+    partial_token = request.GET.get('partial_token')
+    partial = strategy.partial_load(partial_token)
 
-        email = partial.data['kwargs']['details']['email']
-        user = UserModel.objects.get(email=email)
-        auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return redirect('feed')
+    email = partial.data['kwargs']['details']['email']
+    user = UserModel.objects.get(email=email)
+    auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+    return redirect('feed')
+
 
 @login_required
 def post_details(request):
     context = {}
     return render(request, 'post_details.html', context)
+
+
 @login_required
 def profile(request):
     username = request.user.username
     if 'details' in request.POST:
-      form = EditProfileForm(request.POST, instance=request.user)
-      if form.is_valid():
-        form.save()
-        messages.add_message(request, messages.SUCCESS, 'Sucessfully changed informations.')
-      else:
-        messages.add_message(request, messages.ERROR, 'Could not edit account details.')
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, 'Sucessfully changed informations.')
+        else:
+            messages.add_message(request, messages.ERROR, 'Could not edit account details.')
 
-      form2 = PasswordChangeForm(user=request.user)
-      args = {'username':username,'form': form, 'form2': form2 }
-      return render(request, 'profile.html', args)
+        form2 = PasswordChangeForm(user=request.user)
+        args = {'username': username, 'form': form, 'form2': form2}
+        return render(request, 'profile.html', args)
 
     elif 'passwordCH' in request.POST:
-      form2 = PasswordChangeForm(user=request.user, data=request.POST)
-      if form2.is_valid():
-        form2.save()
-        update_session_auth_hash(request, form2.user)
-        messages.add_message(request, messages.SUCCESS, 'Sucessfully changed password.')
-      else:
-        messages.add_message(request, messages.ERROR, 'Password change unsuccessful.')
+        form2 = PasswordChangeForm(user=request.user, data=request.POST)
+        if form2.is_valid():
+            form2.save()
+            update_session_auth_hash(request, form2.user)
+            messages.add_message(request, messages.SUCCESS, 'Sucessfully changed password.')
+        else:
+            messages.add_message(request, messages.ERROR, 'Password change unsuccessful.')
 
-      form = EditProfileForm(instance=request.user)
-      args = {'username':username,'form': form, 'form2': form2 }
-      return render(request, 'profile.html', args)
+        form = EditProfileForm(instance=request.user)
+        args = {'username': username, 'form': form, 'form2': form2}
+        return render(request, 'profile.html', args)
     else:
-      messages.add_message(request, messages.SUCCESS, 'Remplire le formulair.')
-      form = EditProfileForm(instance=request.user)
-      form2 = PasswordChangeForm(user=request.user)
-      args = {'username':username,'form': form, 'form2': form2 }
-      return render(request, 'profile.html', args) 
+        messages.add_message(request, messages.SUCCESS, 'Remplire le formulair.')
+        form = EditProfileForm(instance=request.user)
+        form2 = PasswordChangeForm(user=request.user)
+        args = {'username': username, 'form': form, 'form2': form2}
+        return render(request, 'profile.html', args)
 
 
 def error404(request, exception):
     context = {}
     return render(request, 'index.html', context)
+
+
 def handler404(request, exception, template_name="index.html"):
     response = render_to_response("index.html")
     response.status_code = 404
     return response
+
+
 def handler500(request, *args, **argv):
-    response = render_to_response('index.html', {},
-                                  context_instance=RequestContext(request))
+    response = render_to_response('index.html', {}, context_instance=RequestContext(request))
     response.status_code = 500
     return response

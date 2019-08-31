@@ -45,7 +45,7 @@ FIRE IT UP!
     URL : hostname/api-token-auth/
     
 `add Token to the HTTP method header
-[Authorization Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]`
+[Authorization Token 9d92c2fa2f220e4b1d6fdb7c773d838c1f33883d]`
     
 **List Users**
     

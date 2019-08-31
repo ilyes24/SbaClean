@@ -20,6 +20,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_swagger.views import get_swagger_view
+from django.contrib.auth import views as auth_views
 
 from webapp import views
 
@@ -58,7 +59,9 @@ urlpatterns = [
     url(r'^signaled/$',views.signaled,name="signaled"),
     url(r'^Myposts/$',views.Myposts,name="Myposts"),
     url(r'^Myreactions/$',views.Myreactions,name="Myreactions"),
-    url(r'^comment_delete/$',views.comment_delete,name="comment_delete")
+    url(r'^comment_delete/$',views.comment_delete,name="comment_delete"),
+    url(r'^create_comment/$',views.create_comment,name="create_comment")
+    
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

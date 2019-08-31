@@ -36,8 +36,15 @@ def account(request):
 def feed(request):
         user = request.user
         username = request.user.username
-        posts=Anomaly.objects.filter(archived=False)
+        postCity=Post.objects.filter(city=user.city)
+        posts=Anomaly.objects.filter(archived=False,post__in= postCity)
+        user_pic_post=[]
+        for post in postCity:
+                user_pic_post.append({'post':post,'post_owner':post.post_owner,'user_pic':base64.urlsafe_b64encode(post.post_owner.username.encode())})
         comments=Comment.objects.all()
+        user_pic_comment=[]
+        for comment in comments:
+                user_pic_comment.append({'comment':comment,'comment_owner':comment.comment_owner,'user_pic':base64.urlsafe_b64encode(comment.comment_owner.username.encode())})
         reactions= Reaction.objects.filter(reaction_owner=request.user)
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
@@ -50,6 +57,9 @@ def feed(request):
         if query_limit is not None:
                 # get all users of the same city
                 users = MyUser.objects.filter(city=user.city)
+                user_pic_user=[]
+                for user in users:
+                        user_pic_user.append({'user':user,'user_pic':base64.urlsafe_b64encode(user.username.encode())})
                 posts2=posts
                 
 
@@ -84,14 +94,33 @@ def feed(request):
                 form=UserComment()
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'users':users,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2,'reactions':reactions,
-        'like_creat_nember':like_creat_nember,'posts2':posts2}         
+        'like_creat_nember':like_creat_nember,'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user}         
         return render(request, 'feed.html', context)
+def create_comment(request):
+        if request.method == 'POST':
+                post_id=int(request.POST['post_id'])
+                post=get_object_or_404(Post,id=post_id)
+                description=request.POST['description']
+                Comment.objects.create(post=post, comment_owner=request.user,description=description)
+                
+        return HttpResponse('')
+
 @login_required
 def event(request):
         user = request.user
         username = request.user.username
-        events=Event.objects.all()
+        postCity=Post.objects.filter(city=user.city)
+        events=Event.objects.filter(post__in= postCity)
+        user_pic_post=[]
+        for post in postCity:
+                user_pic_post.append({'post':post,'post_owner':post.post_owner,'user_pic':base64.urlsafe_b64encode(post.post_owner.username.encode())})
         comments=Comment.objects.all()
+        user_pic_comment=[]
+        for comment in comments:
+                user_pic_comment.append({'comment':comment,'comment_owner':comment.comment_owner,'user_pic':base64.urlsafe_b64encode(comment.comment_owner.username.encode())})
+        user_pic_comment=[]
+        for comment in comments:
+                user_pic_comment.append({'comment':comment,'comment_owner':comment.comment_owner,'user_pic':base64.urlsafe_b64encode(comment.comment_owner.username.encode())})
         reactions= Reaction.objects.filter(reaction_owner=request.user)
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
@@ -104,6 +133,9 @@ def event(request):
         if query_limit is not None:
                   # get all users of the same city
                 users = MyUser.objects.filter(city=user.city)
+                user_pic_user=[]
+                for user in users:
+                        user_pic_user.append({'user':user,'user_pic':base64.urlsafe_b64encode(user.username.encode())})
                 posts2=events
                 
 
@@ -140,7 +172,7 @@ def event(request):
                 form=UserComment()
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember,
-        'posts2':posts2}         
+        'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user}         
         return render(request, 'event.html', context)
 @login_required
 def Myposts(request):
@@ -149,6 +181,9 @@ def Myposts(request):
         posts=Anomaly.objects.filter(archived=False)
         Myposts=Post.objects.filter(post_owner=user)
         comments=Comment.objects.all()
+        user_pic_comment=[]
+        for comment in comments:
+                user_pic_comment.append({'comment':comment,'comment_owner':comment.comment_owner,'user_pic':base64.urlsafe_b64encode(comment.comment_owner.username.encode())})
         reactions= Reaction.objects.filter(reaction_owner=request.user)
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
@@ -161,6 +196,9 @@ def Myposts(request):
         if query_limit is not None:
                   # get all users of the same city
                 users = MyUser.objects.filter(city=user.city)
+                user_pic_user=[]
+                for user in users:
+                        user_pic_user.append({'user':user,'user_pic':base64.urlsafe_b64encode(user.username.encode())})
                 posts2=posts
                 
 
@@ -197,19 +235,30 @@ def Myposts(request):
                 form=UserComment()
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember,
-        'posts2':posts2, 'Myposts':Myposts}         
+        'posts2':posts2, 'Myposts':Myposts,'user_pic_user':user_pic_user,'user_pic_comment':user_pic_comment}         
         return render(request, 'Myposts.html', context)
 @login_required
 def Myreactions(request):
         user = request.user
         username = request.user.username
         posts=Anomaly.objects.filter(archived=False)
+        postCity=Post.objects.filter()
+        user_pic_post=[]
+        for post in postCity:
+                user_pic_post.append({'post':post,'post_owner':post.post_owner,'user_pic':base64.urlsafe_b64encode(post.post_owner.username.encode())})
         Myreactions=Reaction.objects.filter(reaction_owner=user)
         Mycomments=Comment.objects.filter(comment_owner=user)
+        Mycomments2=[]
+        for Vtcomment in Mycomments:
+                if Vtcomment.post not in Mycomments2:
+                        Mycomments2.append(Vtcomment.post)
         valide_comments=[]
         for Vcomment in Myreactions:
                 valide_comments.append(Vcomment.post)
         comments=Comment.objects.all()
+        user_pic_comment=[]
+        for comment in comments:
+                user_pic_comment.append({'comment':comment,'comment_owner':comment.comment_owner,'user_pic':base64.urlsafe_b64encode(comment.comment_owner.username.encode())})
         reactions= Reaction.objects.filter(reaction_owner=request.user)
         user_pic=base64.urlsafe_b64encode(username.encode())
         userId= request.user.id
@@ -222,6 +271,9 @@ def Myreactions(request):
         if query_limit is not None:
                   # get all users of the same city
                 users = MyUser.objects.filter(city=user.city)
+                user_pic_user=[]
+                for user in users:
+                        user_pic_user.append({'user':user,'user_pic':base64.urlsafe_b64encode(user.username.encode())})
                 posts2=posts
                 
 
@@ -258,7 +310,7 @@ def Myreactions(request):
                 form=UserComment()
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'posts':posts,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember,
-        'posts2':posts2, 'Myreactions':Myreactions,'Mycomments':Mycomments, 'valide_comments':valide_comments}         
+        'posts2':posts2, 'Myreactions':Myreactions,'Mycomments':Mycomments2, 'valide_comments':valide_comments,'user_pic_user':user_pic_user,'user_pic_comment':user_pic_comment,'user_pic_post':user_pic_post}         
         return render(request, 'Myreactions.html', context)
 
 def like_post(request):
@@ -314,54 +366,60 @@ def logout(request):
     return redirect('/')
 
 def login(request):
-    form=UserForm(request.POST)
-    context = {'form':form}
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user:
-                if user.is_active:
-                        auth_login(request,user)
-                        return redirect('feed')
+    if request.user :
+        return redirect('/')  
+    else:        
+        form=UserForm(request.POST)
+        context = {'form':form}
+        if request.method == 'POST':
+                username = request.POST.get('username')
+                password = request.POST.get('password')
+                user = authenticate(username=username, password=password)
+                if user:
+                        if user.is_active:
+                                auth_login(request,user)
+                                return redirect('feed')
+                        else:
+                                return HttpResponse("Your account is inactive.")
                 else:
-                        return HttpResponse("Your account is inactive.")
+                        errors = '<div class="alert alert-danger" role="alert">Nom d\'utilisateur ou mot de passe incorrect</div>'
+                        context = {'form':form, 'errors': errors}
+                        return render(request, 'login.html', context)
         else:
-            errors = '<div class="alert alert-danger" role="alert">Nom d\'utilisateur ou mot de passe incorrect</div>'
-            context = {'form':form, 'errors': errors}
-            return render(request, 'login.html', context)
-    else:
-            return render(request, 'login.html', context)
-    
+                return render(request, 'login.html', context)
+        
 def register(request):
-        if (request.method == 'POST'):
-                form=UserRegistreForm(request.POST)
-                if form.is_valid():
-                        user = form.save(commit=False)
-                        user.city_id = form.cleaned_data.get('City')
-                        user.save()
-                        raw_password = request.POST.get('password1')
-                        raw_user=request.POST.get('username')
-                        user = authenticate(username=raw_user, password=raw_password)
-                        auth_login(request, user)
-                        return redirect('feed')
-                else:
-                        context = {'form':form}
-                        return render(request, 'register.html', context)
+        if request.user :
+                return redirect('/')
         else:
-                partial_token = None
-                if request.GET.get('partial_token'):
-                        strategy = load_strategy()
-                        partial_token = request.GET.get('partial_token')
-                        partial = strategy.partial_load(partial_token)
-                        data = partial.data['kwargs']['details']
-                        form=UserRegistreForm(initial = {'username': data['username'],'email' :data['email'], 'First_name': data['first_name'],'Last_name': data['last_name']})
-                        context = {'form':form}
-                        return render(request, 'register.html', context)
+                if (request.method == 'POST'):
+                        form=UserRegistreForm(request.POST)
+                        if form.is_valid():
+                                user = form.save(commit=False)
+                                user.city_id = form.cleaned_data.get('City')
+                                user.save()
+                                raw_password = request.POST.get('password1')
+                                raw_user=request.POST.get('username')
+                                user = authenticate(username=raw_user, password=raw_password)
+                                auth_login(request, user)
+                                return redirect('feed')
+                        else:
+                                context = {'form':form}
+                                return render(request, 'register.html', context)
                 else:
-                        form=UserRegistreForm()
-                        context = {'form':form}
-                        return render(request, 'register.html', context)
+                        partial_token = None
+                        if request.GET.get('partial_token'):
+                                strategy = load_strategy()
+                                partial_token = request.GET.get('partial_token')
+                                partial = strategy.partial_load(partial_token)
+                                data = partial.data['kwargs']['details']
+                                form=UserRegistreForm(initial = {'username': data['username'],'email' :data['email'], 'First_name': data['first_name'],'Last_name': data['last_name']})
+                                context = {'form':form}
+                                return render(request, 'register.html', context)
+                        else:
+                                form=UserRegistreForm()
+                                context = {'form':form}
+                                return render(request, 'register.html', context)
         
 def social_auth(request):
         strategy = load_strategy()

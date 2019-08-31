@@ -9,15 +9,21 @@
             <div class="post-bar animated fadeInUp fast" id="post{{reaction2.post.id}}">
                 <div class="post_topbar">
                     <div class="usy-dt">
+                        {% for user_pic3 in user_pic_post %}
+                        {% if reaction2.post == user_pic3.post %}
+                        {% if reaction2.post.post_owner == user_pic3.post_owner %}
                         <script>
-                            userpic='{{ user_pic }}';
+                            userpic='{{ user_pic3.user_pic }}';
                             
                             var data = new Identicon (userpic).toString();
                             
                             document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
                     </script>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
                         <div class="usy-name">
-                            <h3>{{post.post_owner}}</h3>
+                            <h3>{{reaction2.post.post_owner}}</h3>
                             <span><img src="{% static 'img/clock.png' %}" alt="">{{reaction2.post.created_at}}</span>
                         </div>
                     </div>
@@ -107,18 +113,24 @@
                    
                     <div class="comment-sec">
                         <ul>
-                            <li>
+                            <li id="commets{{reaction2.post.id}}">
                                 {% for comment in comments %}
                                     {% if comment.post == reaction2.post %}
                                         <div class="comment-list">
                                             <div class="bg-img">
-                                                 <script>
-                            userpic='{{ user_pic }}';
-                            
-                            var data = new Identicon (userpic).toString();
-                            
-                            document.write('<img style="width:30px; height:30px;" src="data:svg+xml;base64,' + data + '">');
-                    </script>
+                                                    {% for user_pic3 in user_pic_comment %}
+                                                    {% if comment == user_pic3.comment %}
+                                                    {% if comment.comment_owner == user_pic3.comment_owner %}
+                                                    <script>
+                                                        userpic='{{ user_pic3.user_pic }}';
+                                                        
+                                                        var data = new Identicon (userpic).toString();
+                                                        
+                                                        document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
+                                                </script>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% endfor %}
                                             </div>
                                             {% if comment.comment_owner == request.user %}
                                         <div class="comment">
@@ -141,6 +153,62 @@
                                         </div><!--comment-list end-->
                                     {% endif %}
                                 {% endfor %}
+                                <script>
+                                        // Submit post on submit
+                                        $(document).on('submit',"#create_comment{{reaction2.post.id}}", function(e){
+                                            e.preventDefault();
+                                            $.ajax({
+                                                url : "/create_comment/", // the endpoint
+                                                type : "POST", // http method
+                                                data : {
+                                                    post_id : $('#post_id{{reaction2.post.id}}').val(),
+                                                    description:  $('#description{{reaction2.post.id}}').val(),
+                                                    csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                                    
+                                                }, // data sent with the post request
+    
+                                                // handle a successful response
+                                                success : function() {
+                                                    var div1=document.createElement("div");
+                                                    div1.className= "comment-list" ;
+                                                    var div2=document.createElement("div");
+                                                    div2.className="bg-img" ;
+                                                    var userpic='{{ user_pic }}';
+                                                    var data = new Identicon (userpic).toString();
+                                                    var img = document.createElement("IMG");
+                                                    img.src = "data:svg+xml;base64," + data +"";
+                                                    img.style="width:20px; height:20px;"
+                                                    div2.append(img);
+                                                    var div3=document.createElement("div");
+                                                    div3.className="comment";
+                                                    var h3=document.createElement("h3");
+                                                    h3.append('{{username}}');
+                                                    var span=document.createElement("span");
+                                                    var img2 = document.createElement("IMG");
+                                                    img2.src = "{% static 'img/clock.png' %}";
+                                                    span.append(img2);
+                                                    span.append("Now");
+                                                    var p=document.createElement("p");
+                                                    p.append(""+$('#description{{reaction2.post.id}}').val());
+                                                    div3.appendChild( h3 );
+                                                    div3.appendChild( span );
+                                                    div3.appendChild( p );
+                                                    div1.appendChild(div2);
+                                                    div1.appendChild(div3);
+                                                    $('#commets'+$('#post_id{{reaction2.post.id}}').val()).append(div1);
+                                                },
+    
+                                                // handle a non-successful response
+                                                error : function(xhr,errmsg,err) {
+                                                    $('#create_comment{{reaction2.post.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                                    //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                                                }
+                                            });
+                                        });
+    
+                                        
+                                        
+                                        </script>
                             </li>
                         </ul>
                     </div><!--comment-sec end-->
@@ -155,45 +223,51 @@
                                 </script>
                         </div>
                         <div class="comment_box">
-                            <form method="POST">
-                                {% csrf_token %}
-                                <input type="text" name="post_id" id="post_id" value="{{reaction2.post.id}}" hidden>
-                                {% for field in form.visible_fields %}
-                                <div>
-                                    {% render_field field class='autoExpand' rows='3' data-min-rows='3' cols='60' data-min-cols='60' placeholder='Votre Commentaire'  %}
-                                </div>
-                                {% endfor %}
-                                <br>
-                                <button type="submit">Send</button>
-                            </form>
+                                <form  id="create_comment{{reaction2.post.id}}">
+                                        {% csrf_token %}
+                                        <input type="text" name="post_id" id="post_id{{reaction2.post.id}}" value="{{reaction2.post.id}}" hidden>
+                                       
+                                        <div>
+                                                <textarea  class='autoExpand' rows='3' data-min-rows='3' cols='60' data-min-cols='60' placeholder='Votre Commentaire' name="description" id="description{{reaction2.post.id}}" required > </textarea>
+                                        </div>
+                                        
+                                        <br>
+                                        <button type="submit">Send</button>
+                                    </form>
                         </div>
                     </div><!--post-comment end-->
                 </div><!--comment-section end-->
             </div><!--post-bar end-->
         {% endfor %}
         {% for reaction3 in Mycomments %}
-            {% if reaction3.post in valide_comments %}
+            {% if reaction3 in valide_comments %}
             {% else %}
-        <div class="post-bar animated fadeInUp fast" id="post{{reaction3.post.id}}">
+        <div class="post-bar animated fadeInUp fast" id="post{{reaction3.id}}">
             <div class="post_topbar">
                 <div class="usy-dt">
-                    <script>
-                        userpic='{{ user_pic }}';
-                        
-                        var data = new Identicon (userpic).toString();
-                        
-                        document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
-                </script>
+                        {% for user_pic3 in user_pic_post %}
+                        {% if reaction3 == user_pic3.post %}
+                        {% if reaction3.post_owner == user_pic3.post_owner %}
+                        <script>
+                            userpic='{{ user_pic3.user_pic }}';
+                            
+                            var data = new Identicon (userpic).toString();
+                            
+                            document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
+                    </script>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
                     <div class="usy-name">
-                        <h3>{{post.post_owner}}</h3>
-                        <span><img src="{% static 'img/clock.png' %}" alt="">{{reaction3.post.created_at}}</span>
+                        <h3>{{reaction3.post_owner}}</h3>
+                        <span><img src="{% static 'img/clock.png' %}" alt="">{{reaction3.created_at}}</span>
                     </div>
                 </div>
                 
             </div>
             <div class="epi-sec">
                 <ul class="descp">
-                    <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{reaction3.post.city.name}}</span></li>
+                    <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{reaction3.city.name}}</span></li>
                 </ul>
                 <ul class="bk-links">
                     
@@ -201,12 +275,12 @@
                 </ul>
             </div>
             <div class="job_descp">
-                <p>{{reaction3.post.description}}</p>
+                <p>{{reaction3.description}}</p>
                 <ul>
-                  {% if reaction3.post.image == '/media/images/default.png' %}
+                  {% if reaction3.image == '/media/images/default.png' %}
                     <li><img width="100%" src="{% static 'img/default.png' %}" alt=""></li>
                     {% else %}
-                    <li><img width="100%" src="{{reaction3.post.image}}" alt=""></li>
+                    <li><img width="100%" src="{{reaction3.image}}" alt=""></li>
                     {% endif %}
                 </ul>	
             </div>
@@ -216,18 +290,18 @@
                         <form method="post" action="{% url 'like_post' %}">
                                 {% csrf_token %}
                         
-                        {% if reaction3.post in like_creat_nember %}
+                        {% if reaction3 in like_creat_nember %}
                          {% for reaction in reactions %}
-                            {% if reaction3.post == reaction.post %}
+                            {% if reaction3 == reaction.post %}
                                 {% if reaction.is_like == True %}
-                                <button type='submit' name="post_id" value="{{reaction3.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Like</button>
+                                <button type='submit' name="post_id" value="{{reaction3.id}}" class="btn btn-info"><i class="la la-heart"></i> Like</button>
                                 {% else %}
-                                <button type='submit' name="post_id" value="{{reaction3.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
+                                <button type='submit' name="post_id" value="{{reaction3.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
                                 {% endif%}
                             {% endif %}
                          {% endfor %}
                         {% else %} 
-                         <button type='submit' name="post_id" value="{{reaction3.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
+                         <button type='submit' name="post_id" value="{{reaction3.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
                         {% endif %}
       
                         
@@ -244,18 +318,18 @@
                     <li>
                             <form method="post" action="{% url 'dislike_post' %}">
                                     {% csrf_token %}
-                            {% if reaction3.post in like_creat_nember %}
+                            {% if reaction3 in like_creat_nember %}
                             {% for reaction in reactions %}
-                                {% if reaction3.post == reaction.post %}
+                                {% if reaction3 == reaction.post %}
                                     {% if reaction.is_like == False %}
-                                    <button type='submit' name="post_id" value="{{reaction3.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Dislike</button>
+                                    <button type='submit' name="post_id" value="{{reaction3.id}}" class="btn btn-danger"><i class="la la-heart"></i> Dislike</button>
                                     {% else %}
-                                    <button type='submit' name="post_id" value="{{reaction3.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
+                                    <button type='submit' name="post_id" value="{{reaction3.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
                                     {% endif%}
                                 {% endif %}
                             {% endfor %}
                             {% else %} 
-                            <button type='submit' name="post_id" value="{{reaction3.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
+                            <button type='submit' name="post_id" value="{{reaction3.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
                             {% endif %}
                                           
                                           
@@ -265,28 +339,34 @@
                     
                     
                 </ul>
-                <a href="#" title="" ><img src="{% static 'img/com.png' %}" alt="">Comment {{reaction3.post.count_comments}}</a>
+                <a href="#" title="" ><img src="{% static 'img/com.png' %}" alt="">Comment {{reaction3.count_comments}}</a>
 
             </div>
             <div class="plus-ic">
-               <button data-toggle="collapse" class="btn btn-circle" href="#collapse{{reaction3.post.id}}" role="button" aria-expanded="false" aria-controls="collapsecollapse{{reaction2.post.id}}"> <i  class="la la-plus"></i></button>
+               <button data-toggle="collapse" class="btn btn-circle" href="#collapse{{reaction3.id}}" role="button" aria-expanded="false" aria-controls="collapsecollapse{{reaction2.post.id}}"> <i  class="la la-plus"></i></button>
             </div>
-            <div class="comment-section collapse" id="collapse{{reaction3.post.id}}">
+            <div class="comment-section collapse" id="collapse{{reaction3.id}}">
                
                 <div class="comment-sec">
                     <ul>
-                        <li>
+                        <li id="commetsC{{reaction3.id}}">
                             {% for comment in comments %}
-                                {% if comment.post == reaction3.post %}
+                                {% if comment.post == reaction3 %}
                                     <div class="comment-list">
                                         <div class="bg-img">
-                                             <script>
-                        userpic='{{ user_pic }}';
-                        
-                        var data = new Identicon (userpic).toString();
-                        
-                        document.write('<img style="width:30px; height:30px;" src="data:svg+xml;base64,' + data + '">');
-                </script>
+                                                {% for user_pic3 in user_pic_comment %}
+                                                {% if comment == user_pic3.comment %}
+                                                {% if comment.comment_owner == user_pic3.comment_owner %}
+                                                <script>
+                                                    userpic='{{ user_pic3.user_pic }}';
+                                                    
+                                                    var data = new Identicon (userpic).toString();
+                                                    
+                                                    document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
+                                            </script>
+                                            {% endif %}
+                                            {% endif %}
+                                            {% endfor %}
                                         </div>
                                         {% if comment.comment_owner == request.user %}
                                         <div class="comment">
@@ -310,6 +390,62 @@
                                
                                 {% endif %}
                             {% endfor %}
+                            <script>
+                                    // Submit post on submit
+                                    $(document).on('submit',"#create_commentC{{reaction3.id}}", function(e){
+                                        e.preventDefault();
+                                        $.ajax({
+                                            url : "/create_comment/", // the endpoint
+                                            type : "POST", // http method
+                                            data : {
+                                                post_id : $('#post_idC{{reaction3.id}}').val(),
+                                                description:  $('#descriptionC{{reaction3.id}}').val(),
+                                                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                                
+                                            }, // data sent with the post request
+
+                                            // handle a successful response
+                                            success : function() {
+                                                var div1=document.createElement("div");
+                                                div1.className= "comment-list" ;
+                                                var div2=document.createElement("div");
+                                                div2.className="bg-img" ;
+                                                var userpic='{{ user_pic }}';
+                                                var data = new Identicon (userpic).toString();
+                                                var img = document.createElement("IMG");
+                                                img.src = "data:svg+xml;base64," + data +"";
+                                                img.style="width:20px; height:20px;"
+                                                div2.append(img);
+                                                var div3=document.createElement("div");
+                                                div3.className="comment";
+                                                var h3=document.createElement("h3");
+                                                h3.append('{{username}}');
+                                                var span=document.createElement("span");
+                                                var img2 = document.createElement("IMG");
+                                                img2.src = "{% static 'img/clock.png' %}";
+                                                span.append(img2);
+                                                span.append("Now");
+                                                var p=document.createElement("p");
+                                                p.append(""+$('#descriptionC{{reaction3.id}}').val());
+                                                div3.appendChild( h3 );
+                                                div3.appendChild( span );
+                                                div3.appendChild( p );
+                                                div1.appendChild(div2);
+                                                div1.appendChild(div3);
+                                                $('#commetsC'+$('#post_idC{{reaction3.id}}').val()).append(div1);
+                                            },
+
+                                            // handle a non-successful response
+                                            error : function(xhr,errmsg,err) {
+                                                $('#create_commentC{{reaction3.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                                //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                                            }
+                                        });
+                                    });
+
+                                    
+                                    
+                                    </script>
                         </li>
                     </ul>
                 </div><!--comment-sec end-->
@@ -324,17 +460,17 @@
                             </script>
                     </div>
                     <div class="comment_box">
-                        <form method="POST">
-                            {% csrf_token %}
-                            <input type="text" name="post_id" id="post_id" value="{{reaction3.post.id}}" hidden>
-                            {% for field in form.visible_fields %}
-                            <div>
-                                {% render_field field class='autoExpand' rows='3' data-min-rows='3' cols='60' data-min-cols='60' placeholder='Votre Commentaire'  %}
-                            </div>
-                            {% endfor %}
-                            <br>
-                            <button type="submit">Send</button>
-                        </form>
+                            <form  id="create_commentC{{reaction3.id}}">
+                                    {% csrf_token %}
+                                    <input type="text" name="post_id" id="post_idC{{reaction3.id}}" value="{{reaction3.id}}" hidden>
+                                   
+                                    <div>
+                                            <textarea  class='autoExpand' rows='3' data-min-rows='3' cols='60' data-min-cols='60' placeholder='Votre Commentaire' name="description" id="descriptionC{{reaction3.id}}" required > </textarea>
+                                    </div>
+                                    
+                                    <br>
+                                    <button type="submit">Send</button>
+                                </form>
                     </div>
                 </div><!--post-comment end-->
             </div><!--comment-section end-->

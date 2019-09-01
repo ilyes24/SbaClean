@@ -352,10 +352,10 @@ def like_post(request):
 
 
 def comment_delete(request):
-    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    comment = get_object_or_404(Comment, id=int(request.POST['comment_id']))
     comment.delete()
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return HttpResponse('')
 
 
 def dislike_post(request):

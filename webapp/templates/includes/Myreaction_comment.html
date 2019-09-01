@@ -116,7 +116,7 @@
                             <li id="commets{{reaction2.post.id}}">
                                 {% for comment in comments %}
                                     {% if comment.post == reaction2.post %}
-                                        <div class="comment-list">
+                                        <div class="comment-list" id="comment{{comment.id}}">
                                             <div class="bg-img">
                                                     {% for user_pic3 in user_pic_comment %}
                                                     {% if comment == user_pic3.comment %}
@@ -133,14 +133,43 @@
                                                 {% endfor %}
                                             </div>
                                             {% if comment.comment_owner == request.user %}
-                                        <div class="comment">
+                                        <div class="comment" >
                                             <h3>{{comment.comment_owner.username}}</h3>
                                             <span><img src="{% static 'img/clock.png' %}" alt=""> {{comment.created_at}}</span>
                                             <p>{{comment.description}}</p>
-                                            <form method="post" action="{% url 'comment_delete' %}">
+                                            <form id="comment_delete{{comment.id}}">
                                                     {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger" name="comment_id" value="{{comment.id}}">delete</button>
+                                            <button type="submit" class="btn btn-danger" id="comment_id{{comment.id}}" value="{{comment.id}}">delete</button>
                                             </form>
+                                            <script>
+                                                // Submit post on submit
+                                                $(document).on('submit',"#comment_delete{{comment.id}}", function(e){
+                                                    e.preventDefault();
+                                                    $.ajax({
+                                                        url : "/comment_delete/", // the endpoint
+                                                        type : "POST", // http method
+                                                        data : {
+                                                            comment_id : $('#comment_id{{comment.id}}').val(),
+                                                            csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                                            
+                                                        }, // data sent with the post request
+            
+                                                        // handle a successful response
+                                                        success : function() {
+                                                            $('#comment{{comment.id}}').remove();
+                                                        },
+            
+                                                        // handle a non-successful response
+                                                        error : function(xhr,errmsg,err) {
+                                                            $('#comment_delete{{comment.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                                            //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                                                        }
+                                                    });
+                                                });
+            
+                                                
+                                                
+                                                </script>
                                         </div>
                                         {% else %}
                                         <div class="comment">
@@ -352,32 +381,61 @@
                         <li id="commetsC{{reaction3.id}}">
                             {% for comment in comments %}
                                 {% if comment.post == reaction3 %}
-                                    <div class="comment-list">
-                                        <div class="bg-img">
-                                                {% for user_pic3 in user_pic_comment %}
-                                                {% if comment == user_pic3.comment %}
-                                                {% if comment.comment_owner == user_pic3.comment_owner %}
-                                                <script>
-                                                    userpic='{{ user_pic3.user_pic }}';
+                                <div class="comment-list" id="comment{{comment.id}}">
+                                    <div class="bg-img">
+                                            {% for user_pic3 in user_pic_comment %}
+                                            {% if comment == user_pic3.comment %}
+                                            {% if comment.comment_owner == user_pic3.comment_owner %}
+                                            <script>
+                                                userpic='{{ user_pic3.user_pic }}';
+                                                
+                                                var data = new Identicon (userpic).toString();
+                                                
+                                                document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
+                                        </script>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    {% if comment.comment_owner == request.user %}
+                                <div class="comment" >
+                                    <h3>{{comment.comment_owner.username}}</h3>
+                                    <span><img src="{% static 'img/clock.png' %}" alt=""> {{comment.created_at}}</span>
+                                    <p>{{comment.description}}</p>
+                                    <form id="comment_delete{{comment.id}}">
+                                            {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger" id="comment_id{{comment.id}}" value="{{comment.id}}">delete</button>
+                                    </form>
+                                    <script>
+                                        // Submit post on submit
+                                        $(document).on('submit',"#comment_delete{{comment.id}}", function(e){
+                                            e.preventDefault();
+                                            $.ajax({
+                                                url : "/comment_delete/", // the endpoint
+                                                type : "POST", // http method
+                                                data : {
+                                                    comment_id : $('#comment_id{{comment.id}}').val(),
+                                                    csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
                                                     
-                                                    var data = new Identicon (userpic).toString();
-                                                    
-                                                    document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
-                                            </script>
-                                            {% endif %}
-                                            {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                        {% if comment.comment_owner == request.user %}
-                                        <div class="comment">
-                                            <h3>{{comment.comment_owner.username}}</h3>
-                                            <span><img src="{% static 'img/clock.png' %}" alt=""> {{comment.created_at}}</span>
-                                            <p>{{comment.description}}</p>
-                                            <form method="post" action="{% url 'comment_delete' %}">
-                                                    {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger" name="comment_id" value="{{comment.id}}">delete</button>
-                                            </form>
-                                        </div>
+                                                }, // data sent with the post request
+    
+                                                // handle a successful response
+                                                success : function() {
+                                                    $('#comment{{comment.id}}').remove();
+                                                },
+    
+                                                // handle a non-successful response
+                                                error : function(xhr,errmsg,err) {
+                                                    $('#comment_delete{{comment.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                                    //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                                                }
+                                            });
+                                        });
+    
+                                        
+                                        
+                                        </script>
+                                </div>
                                         {% else %}
                                         <div class="comment">
                                                 <h3>{{comment.comment_owner.username}}</h3>

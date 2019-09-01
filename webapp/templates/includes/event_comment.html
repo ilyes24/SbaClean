@@ -52,7 +52,47 @@
                         <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{event.post.city.name}}</span></li>
                     </ul>
                     <ul class="bk-links">
-                        
+                        <li>
+                            <form id="event{{event.id}}">
+                                {% csrf_token %}
+                                {% for nb_part in nb_participante %}
+                                {% if  event == nb_part.event %}
+                        <button type="submit" class="btn btn-warning" id="event_id{{event.id}}" value="{{event.id}}">Participer {{nb_part.nb_part}}</button>
+                        {% endif %}        
+                        {% endfor %}
+                        </form>
+                        <script>
+                            // Submit post on submit
+                            $(document).on('submit',"#event{{event.id}}", function(e){
+                                e.preventDefault();
+                                $.ajax({
+                                    url : "/Participate/", // the endpoint
+                                    type : "POST", // http method
+                                    data : {
+                                        event_id : $('#event_id{{event.id}}').val(),
+                                        csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                        
+                                    }, // data sent with the post request
+
+                                    // handle a successful response
+                                    success : function() {
+                                        alert('thank you !!')
+                                       $('#event_id{{event.id}}').attr("disabled", true);
+                                      
+                                    },
+
+                                    // handle a non-successful response
+                                    error : function(xhr,errmsg,err) {
+                                        $('#event{{event.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                        //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                                    }
+                                });
+                            });
+
+                            
+                            
+                            </script>
+                        </li>
                     </ul>
                 </div>
                 <div class="job_descp">

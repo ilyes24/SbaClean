@@ -380,7 +380,7 @@ def logout(request):
 
 
 def login(request):
-    if request.user :
+    if request.user.is_authenticated :
         return redirect('/')  
     else:        
         form=UserForm(request.POST)
@@ -403,7 +403,7 @@ def login(request):
                 return render(request, 'login.html', context)
         
 def register(request):
-        if request.user :
+        if request.user.is_authenticated :
                 return redirect('/')
         else:
                 if (request.method == 'POST'):

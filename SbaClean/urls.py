@@ -21,7 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_swagger.views import get_swagger_view
 from django.contrib.auth import views as auth_views
-
+from webapp.views import UploadView
 from webapp import views
 
 schema_view = get_swagger_view(title='SbaClean API')
@@ -48,6 +48,7 @@ urlpatterns = [
                   path('', include('social_django.urls', namespace='social')),
                   path("logout/", views.logout, name="logout"),
                   path('', include('dashboard.urls', namespace='dashboard')),
+                  path('api/upload-image', UploadView.as_view()),
 
 
     path('admin/', admin.site.urls),
@@ -63,6 +64,8 @@ urlpatterns = [
     url(r'^create_comment/$',views.create_comment,name="create_comment")
     
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
 
 handler404 = views.handler404
 handler500 = views.handler500

@@ -8,6 +8,9 @@ from django.template import RequestContext
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.db import transaction
+from rest_framework.parsers import MultiPartParser, JSONParser
+from rest_framework.views import APIView
+import cloudinary.uploader
 from .models import *
 from Post.models import *
 from Event.models import *
@@ -36,6 +39,11 @@ def account(request):
     context = {}
     return render(request, 'account.html', context)
 
+class UploadView(APIView):
+    parser_classes = (
+        MultiPartParser,
+        JSONParser,
+    )
 
 @login_required
 def feed(request):
@@ -86,12 +94,15 @@ def feed(request):
                                 comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
                                 comment.save()
                 if form2.is_valid():
+                        image= request.FILES['image'].read()
+                        upload_data = cloudinary.uploader.upload(image)
+                        image=upload_data['url']
                         title = request.POST.get('title')
                         city = request.POST.get('city')
                         longitude = request.POST.get('longitude')
                         latitude = request.POST.get('latitude')
                         description=request.POST.get('description')
-                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
+                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude,image=image)
                         post.save()
                         anomaly=Anomaly.objects.create(post=post,signaled=False)
                         anomaly.save()
@@ -162,6 +173,9 @@ def event(request):
                                 comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
                                 comment.save()
                 if form2.is_valid():
+                        image= request.FILES['image'].read()
+                        upload_data = cloudinary.uploader.upload(image)
+                        image=upload_data['url']
                         title = request.POST.get('title')
                         city = request.POST.get('city')
                         longitude = request.POST.get('longitude')
@@ -169,7 +183,7 @@ def event(request):
                         description=request.POST.get('description')
                         max_participants =request.POST.get('max_participants')
                         starts_at = request.POST.get('starts_at')
-                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
+                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude,image=image)
                         post.save()
                         event=Event.objects.create(post=post, max_participants=max_participants, starts_at=starts_at)
                         event.save()

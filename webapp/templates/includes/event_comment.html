@@ -262,7 +262,7 @@
                 </div>
                 <div class="modal-body">
                         <div class="post-project-fields">
-                                <form method="POST">
+                                <form method="POST" enctype="multipart/form-data">
                                         {% csrf_token %}
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -273,6 +273,9 @@
                                                 {% render_field field %}
                                         </div>
                                         {% endfor %}
+                                        <div class="col-lg-12">
+                                            <input type="file" name="image"   id="id_image">
+                                            </div>
                                         <div class="col-lg-12">
                                         <input type="text" name="latitude" placeholder="latitude" readonly maxlength="255" required="" id="id_latitude">
                                         </div>

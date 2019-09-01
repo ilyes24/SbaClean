@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -152,3 +153,12 @@ GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBqGhIGuiWpOPsAEXvuJJ7GblyGbSr_7lk'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+
+
+import cloudinary
+
+cloudinary.config(cloud_name='dfpwodxkm',
+                  api_key='445159847865135',
+                  api_secret='BH1s1XUwXGVizaxYdQpIbLGxsZI')
+

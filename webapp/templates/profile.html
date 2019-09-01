@@ -49,15 +49,42 @@
     {% csrf_token %}
 
 {{errors | safe}}
-{% for field in form.visible_fields  %}
+
 <div class="form-group row">
-        <label class="col-lg-3 col-form-label form-control-label">{{field.name}}</label>
+        <label class="col-lg-3 col-form-label form-control-label">Email</label>
         <div class="col-lg-9">
-    {% render_field field class="form-control" %}
+        <input type="email" name="email" value="m.sidelmrabet@esi-sba.dz" maxlength="254" class="form-control" id="id_email">
 </div>
 </div>
 <br>
-{% endfor %}
+<div class="form-group row">
+    <label class="col-lg-3 col-form-label form-control-label">Nom</label>
+    <div class="col-lg-9">
+        <input type="text" name="first_name" value="islem" maxlength="30" class="form-control" id="id_first_name">
+</div>
+</div>
+<br>
+<div class="form-group row">
+    <label class="col-lg-3 col-form-label form-control-label">Prenom</label>
+    <div class="col-lg-9">
+        <input type="text" name="last_name" value="mohamed" maxlength="150" class="form-control" id="id_last_name">
+</div>
+</div>
+<br>
+<div class="form-group row">
+    <label class="col-lg-3 col-form-label form-control-label">Telephone</label>
+    <div class="col-lg-9">
+        <input type="number" name="phone_number" value="21348565835" min="-9223372036854775808" max="9223372036854775807" class="form-control" required="" id="id_phone_number">
+</div>
+</div>
+<br>
+<div class="form-group row">
+    <label class="col-lg-3 col-form-label form-control-label">Address</label>
+    <div class="col-lg-9">
+        <input type="text" name="address" value="sdqfdq" maxlength="255" class="form-control" required="" id="id_address">
+</div>
+</div>
+<br>
 <div class="col d-flex justify-content-start">
         <button class="btn btn-primary" type="submit" name="details">Save Changes</button>
       </div>
@@ -68,15 +95,28 @@
         {% csrf_token %}
     
     {{errors | safe}}
-    {% for field in form2.visible_fields  %}
+    
     <div class="form-group row">
-            <label class="col-lg-3 col-form-label form-control-label">{{field.name}}</label>
+            <label class="col-lg-3 col-form-label form-control-label">Mon Password</label>
             <div class="col-lg-9">
-        {% render_field field class="form-control" %}
+                <input type="password" name="old_password" autofocus="" class="form-control" required="" id="id_old_password">
     </div>
     </div>
     <br>
-    {% endfor %}
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">Nouveau Password</label>
+        <div class="col-lg-9">
+            <input type="password" name="new_password1" class="form-control" required="" id="id_new_password1">
+</div>
+</div>
+<br>
+<div class="form-group row">
+    <label class="col-lg-3 col-form-label form-control-label">Confirmé Password</label>
+    <div class="col-lg-9">
+        <input type="password" name="new_password2" class="form-control" required="" id="id_new_password2">
+</div>
+</div>
+<br>
     
     <div class="col d-flex justify-content-start">
             <button class="btn btn-primary" type="submit" name="passwordCH">Save Changes</button>

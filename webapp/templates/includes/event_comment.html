@@ -26,13 +26,19 @@
             <div class="post-bar animated fadeInUp fast" id="post{{event.post.id}}">
                 <div class="post_topbar">
                     <div class="usy-dt">
-                            <script>
-                                    userpic='{{ user_pic }}';
-                                    
-                                    var data = new Identicon (userpic).toString();
-                                    
-                                    document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
-                            </script>
+                            {% for user_pic3 in user_pic_post %}
+                        {% if event.post == user_pic3.post %}
+                        {% if event.post.post_owner == user_pic3.post_owner %}
+                        <script>
+                            userpic='{{ user_pic3.user_pic }}';
+                            
+                            var data = new Identicon (userpic).toString();
+                            
+                            document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
+                    </script>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
                         <div class="usy-name">
                             <h3>{{event.post.post_owner}}</h3>
                             <span><img src="{% static 'img/clock.png' %}" alt="">{{event.post.created_at}}</span>
@@ -123,18 +129,24 @@
                     
                     <div class="comment-sec">
                         <ul>
-                            <li>
+                            <li id="commets{{event.post.id}}">
                                 {% for comment in comments %}
                                     {% if comment.post == event.post %}
                                         <div class="comment-list">
                                             <div class="bg-img">
+                                                    {% for user_pic3 in user_pic_comment %}
+                                                    {% if comment == user_pic3.comment %}
+                                                    {% if comment.comment_owner == user_pic3.comment_owner %}
                                                     <script>
-                                                            userpic='{{ user_pic }}';
-                                                            
-                                                            var data = new Identicon (userpic).toString();
-                                                            
-                                                            document.write('<img style="width:30px; height:30px;" src="data:svg+xml;base64,' + data + '">');
-                                                    </script>
+                                                        userpic='{{ user_pic3.user_pic }}';
+                                                        
+                                                        var data = new Identicon (userpic).toString();
+                                                        
+                                                        document.write('<img style="width:20px; height:20px;" src="data:svg+xml;base64,' + data + '">');
+                                                </script>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% endfor %}
                                             </div>
                                             <div class="comment">
                                                 <h3>{{comment.comment_owner.username}}</h3>
@@ -144,6 +156,62 @@
                                         </div><!--comment-list end-->
                                     {% endif %}
                                 {% endfor %}
+                                <script>
+                                        // Submit post on submit
+                                        $(document).on('submit',"#create_comment{{event.post.id}}", function(e){
+                                            e.preventDefault();
+                                            $.ajax({
+                                                url : "/create_comment/", // the endpoint
+                                                type : "POST", // http method
+                                                data : {
+                                                    post_id : $('#post_id{{event.post.id}}').val(),
+                                                    description:  $('#description{{event.post.id}}').val(),
+                                                    csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                                    
+                                                }, // data sent with the post request
+    
+                                                // handle a successful response
+                                                success : function() {
+                                                    var div1=document.createElement("div");
+                                                    div1.className= "comment-list" ;
+                                                    var div2=document.createElement("div");
+                                                    div2.className="bg-img" ;
+                                                    var userpic='{{ user_pic }}';
+                                                    var data = new Identicon (userpic).toString();
+                                                    var img = document.createElement("IMG");
+                                                    img.src = "data:svg+xml;base64," + data +"";
+                                                    img.style="width:20px; height:20px;"
+                                                    div2.append(img);
+                                                    var div3=document.createElement("div");
+                                                    div3.className="comment";
+                                                    var h3=document.createElement("h3");
+                                                    h3.append('{{username}}');
+                                                    var span=document.createElement("span");
+                                                    var img2 = document.createElement("IMG");
+                                                    img2.src = "{% static 'img/clock.png' %}";
+                                                    span.append(img2);
+                                                    span.append("Now");
+                                                    var p=document.createElement("p");
+                                                    p.append(""+$('#description{{event.post.id}}').val());
+                                                    div3.appendChild( h3 );
+                                                    div3.appendChild( span );
+                                                    div3.appendChild( p );
+                                                    div1.appendChild(div2);
+                                                    div1.appendChild(div3);
+                                                    $('#commets'+$('#post_id{{event.post.id}}').val()).append(div1);
+                                                },
+    
+                                                // handle a non-successful response
+                                                error : function(xhr,errmsg,err) {
+                                                    $('#create_comment{{event.post.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                                    //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                                                }
+                                            });
+                                        });
+    
+                                        
+                                        
+                                        </script>
                             </li>
                         </ul>
                     </div><!--comment-sec end-->
@@ -158,17 +226,17 @@
                                 </script>
                         </div>
                         <div class="comment_box">
-                            <form method="POST">
-                                {% csrf_token %}
-                                <input type="text" name="post_id" id="post_id" value="{{event.post.id}}" hidden>
-                                {% for field in form.visible_fields %}
-                                <div>
-                                    {% render_field field class='autoExpand' rows='3' data-min-rows='3' cols='60' data-min-cols='60' placeholder='Votre Commentaire'  %}
-                                </div>
-                                {% endfor %}
-                                <br>
-                                <button type="submit">Send</button>
-                            </form>
+                                <form  id="create_comment{{event.post.id}}">
+                                        {% csrf_token %}
+                                        <input type="text" name="post_id" id="post_id{{event.post.id}}" value="{{event.post.id}}" hidden>
+                                       
+                                        <div>
+                                                <textarea  class='autoExpand' rows='3' data-min-rows='3' cols='60' data-min-cols='60' placeholder='Votre Commentaire' name="description" id="description{{event.post.id}}" required > </textarea>
+                                        </div>
+                                        
+                                        <br>
+                                        <button type="submit">Send</button>
+                                    </form>
                         </div>
                     </div><!--post-comment end-->
                 </div><!--comment-section end-->
@@ -194,7 +262,7 @@
                 </div>
                 <div class="modal-body">
                         <div class="post-project-fields">
-                                <form method="POST">
+                                <form method="POST" enctype="multipart/form-data">
                                         {% csrf_token %}
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -205,6 +273,9 @@
                                                 {% render_field field %}
                                         </div>
                                         {% endfor %}
+                                        <div class="col-lg-12">
+                                            <input type="file" name="image"   id="id_image">
+                                            </div>
                                         <div class="col-lg-12">
                                         <input type="text" name="latitude" placeholder="latitude" readonly maxlength="255" required="" id="id_latitude">
                                         </div>

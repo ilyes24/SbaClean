@@ -22,7 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-#SECRET_KEY = 'td&7@am*jkdvvp9^li_h9d*t_wdy*ey%6j6c*0h1pwc5pwd9n6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -162,15 +161,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
-
-
-
-import cloudinary
-
-# cloudinary.config(cloud_name=os.environ.get('cloud_name'),
-#                   api_key=os.environ.get('api_key'),
-#                   api_secret=os.environ.get('api_secret') )
-cloudinary.config(cloud_name='dfpwodxkm',
-                  api_key='445159847865135',
-                  api_secret='BH1s1XUwXGVizaxYdQpIbLGxsZI')
-

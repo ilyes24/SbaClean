@@ -2,7 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
 from Address.models import City
-from Post.models import Post
 
 
 class MyUser(AbstractUser):

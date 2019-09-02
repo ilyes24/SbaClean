@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
 from Address.models import City
+from Post.models import Post
 
 
 class MyUser(AbstractUser):
@@ -16,6 +17,13 @@ class MyUser(AbstractUser):
     def ban(self):
         self.is_banned = True
         self.save()
+
+
+class Notification(models.Model):
+    sender = models.ForeignKey(MyUser, related_name='user_sender', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(MyUser, related_name='user_receiver', on_delete=models.CASCADE)
+    message = models.CharField(max_length=255, null=True)
+    created_at = models.DateTimeField(null=True)
 
 
 # is_staff = True                           is_staff = False

@@ -61,7 +61,8 @@ urlpatterns = [
     url(r'^Myposts/$',views.Myposts,name="Myposts"),
     url(r'^Myreactions/$',views.Myreactions,name="Myreactions"),
     url(r'^comment_delete/$',views.comment_delete,name="comment_delete"),
-    url(r'^create_comment/$',views.create_comment,name="create_comment")
+    url(r'^create_comment/$',views.create_comment,name="create_comment"),
+    url(r'^Participate/$',views.Participate,name="Participate")
     
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

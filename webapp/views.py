@@ -127,6 +127,10 @@ def event(request):
         username = request.user.username
         postCity=Post.objects.filter(city=user.city)
         events=Event.objects.filter(post__in= postCity)
+        nb_participante=[]
+        for event in events:
+                nb_participante.append({'event':event,'nb_part':EventParticipation.objects.filter(event=event).count()})
+        print(nb_participante)
         user_pic_post=[]
         for post in postCity:
                 user_pic_post.append({'post':post,'post_owner':post.post_owner,'user_pic':base64.urlsafe_b64encode(post.post_owner.username.encode())})
@@ -191,7 +195,7 @@ def event(request):
                 form=UserComment()
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember,
-        'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user}         
+        'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user,'nb_participante': nb_participante}         
         return render(request, 'event.html', context)
 @login_required
 def Myposts(request):
@@ -384,6 +388,21 @@ def signaled(request):
     anomaly.save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+def Participate(request):
+        if request.method == 'POST':
+                
+                event_id=int(request.POST['event_id'])
+                event=get_object_or_404(Event,id=event_id)
+                nb_participante=EventParticipation.objects.filter(event=event).count()
+                if nb_participante < event.max_participants:
+                        if EventParticipation.objects.filter(event=event, user=request.user) :
+                                return HttpResponse('')
+                        else: 
+                                EventParticipation.objects.create(event=event, user=request.user)
+                else:
+                        HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+                
+        return HttpResponse('')
 
 
 @login_required

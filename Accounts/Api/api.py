@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.db.models.aggregates import Count
+from rest_framework import mixins, generics
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateAPIView
 
-from Accounts.models import MyUser
-from Post.models import Post
-from .serializers import MyUserSerializer
+from Accounts.models import MyUser, Notification
+from .serializers import MyUserSerializer, NotificationSerializer
 
 UserModel = get_user_model()
 
@@ -57,21 +57,21 @@ class UserRanking(ListAPIView):
 
     def get_queryset(self):
         qs = MyUser.objects.all()
-        query_limit = self.request.GET.get('limit')
+        query_limit = int(self.request.GET.get('limit'))
         query_city = self.request.GET.get('city')
         query_user = self.request.GET.get('user')
 
         if query_limit is not None:
             if query_user is not None:
                 # get the user
-                user = MyUser.objects.get(pk=query_user)
+                user = MyUser.objects.filter(pk=query_user).first()
 
                 # get all users of the same city
-                users = MyUser.objects.filter(city=user.city)
+                users = qs.filter(city=user.city)
 
                 # Then doing the calculations
                 users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
-                    Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
+                    Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gte=0)
 
                 # And finaly, order the results
                 users = users.order_by('-rank_point')[:query_limit]
@@ -90,3 +90,37 @@ class UserRanking(ListAPIView):
                 users = users.order_by('-rank_point')[:query_limit]
 
                 return users
+
+
+class NotificationAPIView(mixins.CreateModelMixin, generics.ListAPIView):
+    lookup_field = 'pk'
+    serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        qs = Notification.objects.all()
+
+        query_sender = self.request.GET.get("sender")
+        query_receiver = self.request.GET.get("receiver")
+
+        if query_sender is not None:
+            qs = qs.filter(Q(sender__exact=query_sender)).distinct()
+
+        if query_receiver is not None:
+            qs = qs.filter(Q(receiver__exact=query_receiver)).distinct()
+
+        return qs
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def get_serializer_context(self, *args, **kwargs):
+        return {"request": self.request}
+
+
+class NotificationRudView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = 'pk'
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer

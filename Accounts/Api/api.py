@@ -71,7 +71,7 @@ class UserRanking(ListAPIView):
 
                 # Then doing the calculations
                 users = users.annotate(rank_point=(Count('post__reactions', filter=Q(post__reactions__is_like=True)) - (
-                    Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gte=0)
+                    Count('post__reactions', filter=Q(post__reactions__is_like=False))))).filter(rank_point__gt=0)
 
                 # And finaly, order the results
                 users = users.order_by('-rank_point')[:query_limit]

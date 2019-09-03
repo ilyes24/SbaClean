@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from Address.models import City
-
+from ..models import Notification
 UserModel = get_user_model()
 
 
@@ -60,3 +60,9 @@ class MyUserSerializer(serializers.ModelSerializer):
             "is_staff",
             "password",
         ]
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'

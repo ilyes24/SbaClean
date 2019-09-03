@@ -49,42 +49,28 @@
     {% csrf_token %}
 
 {{errors | safe}}
-
+{% for field in form.visible_fields  %}
 <div class="form-group row">
+     {% if field.name == 'email' %}
         <label class="col-lg-3 col-form-label form-control-label">Email</label>
+     {% elif field.name == 'first_name' %}
+     <label class="col-lg-3 col-form-label form-control-label">Nom</label>
+     {% elif field.name == 'last_name' %}
+     <label class="col-lg-3 col-form-label form-control-label">Prenom</label>
+     {% elif field.name == 'phone_number' %}
+     <label class="col-lg-3 col-form-label form-control-label">Telephone</label>
+     {% elif field.name == 'address' %}
+     <label class="col-lg-3 col-form-label form-control-label">Address</label>
+     {% endif %}
         <div class="col-lg-9">
-        <input type="email" name="email" value="m.sidelmrabet@esi-sba.dz" maxlength="254" class="form-control" id="id_email">
+            {% render_field field class="form-control" %}
 </div>
-</div>
-<br>
-<div class="form-group row">
-    <label class="col-lg-3 col-form-label form-control-label">Nom</label>
-    <div class="col-lg-9">
-        <input type="text" name="first_name" value="islem" maxlength="30" class="form-control" id="id_first_name">
-</div>
+
 </div>
 <br>
-<div class="form-group row">
-    <label class="col-lg-3 col-form-label form-control-label">Prenom</label>
-    <div class="col-lg-9">
-        <input type="text" name="last_name" value="mohamed" maxlength="150" class="form-control" id="id_last_name">
-</div>
-</div>
-<br>
-<div class="form-group row">
-    <label class="col-lg-3 col-form-label form-control-label">Telephone</label>
-    <div class="col-lg-9">
-        <input type="number" name="phone_number" value="21348565835" min="-9223372036854775808" max="9223372036854775807" class="form-control" required="" id="id_phone_number">
-</div>
-</div>
-<br>
-<div class="form-group row">
-    <label class="col-lg-3 col-form-label form-control-label">Address</label>
-    <div class="col-lg-9">
-        <input type="text" name="address" value="sdqfdq" maxlength="255" class="form-control" required="" id="id_address">
-</div>
-</div>
-<br>
+{% endfor %}
+
+
 <div class="col d-flex justify-content-start">
         <button class="btn btn-primary" type="submit" name="details">Save Changes</button>
       </div>

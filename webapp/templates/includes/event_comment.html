@@ -48,6 +48,11 @@
                 </div>
                 <div class="epi-sec">
                     <ul class="descp">
+                            {% for nb_part in nb_participante %}
+                            {% if  event == nb_part.event %}
+                            <li><img src="{% static 'img/icon8.png' %}" alt=""><span>N°des participants: {{nb_part.nb_part}}</span></li>
+                            {% endif  %}
+                            {% endfor %}
                         
                         <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{event.post.city.name}}</span></li>
                     </ul>
@@ -57,11 +62,23 @@
                                 {% csrf_token %}
                                 {% for nb_part in nb_participante %}
                                 {% if  event == nb_part.event %}
-                        <button type="submit" class="btn btn-warning" id="event_id{{event.id}}" value="{{event.id}}">Participer {{nb_part.nb_part}}</button>
+                                
+                                {% if nb_part.is_part %}
+                                    <button type="submit" class="btn btn-default" id="event_id{{event.id}}" value="{{event.id}}">Participant <i class="la la-check"></i></button>
+                                {% else %}
+                                {% if event.max_participants > nb_part.nb_part %}
+                                    <button type="submit" class="btn btn-warning" id="event_id{{event.id}}" value="{{event.id}}"><i class="la la-calendar-plus-o"></i> Participé </button>
+                                    {% else %}
+                                <button type="submit" class="btn btn-default" id="event_id{{event.id}}" value="{{event.id}}" disabled>Max participants </button>
+                                {% endif %}
+                                {% endif %}
+                                
                         {% endif %}        
                         {% endfor %}
                         </form>
+                        
                         <script>
+                            
                             // Submit post on submit
                             $(document).on('submit',"#event{{event.id}}", function(e){
                                 e.preventDefault();
@@ -76,8 +93,14 @@
 
                                     // handle a successful response
                                     success : function() {
-                                        alert('thank you !!')
-                                       $('#event_id{{event.id}}').attr("disabled", true);
+                                        
+                                       if($('#event_id{{event.id}}').attr("class")==="btn btn-default"){
+                                           $("#event_id{{event.id}}").remove();
+                                            $("#event{{event.id}}").append(' <button type="submit" class="btn btn-warning" id="event_id{{event.id}}" value="{{event.id}}"><i class="la la-calendar-plus-o"></i> Participé </button>');
+                                       }else{
+                                        $("#event_id{{event.id}}").remove();
+                                        $("#event{{event.id}}").append(' <button type="submit" class="btn btn-default" id="event_id{{event.id}}" value="{{event.id}}">Participant <i class="la la-check"></i></button>');
+                                       }
                                       
                                     },
 

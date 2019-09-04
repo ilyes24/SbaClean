@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from Post.models import Post, Comment, Reaction, Picture
 from Anomaly.Api.serializers import AnomalySerializer
+from Event.Api.serializers import EventSerializer
 from Accounts.Api.serializers import MyUserSerializer
 
 class PostSerializer(serializers.ModelSerializer):
@@ -8,6 +9,7 @@ class PostSerializer(serializers.ModelSerializer):
     reactions = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     reactions_count = serializers.SerializerMethodField()
     anomaly = AnomalySerializer(many = True, read_only = True)
+    event = EventSerializer(many = True, read_only = True)
     user = serializers.SerializerMethodField()
 
     def get_reactions_count(self, obj):
@@ -26,6 +28,7 @@ class PostSerializer(serializers.ModelSerializer):
             'comments',
             'reactions', 
             'anomaly',
+            'event',
             'description',
             'city',
             'longitude',

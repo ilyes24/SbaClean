@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.db.models.aggregates import Count
 from rest_framework import mixins, generics
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateAPIView
-
+from Post.models import Post
 from Accounts.models import MyUser, Notification
 from .serializers import MyUserSerializer, NotificationSerializer
 

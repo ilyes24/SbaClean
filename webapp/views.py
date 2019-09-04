@@ -15,6 +15,7 @@ from .models import *
 from Post.models import *
 from Event.models import *
 from Anomaly.models import *
+from Accounts.models import *
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from .form import *
 import base64
@@ -129,7 +130,7 @@ def event(request):
         events=Event.objects.filter(post__in= postCity)
         nb_participante=[]
         for event in events:
-                nb_participante.append({'event':event,'nb_part':EventParticipation.objects.filter(event=event).count()})
+                nb_participante.append({'event':event,'nb_part':EventParticipation.objects.filter(event=event).count(),'is_part':EventParticipation.objects.filter(event=event,user=request.user)})
         print(nb_participante)
         user_pic_post=[]
         for post in postCity:
@@ -394,13 +395,14 @@ def Participate(request):
                 event_id=int(request.POST['event_id'])
                 event=get_object_or_404(Event,id=event_id)
                 nb_participante=EventParticipation.objects.filter(event=event).count()
-                if nb_participante < event.max_participants:
-                        if EventParticipation.objects.filter(event=event, user=request.user) :
-                                return HttpResponse('')
-                        else: 
-                                EventParticipation.objects.create(event=event, user=request.user)
-                else:
-                        HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+               
+                
+                if EventParticipation.objects.filter(event=event, user=request.user) :
+                        eventParticipation=EventParticipation.objects.filter(event=event, user=request.user)
+                        eventParticipation.delete()
+                elif nb_participante < event.max_participants: 
+                        EventParticipation.objects.create(event=event, user=request.user)
+        
                 
         return HttpResponse('')
 

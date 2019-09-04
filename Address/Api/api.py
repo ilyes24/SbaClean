@@ -1,7 +1,5 @@
 from django.db.models import Q
-
 from rest_framework import generics, mixins, permissions
-
 from Address.models import City, State
 from .serializers import CitySerializer, StateSerializer
 

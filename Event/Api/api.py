@@ -106,4 +106,4 @@ class EventParticipationAPIView(mixins.CreateModelMixin, generics.ListAPIView):
 class EventParticipationRudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = EventParticipation.objects.all()
-    serializer_class = EventSerializer
+    serializer_class = EventParticipationSerializer

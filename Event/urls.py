@@ -5,7 +5,7 @@ from Event.Api.api import EventAPIView, EventRudView, EventParticipationAPIView,
 api_urlpatterns = [
     path('', EventAPIView.as_view(), name='event-listCreate'),
     path('<pk>', EventRudView.as_view(), name='event-rud'),
-    path('participate', EventParticipationAPIView.as_view(), name='eventParticipation-listCreate'),
+    path('participate/', EventParticipationAPIView.as_view(), name='eventParticipation-listCreate'),
     path('participate/<pk>', EventParticipationRudView.as_view(), name='eventParticipation-rud'),
 ]
 

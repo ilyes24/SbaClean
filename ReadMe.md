@@ -205,4 +205,4 @@ FIRE IT UP!
 
     method : GET
     Parameters : limit, (user|city)
-    URL : hostname/api/v1/accounts/ranking?limit=5&user=1 OR hostname/api/v1/accounts/ranking?limit=5&city=1
+    URL : hostname/api/v1/accounts/ranking/?limit=5&user=1 OR hostname/api/v1/accounts/ranking/?limit=5&city=1

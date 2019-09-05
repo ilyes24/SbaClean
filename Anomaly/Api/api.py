@@ -62,30 +62,14 @@ class AnomalySignalAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     def get_queryset(self):
         qs = AnomalySignal.objects.all()
 
-        query_post = self.request.GET.get("post")
-        query_owner = self.request.GET.get("owner")
-        query_title = self.request.GET.get("title")
-        query_city = self.request.GET.get("city")
-        query_description = self.request.GET.get("description")
-        query_signaled_by = self.request.GET.get("signaledBy")
+        query_anomaly = self.request.GET.get("anomaly")
+        query_user = self.request.GET.get("user")
 
-        if query_post is not None:
-            qs = qs.filter(Q(post__exact=query_post)).distinct()
+        if query_anomaly is not None:
+            qs = qs.filter(Q(anomaly__exact=query_anomaly)).distinct()
 
-        if query_owner is not None:
-            qs = qs.filter(Q(post__post_owner__exact=query_owner)).distinct()
-
-        if query_title is not None:
-            qs = qs.filter(Q(post__title__exact=query_title)).distinct()
-
-        if query_city is not None:
-            qs = qs.filter(Q(post__city__exact=query_city)).distinct()
-
-        if query_description is not None:
-            qs = qs.filter(Q(post__description__contains=query_description)).distinct()
-
-        if query_signaled_by is not None:
-            qs = qs.filter(Q(user__exact=query_signaled_by)).distinct()
+        if query_user is not None:
+            qs = qs.filter(Q(user__exact=query_user)).distinct()
 
         return qs
 

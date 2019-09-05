@@ -66,7 +66,7 @@ class EventParticipationAPIView(mixins.CreateModelMixin, generics.ListAPIView):
         query_user = self.request.GET.get("user")
 
         if query_event is not None:
-            qs = qs.filter(Q(event__post__exact=query_event)).distinct()
+            qs = qs.filter(Q(event__exact=query_event)).distinct()
 
         if query_user is not None:
             qs = qs.filter(Q(user__exact=query_user)).distinct()

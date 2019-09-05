@@ -4,7 +4,6 @@ from django.db import models
 from Address.models import City
 
 
-
 class MyUser(AbstractUser):
     phone_number = models.BigIntegerField(blank=False, unique=True)
     city = models.ForeignKey(City, related_name='city', on_delete=models.CASCADE)

@@ -220,7 +220,7 @@ iframe {
   margin: 0 auto;
 }
 .inner{
-  width: 60%;
+  width: 80%;
   height: 60%;
   position: absolute;
   top: 50%;
@@ -229,7 +229,7 @@ iframe {
   border-right: 1px solid #EEE;
 }
 .inner2{
-  width: 90%;
+  width: 80%;
   height: 100%;
   position: absolute;
   top: 40%;

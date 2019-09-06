@@ -27,6 +27,12 @@ menu = [
     "icon": "report_problem"
     },
     {
+    "title": "Anomalies archivées",
+    "status": "",
+    "url": "dashboard:dashboard_archives",
+    "icon": "check_circle_outline"
+    },    
+    {
     "title": "Evénements",
     "status": "",
     "url": "dashboard:dashboard_events",
@@ -38,12 +44,12 @@ menu = [
     "url": "dashboard:dashboard_users",
     "icon": "person"
     },
-    {
-    "title": "Commentaires",
-    "status": "",
-    "url": "dashboard:dashboard_comments",
-    "icon": "comment"
-    },
+    # {
+    # "title": "Commentaires",
+    # "status": "",
+    # "url": "dashboard:dashboard_comments",
+    # "icon": "comment"
+    # },
     {
     "title": "Signalements",
     "status": "",
@@ -71,7 +77,7 @@ def dashboard_anomalies(request):
         if action == 'delete':
             post_id = request.POST.get('post_id')
             posts = Post.objects.filter(id=post_id).delete()
-    anomalies = Anomaly.objects.all()
+    anomalies = Anomaly.objects.filter(archived=False)
     context = {"menu": menu, "anomalies": anomalies }
     return render(request, 'anomalies.html', context)
 
@@ -87,6 +93,23 @@ def dashboard_anomalie_edit(request, pid):
 
     context = {'menu': menu, 'post': post, 'form': form}
     return render(request, 'anomalie_edit.html', context)
+
+def dashboard_anomalie_archive(request, pid):
+    menu_active('Anomalies')
+    anomaly = Anomaly.objects.get(post=pid)
+    anomaly.archive()
+    return redirect('dashboard:dashboard_anomalies')
+
+def dashboard_archives(request):
+    menu_active('Anomalies archivées')
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'delete':
+            post_id = request.POST.get('post_id')
+            posts = Post.objects.filter(id=post_id).delete()
+    anomalies = Anomaly.objects.filter(archived=True)
+    context = {"menu": menu, "anomalies": anomalies }
+    return render(request, 'archives.html', context)
 
 def dashboard_users(request):
     menu_active('Utilisateurs')

@@ -2,7 +2,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title ">Anomalies</h4>
+                  <h4 class="card-title ">Anomalies archivées</h4>
                   <p class="card-category">Consult, edit or delete.</p>
                 </div>
                 <div class="card-body">
@@ -23,13 +23,11 @@
                           <td class="text-primary">{{a.post.post_owner.username}}</td>
                           <td>{{a.post.count_reactions}}</td>
                           <td>
-                            <a href="{% url 'dashboard:dashboard_anomalie_edit' a.post.id %}" class="btn btn-warning btn-sm text-white">Edit</a>
-                            <a href="{% url 'dashboard:dashboard_anomalie_archive' a.post.id %}" class="btn btn-success btn-sm text-white">Archive</a>
-                            <form method="POST" action="/dashboard/anomalies">
+                            <form method="POST" action="/dashboard/archives">
                                {% csrf_token %}
                               <input id="action" type="text" name="action" value="delete" hidden>
                               <input id="post_id" type="text" name="post_id" value="{{a.post.id}}" hidden>
-                              <button class="btn btn-danger btn-sm text-white" type="submit">Delete</button>
+                              <button class="btn btn-danger text-white" type="submit">Delete</button>
                             </form>
                           </td>
                         </tr>

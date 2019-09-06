@@ -52,6 +52,7 @@ def feed(request):
         username = request.user.username
         postCity=Post.objects.filter(city=user.city)
         posts=Anomaly.objects.filter(archived=False,post__in= postCity)
+        anomalySignal=AnomalySignal.objects.filter(user= request.user)
         user_pic_post=[]
         for post in postCity:
                 user_pic_post.append({'post':post,'post_owner':post.post_owner,'user_pic':base64.urlsafe_b64encode(post.post_owner.username.encode())})
@@ -111,7 +112,7 @@ def feed(request):
                 form=UserComment()
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'users':users,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2,'reactions':reactions,
-        'like_creat_nember':like_creat_nember,'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user}         
+        'like_creat_nember':like_creat_nember,'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user,'anomalySignal':anomalySignal}         
         return render(request, 'feed.html', context)
 def create_comment(request):
         if request.method == 'POST':
@@ -128,7 +129,8 @@ def event(request):
         username = request.user.username
         postCity=Post.objects.filter(city=user.city)
         events=Event.objects.filter(post__in= postCity)
-        nb_participante=[]
+        
+        print(anomalySignal)
         for event in events:
                 nb_participante.append({'event':event,'nb_part':EventParticipation.objects.filter(event=event).count(),'is_part':EventParticipation.objects.filter(event=event,user=request.user)})
         print(nb_participante)
@@ -387,6 +389,10 @@ def signaled(request):
     anomaly = get_object_or_404(Anomaly, post=post)
     anomaly.signaled = True
     anomaly.save()
+    anomalySignal =AnomalySignal.objects.create(anomaly=anomaly,user=request.user)
+    
+    anomalySignal.save()
+    
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 def Participate(request):

@@ -53,14 +53,23 @@
                         
                     </ul>
                     <ul class="bk-links">
-                        <li> <form method="post" action="{% url 'signaled' %}">
-                                {% csrf_token %}
-                                <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-warning"><i class="la la-bullhorn"></i> Signaler</button>
-
-                                      
-                                      
-          
-                        </form></li>
+                            <li id="anomalySignal{{post.id}}"> <form method="post" action="{% url 'signaled' %}">
+                                    {% csrf_token %}
+                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-warning"><i class="la la-bullhorn"></i> Signaler</button>
+    
+                                          
+                                          
+              
+                            </form></li>
+                        {% for anomaly in anomalySignal %}
+                        {% if anomaly.anomaly == post %}
+                        
+                        <script>
+                        $("#anomalySignal{{post.id}}").remove();
+                        </script>
+                        
+                        {% endif %}
+                        {% endfor %}
                         
                     </ul>
                 </div>

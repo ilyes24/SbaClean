@@ -67,7 +67,26 @@ def menu_active(title):
 
 def dashboard_index(request):
     menu_active('Dashboard')
-    context = {"menu": menu}
+    users_count = MyUser.objects.all().count()
+    anomalies_count = Anomaly.objects.filter(archived=False).count()
+    events_count = Event.objects.all().count()
+    archives_count = Anomaly.objects.filter(archived=True).count()
+    anomalies = Anomaly.objects.all()
+    monthly = []
+    for i in range(1,32):
+        monthly.append(0)
+    for a in anomalies:
+        for i in range(1,32):
+            if a.consulted_at.day == i:
+                monthly[i]+=1;
+    stats = {
+        "users": users_count,
+        "anomalies": anomalies_count,
+        "events": events_count,
+        "archives": archives_count,
+        "monthly": monthly
+    }
+    context = {"menu": menu, "stats": stats, "anomalies": anomalies}
     return render(request, 'index_dashboard.html', context)
 
 def dashboard_anomalies(request):

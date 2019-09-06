@@ -87,6 +87,7 @@ class PostAPIView(mixins.CreateModelMixin, generics.ListAPIView):
         query_event = self.request.GET.get("event")
 
         query_anomaly_owner = self.request.GET.get("anomalyOwner")
+        query_event_owner = self.request.GET.get("eventOwner")
 
         if query_owner is not None:
             qs = qs.filter(Q(post_owner__exact=query_owner)).distinct()
@@ -108,6 +109,9 @@ class PostAPIView(mixins.CreateModelMixin, generics.ListAPIView):
         
         if query_anomaly_owner is not None:
             qs = qs.filter(anomaly__gt = 0).filter(Q(post_owner__exact=query_anomaly_owner)).distinct()
+
+        if query_event_owner is not None:
+            qs = qs.filter(event__gt = 0).filter(Q(post_owner__exact=query_event_owner)).distinct()
 
         return qs
 

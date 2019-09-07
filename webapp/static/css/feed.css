@@ -4837,6 +4837,9 @@ a:hover {
     padding: 25px 20px 15px 20px;
     border: 1px solid #eeeeee;
 }
+.autoExpand{
+    border: #666666 1px solid;
+}
 .message-send-area form {
     float: left;
     width: 100%;

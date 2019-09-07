@@ -31,8 +31,11 @@ UserModel = get_user_model()
 
 
 def index(request):
-    context = {}
-    return render(request, 'index.html', context)
+    if request.user.is_authenticated :
+        return redirect('/feed')
+    else:
+        context = {}
+        return render(request, 'index.html', context)
 
 
 @login_required
@@ -129,8 +132,7 @@ def event(request):
         username = request.user.username
         postCity=Post.objects.filter(city=user.city)
         events=Event.objects.filter(post__in= postCity)
-        
-        print(anomalySignal)
+        nb_participante=[]
         for event in events:
                 nb_participante.append({'event':event,'nb_part':EventParticipation.objects.filter(event=event).count(),'is_part':EventParticipation.objects.filter(event=event,user=request.user)})
         print(nb_participante)
@@ -422,7 +424,7 @@ def logout(request):
 
 def login(request):
     if request.user.is_authenticated :
-        return redirect('/')  
+        return redirect('/feed')  
     else:        
         form=UserForm(request.POST)
         context = {'form':form}
@@ -445,7 +447,7 @@ def login(request):
         
 def register(request):
         if request.user.is_authenticated :
-                return redirect('/')
+                return redirect('/feed')
         else:
                 if (request.method == 'POST'):
                         form=UserRegistreForm(request.POST)

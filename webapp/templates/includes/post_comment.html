@@ -100,14 +100,14 @@
                              {% for reaction in reactions %}
                                 {% if post.post == reaction.post %}
                                     {% if reaction.is_like == True %}
-                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Like</button>
+                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>
                                     {% else %}
-                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
+                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                                     {% endif%}
                                 {% endif %}
                              {% endfor %}
                             {% else %} 
-                             <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
+                             <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                             {% endif %}
           
                             
@@ -128,14 +128,14 @@
                                 {% for reaction in reactions %}
                                     {% if post.post == reaction.post %}
                                         {% if reaction.is_like == False %}
-                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Dislike</button>
+                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>
                                         {% else %}
-                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
+                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
                                         {% endif%}
                                     {% endif %}
                                 {% endfor %}
                                 {% else %} 
-                                <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
+                                <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
                                 {% endif %}
                                               
                                               

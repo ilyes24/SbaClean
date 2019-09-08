@@ -15,7 +15,7 @@
                     </div>
                     <div class="post-st">
                         <ul>
-                                <li><a data-toggle="modal" data-target="#exampleModalLong" href="#" title="">Creé Event</a></li>
+                                <li><a data-toggle="modal" data-target="#exampleModalLong" href="#" title="">Créer un événement</a></li>
                     
                         </ul>
                     </div>
@@ -50,7 +50,7 @@
                     <ul class="descp">
                             {% for nb_part in nb_participante %}
                             {% if  event == nb_part.event %}
-                            <li><img src="{% static 'img/icon8.png' %}" alt=""><span>N°des participants: {{nb_part.nb_part}}</span></li>
+                            <li><img src="{% static 'img/icon8.png' %}" alt=""><span>N° de participants: {{nb_part.nb_part}}</span></li>
                             {% endif  %}
                             {% endfor %}
                         
@@ -67,7 +67,7 @@
                                     <button type="submit" class="btn btn-default" id="event_id{{event.id}}" value="{{event.id}}">Participant <i class="la la-check"></i></button>
                                 {% else %}
                                 {% if event.max_participants > nb_part.nb_part %}
-                                    <button type="submit" class="btn btn-warning" id="event_id{{event.id}}" value="{{event.id}}"><i class="la la-calendar-plus-o"></i> Participé </button>
+                                    <button type="submit" class="btn btn-warning" id="event_id{{event.id}}" value="{{event.id}}"><i class="la la-calendar-plus-o"></i> Participer </button>
                                     {% else %}
                                 <button type="submit" class="btn btn-default" id="event_id{{event.id}}" value="{{event.id}}" disabled>Max participants </button>
                                 {% endif %}
@@ -138,25 +138,15 @@
                          {% for reaction in reactions %}
                             {% if event.post == reaction.post %}
                                 {% if reaction.is_like == True %}
-                                <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Liked</button>
+                                <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>
                                 {% else %}
-                                <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Liked</button>
+                                <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                                 {% endif%}
                             {% endif %}
                          {% endfor %}
                         {% else %} 
-                         <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Liked</button>
+                         <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                         {% endif %}
-      
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-
                         </form>
                     </li>
                     <li>
@@ -166,14 +156,14 @@
                             {% for reaction in reactions %}
                                 {% if event.post == reaction.post %}
                                     {% if reaction.is_like == False %}
-                                    <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Disliked</button>
+                                    <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>
                                     {% else %}
-                                    <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Disliked</button>
+                                    <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
                                     {% endif%}
                                 {% endif %}
                             {% endfor %}
                             {% else %} 
-                            <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Disliked</button>
+                            <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
                             {% endif %}
                                           
                                           

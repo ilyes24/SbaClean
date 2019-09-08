@@ -23,6 +23,7 @@ from rest_framework_swagger.views import get_swagger_view
 from django.contrib.auth import views as auth_views
 from webapp.views import UploadView
 from webapp import views
+from django.conf.urls import handler404, handler500
 
 schema_view = get_swagger_view(title='SbaClean API')
 api_urlpatterns = [
@@ -68,5 +69,5 @@ urlpatterns = [
 
 
 
-handler404 = views.handler404
-handler500 = views.handler500
+handler404 = views.error_404
+handler500 = views.error_500

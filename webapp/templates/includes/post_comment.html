@@ -1,5 +1,12 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
+{% for date in date_part %}
+<div class="myAlert-top alert alert-success animated fadeInUp">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        Vous etes participé à <a href="#" class="alert-link">{{date.event}}</a> événement aujourduit à <a href="#" class="alert-link">{{date.hour}}h</a>
+      </div>
+    
+{% endfor %}
 <div class="col-lg-6 col-md-8 no-pd">
     <div class="main-ws-sec">
             <div class="post-topbar">
@@ -53,14 +60,23 @@
                         
                     </ul>
                     <ul class="bk-links">
-                        <li> <form method="post" action="{% url 'signaled' %}">
-                                {% csrf_token %}
-                                <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-warning"><i class="la la-bullhorn"></i> Signaler</button>
-
-                                      
-                                      
-          
-                        </form></li>
+                            <li id="anomalySignal{{post.id}}"> <form method="post" action="{% url 'signaled' %}">
+                                    {% csrf_token %}
+                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-warning"><i class="la la-bullhorn"></i> Signaler</button>
+    
+                                          
+                                          
+              
+                            </form></li>
+                        {% for anomaly in anomalySignal %}
+                        {% if anomaly.anomaly == post %}
+                        
+                        <script>
+                        $("#anomalySignal{{post.id}}").remove();
+                        </script>
+                        
+                        {% endif %}
+                        {% endfor %}
                         
                     </ul>
                 </div>

@@ -29,18 +29,22 @@
                           <td class="text-primary">{{u.phone_number}}</td>
                           <td>{{u.city}}</td>
                           <td>{{u.address}}</td>
-                          {% if u.isbanned %}
+                          {% if u.is_banned %}
                           <td>Banni</td>
                           {% else %}
                           <td>Actif</td>
                           {% endif %}
                           <td>
+                          {% if not u.is_banned %}                            
                             <form method="post" action="/dashboard/users">
                                {% csrf_token %}
                               <input id="action" type="text" name="action" value="ban" hidden>
                               <input id="post_id" type="text" name="user_id" value="{{u.id}}" hidden>
                               <button class="btn btn-danger text-white" type="submit">Ban</button>
                             </form>
+                          {% else %}
+                            Contact admin to unban
+                          {% endif %}
                           </td>
                         </tr>
                         {% endfor %}

@@ -4837,6 +4837,16 @@ a:hover {
     padding: 25px 20px 15px 20px;
     border: 1px solid #eeeeee;
 }
+.autoExpand{
+    border: #666666 1px solid;
+}
+.myAlert-top{
+    position: fixed;
+    bottom: 5px; 
+    left:2%;
+    width: 50%;
+    z-index: 50;
+}
 .message-send-area form {
     float: left;
     width: 100%;

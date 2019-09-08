@@ -153,7 +153,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBqGhIGuiWpOPsAEXvuJJ7GblyGbSr_7lk'
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyApOhXtywkHtI5_9m4yq5GffJpGLEUQsfM'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -161,3 +161,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
+
+
+import cloudinary
+
+cloudinary.config(cloud_name=os.environ['cloud_name'],
+                  api_key=os.environ['api_key'],
+                  api_secret=os.environ['api_secret'] )

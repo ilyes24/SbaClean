@@ -26,13 +26,17 @@ from django.contrib import messages
 from django.db.models.aggregates import Count
 from django.db.models import Q
 from django.db.models.query import QuerySet
+from datetime import datetime
 
 UserModel = get_user_model()
 
 
 def index(request):
-    context = {}
-    return render(request, 'index.html', context)
+    if request.user.is_authenticated :
+        return redirect('/feed')
+    else:
+        context = {}
+        return render(request, 'index.html', context)
 
 
 @login_required
@@ -52,6 +56,14 @@ def feed(request):
         username = request.user.username
         postCity=Post.objects.filter(city=user.city)
         posts=Anomaly.objects.filter(archived=False,post__in= postCity)
+        anomalySignal=AnomalySignal.objects.filter(user= request.user)
+        participant=EventParticipation.objects.filter(user=user)
+        date_part=[]
+        for part in participant:
+                if part.event.starts_at.date() == datetime.today().date():
+                        date_part.append({'event':part.event.post.title,'hour':part.event.starts_at.hour,'minute':part.event.starts_at.minute})
+        print(date_part)
+
         user_pic_post=[]
         for post in postCity:
                 user_pic_post.append({'post':post,'post_owner':post.post_owner,'user_pic':base64.urlsafe_b64encode(post.post_owner.username.encode())})
@@ -111,7 +123,8 @@ def feed(request):
                 form=UserComment()
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'users':users,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2,'reactions':reactions,
-        'like_creat_nember':like_creat_nember,'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user}         
+        'like_creat_nember':like_creat_nember,'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user,
+        'anomalySignal':anomalySignal,'date_part':date_part}         
         return render(request, 'feed.html', context)
 def create_comment(request):
         if request.method == 'POST':
@@ -387,6 +400,10 @@ def signaled(request):
     anomaly = get_object_or_404(Anomaly, post=post)
     anomaly.signaled = True
     anomaly.save()
+    anomalySignal =AnomalySignal.objects.create(anomaly=anomaly,user=request.user)
+    
+    anomalySignal.save()
+    
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 def Participate(request):
@@ -416,7 +433,7 @@ def logout(request):
 
 def login(request):
     if request.user.is_authenticated :
-        return redirect('/')  
+        return redirect('/feed')  
     else:        
         form=UserForm(request.POST)
         context = {'form':form}
@@ -439,7 +456,7 @@ def login(request):
         
 def register(request):
         if request.user.is_authenticated :
-                return redirect('/')
+                return redirect('/feed')
         else:
                 if (request.method == 'POST'):
                         form=UserRegistreForm(request.POST)
@@ -522,18 +539,11 @@ def profile(request):
         return render(request, 'profile.html', args)
 
 
-def error404(request, exception):
+def error_404(request,exception):
     context = {}
-    return render(request, 'index.html', context)
+    return render(request, '404_page.html', context)
 
 
-def handler404(request, exception, template_name="index.html"):
-    response = render_to_response("index.html")
-    response.status_code = 404
-    return response
-
-
-def handler500(request, *args, **argv):
-    response = render_to_response('index.html', {}, context_instance=RequestContext(request))
-    response.status_code = 500
-    return response
+def error_500(request):
+    context = {}
+    return render(request, '404_page.html', context)

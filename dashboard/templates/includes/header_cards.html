@@ -1,6 +1,6 @@
 {% load staticfiles %}
           <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
                   <div class="card-icon">
@@ -8,7 +8,7 @@
                   </div>
                   <p class="card-category">Anomalies</p>
                   <h3 class="card-title">
-                    {{count_anomalies}}54
+                    {{stats.anomalies}}
                   </h3>
                 </div>
                 <div class="card-footer">
@@ -18,14 +18,32 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">check_circle_outline</i>
+                  </div>
+                  <p class="card-category">Archives</p>
+                  <h3 class="card-title">
+                    {{stats.archives}}
+                  </h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <i class="material-icons">update</i> Just Updated
+                  </div>
+                </div>
+              </div>
+            </div>            
+            <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-warning card-header-icon">
                   <div class="card-icon">
                     <i class="material-icons">person</i>
                   </div>
-                  <p class="card-category">Users</p>
-                  <h3 class="card-title">{{count_users}}245</h3>
+                  <p class="card-category">Utilisateurs</p>
+                  <h3 class="card-title">{{stats.users}}</h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -34,18 +52,43 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header card-header-success card-header-icon">
+                <div class="card-header card-header-primary card-header-icon">
                   <div class="card-icon">
                     <i class="material-icons">calendar_today</i>
                   </div>
                   <p class="card-category">Events</p>
-                  <h3 class="card-title">{{count_events}}8</h3>
+                  <h3 class="card-title">{{stats.events}}</h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
                     <i class="material-icons">update</i> Just Updated
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            var stats = {{stats.monthly}};
+          </script>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-chart">
+                <div class="card-header card-header-success">
+                  <div class="ct-chart" id="dailySalesChart"></div>
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">Anomalies Mensuelles</h4>
+                  <p class="card-category">
+                    Anomalies du mois de septembre
+                  </p>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <i class="material-icons">access_time</i> updated just now!
                   </div>
                 </div>
               </div>

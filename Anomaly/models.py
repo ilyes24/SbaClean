@@ -11,6 +11,10 @@ class Anomaly(models.Model):
     signaled = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
 
+    def archive(self):
+        self.archived = True
+        self.save()
+
     def owner(self):
         return self.post.owner
 

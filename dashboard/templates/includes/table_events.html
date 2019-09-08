@@ -12,6 +12,7 @@
                         <th>ID</th>
                         <th>Category</th>
                         <th>User</th>
+                        <th>Status</th>
                         <th>Score</th>
                         <th>Action</th>
                       </thead>
@@ -21,10 +22,13 @@
                           <td class="text-primary">{{e.post.id}}</td>
                           <td>{{e.post.title}}</td>
                           <td class="text-primary">{{e.post.post_owner.username}}</td>
+                          <td>{{e.status}}</td>
                           <td>{{e.post.count_reactions}}</td>
                           <td>
                             <!-- <a href="{% url 'dashboard:dashboard_anomalie_edit' e.post.id %}" class="btn btn-warning text-white">Edit</a> -->
+                            {% if e.status != 'approved' %}
                             <a href="{% url 'dashboard:dashboard_event_approve' e.id %}" class="btn btn-success text-white">Approve</a>
+                            {% endif %}
                             <form method="POST" action="/dashboard/anomalies">
                                {% csrf_token %}
                               <input id="action" type="text" name="action" value="delete" hidden>

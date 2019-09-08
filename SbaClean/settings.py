@@ -147,7 +147,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBqGhIGuiWpOPsAEXvuJJ7GblyGbSr_7lk'
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyApOhXtywkHtI5_9m4yq5GffJpGLEUQsfN'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -158,10 +158,6 @@ STATIC_URL = '/static/'
 
 import cloudinary
 
-# cloudinary.config(cloud_name=os.environ.get('cloud_name'),
-#                   api_key=os.environ.get('api_key'),
-#                   api_secret=os.environ.get('api_secret') )
-cloudinary.config(cloud_name='dfpwodxkm',
-                  api_key='445159847865135',
-                  api_secret='BH1s1XUwXGVizaxYdQpIbLGxsZI')
-
+cloudinary.config(cloud_name=os.environ['cloud_name'],
+                  api_key=os.environ['api_key'],
+                  api_secret=os.environ['api_secret'] )

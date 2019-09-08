@@ -2,6 +2,7 @@ from django.db import models
 from Address.models import City
 from Post.models import Post
 from Accounts.models import MyUser
+from datetime import datetime, timedelta, timezone, tzinfo
 
 
 class Anomaly(models.Model):
@@ -13,6 +14,7 @@ class Anomaly(models.Model):
 
     def archive(self):
         self.archived = True
+        self.consulted_at = datetime.now()
         self.save()
 
     def owner(self):

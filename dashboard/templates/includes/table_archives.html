@@ -11,8 +11,11 @@
                       <thead class=" text-primary">
                         <th>ID</th>
                         <th>Category</th>
+                        <th>Description</th>
+                        <th>Image</th>
                         <th>User</th>
                         <th>Score</th>
+                        <th>Date d'archivage</th>
                         <th>Action</th>
                       </thead>
                       <tbody>
@@ -20,8 +23,11 @@
                         <tr>
                           <td class="text-primary">{{a.post.id}}</td>
                           <td>{{a.post.title}}</td>
+                          <td>{{a.post.description}}</td>
+                          <td><a href ="{{a.post.image}}" target="blank"><img src="{{a.post.image}}" style="height: 10vw; width: auto;"></a></td>
                           <td class="text-primary">{{a.post.post_owner.username}}</td>
                           <td>{{a.post.count_reactions}}</td>
+                          <td>{{a.post.created_at}}</td>
                           <td>
                             <form method="POST" action="/dashboard/archives">
                                {% csrf_token %}

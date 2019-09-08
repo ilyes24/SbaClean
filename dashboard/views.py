@@ -79,8 +79,8 @@ def dashboard_index(request):
         monthly.append(0)
     for a in anomalies:
         for i in range(1,32):
-            if a.consulted_at.day == i:
-                monthly[i]+=1;
+            if a.post.created_at.day == i:
+                monthly[i-1]+=1;
     stats = {
         "users": users_count,
         "anomalies": anomalies_count,

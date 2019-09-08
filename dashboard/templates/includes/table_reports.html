@@ -11,6 +11,9 @@
                       <thead class=" text-primary">
                         <th>ID</th>
                         <th>Post (ID)</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Image</th>
                         <th>Auteur</th>
                         <th>Signalé par</th>
                         <th>Action</th>
@@ -20,6 +23,9 @@
                         <tr>
                           <td class="text-primary">{{r.id}}</td>
                           <td>{{r.anomaly.post.id}}</td>
+                          <td>{{r.anomaly.post.title}}</td>
+                          <td>{{r.anomaly.post.description}}</td>
+                          <td><a href ="{{r.anomaly.post.image}}" target="blank"><img src="{{r.anomaly.post.image}}" style="height: 10vw; width: auto;"></a></td>
                           <td>{{r.anomaly.post.post_owner.username}}</td>
                           <td>{{r.user.username}}</td>
                           <td>

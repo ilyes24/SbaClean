@@ -107,16 +107,26 @@ def feed(request):
                                 comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
                                 comment.save()
                 if form2.is_valid():
-                        image= request.FILES['image'].read()
-                        upload_data = cloudinary.uploader.upload(image)
-                        image=upload_data['url']
-                        title = request.POST.get('title')
-                        city = request.POST.get('city')
-                        longitude = request.POST.get('longitude')
-                        latitude = request.POST.get('latitude')
-                        description=request.POST.get('description')
-                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude,image=image)
-                        post.save()
+                        if request.FILES: 
+                                image= request.FILES['image'].read()
+                                upload_data = cloudinary.uploader.upload(image)
+                                image=upload_data['url']
+                                title = request.POST.get('title')
+                                city = request.POST.get('city')
+                                longitude = request.POST.get('longitude')
+                                latitude = request.POST.get('latitude')
+                                description=request.POST.get('description')
+                                post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude,image=image)
+                                post.save()
+                        else:
+                                title = request.POST.get('title')
+                                city = request.POST.get('city')
+                                longitude = request.POST.get('longitude')
+                                latitude = request.POST.get('latitude')
+                                description=request.POST.get('description')
+                                post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
+                                post.save()
+                        
                         anomaly=Anomaly.objects.create(post=post,signaled=False)
                         anomaly.save()
         else:
@@ -191,18 +201,27 @@ def event(request):
                                 comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
                                 comment.save()
                 if form2.is_valid():
-                        image= request.FILES['image'].read()
-                        upload_data = cloudinary.uploader.upload(image)
-                        image=upload_data['url']
-                        title = request.POST.get('title')
-                        city = request.POST.get('city')
-                        longitude = request.POST.get('longitude')
-                        latitude = request.POST.get('latitude')
-                        description=request.POST.get('description')
+                        if request.FILES: 
+                                image= request.FILES['image'].read()
+                                upload_data = cloudinary.uploader.upload(image)
+                                image=upload_data['url']
+                                title = request.POST.get('title')
+                                city = request.POST.get('city')
+                                longitude = request.POST.get('longitude')
+                                latitude = request.POST.get('latitude')
+                                description=request.POST.get('description')
+                                post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude,image=image)
+                                post.save()
+                        else:
+                                title = request.POST.get('title')
+                                city = request.POST.get('city')
+                                longitude = request.POST.get('longitude')
+                                latitude = request.POST.get('latitude')
+                                description=request.POST.get('description')
+                                post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude)
+                                post.save()
                         max_participants =request.POST.get('max_participants')
                         starts_at = request.POST.get('starts_at')
-                        post=Post.objects.create(title=title, post_owner=request.user,description=description,city=get_object_or_404(City,id=city),longitude=longitude,latitude=latitude,image=image)
-                        post.save()
                         event=Event.objects.create(post=post, max_participants=max_participants, starts_at=starts_at)
                         event.save()
         else:

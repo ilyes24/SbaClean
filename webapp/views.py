@@ -108,9 +108,9 @@ def feed(request):
                                 comment.save()
                 if form2.is_valid():
                         if request.FILES: 
-                                image= request.FILES['image'].read()
+                                image = request.FILES['image'].read()
                                 upload_data = cloudinary.uploader.upload(image)
-                                image=upload_data['url']
+                                image = upload_data['url']
                                 title = request.POST.get('title')
                                 city = request.POST.get('city')
                                 longitude = request.POST.get('longitude')

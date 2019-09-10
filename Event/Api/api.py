@@ -19,7 +19,6 @@ class EventAPIView(mixins.CreateModelMixin, generics.ListAPIView):
         query_city = self.request.GET.get("city")
         query_description = self.request.GET.get("description")
         query_approved = self.request.GET.get("approved")
-        query_starts_at = self.request.GET.get("start")
 
         if query_post is not None:
             qs = qs.filter(Q(post__exact=query_post)).distinct()

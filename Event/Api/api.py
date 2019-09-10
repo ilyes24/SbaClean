@@ -19,12 +19,13 @@ class EventAPIView(mixins.CreateModelMixin, generics.ListAPIView):
         query_city = self.request.GET.get("city")
         query_description = self.request.GET.get("description")
         query_approved = self.request.GET.get("approved")
+        query_starts_at = self.request.GET.get("start")
 
         if query_post is not None:
             qs = qs.filter(Q(post__exact=query_post)).distinct()
 
         if query_date is not None:
-            qs = qs.filter(Q(starts_at__lte=query_date)).distinct()
+            qs = qs.filter(Q(starts_at__gt=query_date)).distinct()
 
         if query_owner is not None:
             qs = qs.filter(Q(post__post_owner__exact=query_owner)).distinct()

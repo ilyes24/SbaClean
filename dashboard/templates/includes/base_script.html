@@ -40,6 +40,10 @@
   <script src="{% static 'js/material-dashboard.js' %}" type="text/javascript"></script>
   <script>
     $(document).ready(function() {
+
+      var resizeEvent = new Event('resize');
+      window.dispatchEvent(resizeEvent);
+
       $().ready(function() {
         $sidebar = $('.sidebar');
 
@@ -202,8 +206,14 @@
 
           // we stop the simulation of Window Resize after the animations are completed
           setTimeout(function() {
-            clearInterval(simulateWindowResize);
-          }, 1000);
+            // clearInterval(simulateWindowResize);
+            var resizeEvent = new Event('resize');
+            window.dispatchEvent(resizeEvent);
+            alert("Done");
+          }, 10000);
+
+          //Refresh graph
+          $( "#dailySalesChart" ).load(window.location.href + "#dailySalesChart" );
 
         });
       });

@@ -12,6 +12,7 @@ from Address.models import *
 from Accounts.models import *
 from Event.models import *
 from django.contrib.admin.views.decorators import staff_member_required
+from datetime import datetime
 import json 
 
 menu = [
@@ -75,11 +76,13 @@ def dashboard_index(request):
     archives_count = Anomaly.objects.filter(archived=True).count()
     anomalies = Anomaly.objects.all()
     monthly = []
+    now_month = datetime.now().month
+    now_year = datetime.now().year
     for i in range(1,32):
         monthly.append(0)
     for a in anomalies:
         for i in range(1,32):
-            if a.post.created_at.day == i:
+            if (a.post.created_at.day == i) and (a.post.created_at.month == now_month) and (a.post.created_at.year == now_year):
                 monthly[i-1]+=1;
     stats = {
         "users": users_count,

@@ -19,6 +19,7 @@ from Accounts.models import *
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from .form import *
 import base64
+import requests
 from social_django.utils import psa, load_strategy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -30,6 +31,11 @@ from datetime import datetime
 
 UserModel = get_user_model()
 
+def upload_image(image):
+    url = 'https://image-cloudinary.herokuapp.com/photos'
+    files = {'image': image}
+    response = requests.post(url, files=files)
+    return response.json()['url']
 
 def index(request):
     if request.user.is_authenticated :
@@ -107,10 +113,11 @@ def feed(request):
                                 comment=Comment.objects.create(post=post, comment_owner=request.user,description=description)
                                 comment.save()
                 if form2.is_valid():
-                        if request.FILES: 
-                                image = request.FILES['image'].read()
-                                upload_data = cloudinary.uploader.upload(image)
-                                image = upload_data['url']
+                        if request.FILES:
+                                image= request.FILES['image'].read()
+                                # upload_data = cloudinary.uploader.upload(image)
+                                # image=upload_data['url']
+                                image=upload_image(image)
                                 title = request.POST.get('title')
                                 city = request.POST.get('city')
                                 longitude = request.POST.get('longitude')
@@ -203,8 +210,9 @@ def event(request):
                 if form2.is_valid():
                         if request.FILES: 
                                 image= request.FILES['image'].read()
-                                upload_data = cloudinary.uploader.upload(image)
-                                image=upload_data['url']
+                                #upload_data = cloudinary.uploader.upload(image)
+                                # image=upload_data['url']
+                                image= upload_image(image)
                                 title = request.POST.get('title')
                                 city = request.POST.get('city')
                                 longitude = request.POST.get('longitude')
@@ -543,7 +551,7 @@ def profile(request):
         if form2.is_valid():
             form2.save()
             update_session_auth_hash(request, form2.user)
-            messages.add_message(request, messages.SUCCESS, 'Sucessfully changed password.')
+            messages.add_message(request, messages.SUCCESS, 'Votre mot de passe a été changer correctement.')
         else:
             messages.add_message(request, messages.ERROR, 'Password change unsuccessful.')
 

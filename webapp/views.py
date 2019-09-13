@@ -157,11 +157,10 @@ def event(request):
         user = request.user
         username = request.user.username
         postCity=Post.objects.filter(city=user.city)
-        events=Event.objects.filter(post__in= postCity)
+        events=Event.objects.filter(post__in= postCity,starts_at__gte = datetime.today())
         nb_participante=[]
         for event in events:
                 nb_participante.append({'event':event,'nb_part':EventParticipation.objects.filter(event=event).count(),'is_part':EventParticipation.objects.filter(event=event,user=request.user)})
-        print(nb_participante)
         user_pic_post=[]
         for post in postCity:
                 user_pic_post.append({'post':post,'post_owner':post.post_owner,'user_pic':base64.urlsafe_b64encode(post.post_owner.username.encode())})
@@ -403,6 +402,8 @@ def comment_delete(request):
     return HttpResponse('')
 
 
+
+
 def dislike_post(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     reaction = Reaction.objects.filter(reaction_owner=request.user, post=post)
@@ -433,6 +434,18 @@ def signaled(request):
     
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+def post_delete(request):
+    post=get_object_or_404(Post, id=request.POST.get('post_id'))
+    anomaly = Anomaly.objects.filter(post=post)
+    event = Event.objects.filter(post=post)
+    if len(anomaly) > 0 :
+        anomaly.delete()
+        post.delete()
+    if len(event) > 0 :
+        event.delete()
+        post.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 def Participate(request):
         if request.method == 'POST':
                 

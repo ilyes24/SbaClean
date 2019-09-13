@@ -60,7 +60,7 @@
                         
                     </ul>
                     <ul class="bk-links">
-                            <li id="anomalySignal{{post.id}}"> <form method="post" action="{% url 'signaled' %}">
+                            <li id="anomalySignal{{post.id}}"> <form onsubmit="return confirm('Voulez vous vraiment Signaler ce post??');" method="post" action="{% url 'signaled' %}">
                                     {% csrf_token %}
                                     <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-warning"><i class="la la-bullhorn"></i> Signaler</button>
     

@@ -15,7 +15,9 @@ class Event(models.Model):
     def owner(self):
         return self.post.owner
 
-    def approve(self):
+    def approve(self, approved_by, approved_at):
+        self.approved_at = approved_at
+        self.approved_by = approved_by
         self.status = 'approved'
         self.save()
 

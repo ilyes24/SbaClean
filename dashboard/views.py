@@ -169,7 +169,8 @@ def dashboard_events(request):
 
 @staff_member_required
 def dashboard_event_approve(request, eid):
-    event = Event.objects.filter(id=eid)[0].approve()
+    now_time = datetime.now()
+    event = Event.objects.filter(id=eid)[0].approve(request.user, now_time)
     return redirect('dashboard:dashboard_events')
 
 @staff_member_required

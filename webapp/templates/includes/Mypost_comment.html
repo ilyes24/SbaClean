@@ -28,7 +28,14 @@
                         <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{post.city.name}}</span></li>
                     </ul>
                     <ul class="bk-links">
-                        
+                        <li> <form onsubmit="return confirm('Voulez vous vraiment supprimer ce post??');" method="post" action="{% url 'post_delete' %}">
+                            {% csrf_token %}
+                            <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-danger"><i class="la la-exclamation"></i>  Supprimé le post</button>
+
+                                  
+                                  
+      
+                    </form></li>
                         
                     </ul>
                 </div>
@@ -42,24 +49,99 @@
                         {% endif %}
                     </ul>	
                 </div>
+                <script>
+                    // Submit post on submit
+                    $(document).on('submit',"#like{{post.id}}", function(e){
+                        e.preventDefault();
+                        $.ajax({
+                            url : "/like/", // the endpoint
+                            type : "POST", // http method
+                            data : {
+                                post_id : $('#likepost_id{{post.id}}').val(),
+                               
+                                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                
+                            }, // data sent with the post request
+
+                            // handle a successful response
+                            success : function() {
+
+                                if($('#likepost_id{{post.id}}').attr("class")==="btn btn-default"){
+                                    $("#dislikepost_id{{post.id}}").remove();
+                                                   $("#dislike{{post.id}}").append('<button type="submit" id="dislikepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n\'aime pas</button>');
+                                                   $("#likepost_id{{post.id}}").remove();
+                                                   $("#like{{post.id}}").append('<button type="submit" id="likepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>');
+                                               }else{
+                                                
+                                                $("#likepost_id{{post.id}}").remove();
+                                                   $("#like{{post.id}}").append('<button type="submit" id="likepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> J\'aime</button>');
+                                               }
+            
+                            },
+
+                            // handle a non-successful response
+                            error : function(xhr,errmsg,err) {
+                                $('#like{{post.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                            }
+                        });
+                    });
+
+                    
+                    $(document).on('submit',"#dislike{{post.id}}", function(e){
+                        e.preventDefault();
+                        $.ajax({
+                            url : "/dislike/", // the endpoint
+                            type : "POST", // http method
+                            data : {
+                                post_id : $('#dislikepost_id{{post.id}}').val(),
+                               
+                                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                
+                            }, // data sent with the post request
+
+                            // handle a successful response
+                            success : function() {
+
+                                if($('#dislikepost_id{{post.id}}').attr("class")==="btn btn-default"){
+                                                   $("#likepost_id{{post.id}}").remove();
+                                                   $("#like{{post.id}}").append('<button type="submit" id="likepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> J\'aime</button>');
+                                                   $("#dislikepost_id{{post.id}}").remove();
+                                                   $("#dislike{{post.id}}").append('<button type="submit" id="dislikepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>');
+                                               }else{
+                                                
+                                                $("#dislikepost_id{{post.id}}").remove();
+                                                   $("#dislike{{post.id}}").append('<button type="submit" id="dislikepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n\'aime pas</button>');
+                                               }
+            
+                            },
+
+                            // handle a non-successful response
+                            error : function(xhr,errmsg,err) {
+                                $('#dislike{{post.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                            }
+                        });
+                    });
+                    </script>
                 <div class="job-status-bar">
                     <ul class="like-com">
                         <li>
-                            <form method="post" action="{% url 'like_post' %}">
+                            <form id="like{{post.id}}">
                                     {% csrf_token %}
                             
                             {% if post in like_creat_nember %}
                              {% for reaction in reactions %}
                                 {% if post == reaction.post %}
                                     {% if reaction.is_like == True %}
-                                    <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-info"><i class="la la-heart"></i> Like</button>
+                                    <button type='submit' id="likepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>
                                     {% else %}
-                                    <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
+                                    <button type='submit' id="likepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                                     {% endif%}
                                 {% endif %}
                              {% endfor %}
                             {% else %} 
-                             <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Like</button>
+                             <button type='submit' id="likepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                             {% endif %}
           
                             
@@ -74,20 +156,20 @@
                             </form>
                         </li>
                         <li>
-                                <form method="post" action="{% url 'dislike_post' %}">
+                                <form id="dislike{{post.id}}">
                                         {% csrf_token %}
                                 {% if post in like_creat_nember %}
                                 {% for reaction in reactions %}
                                     {% if post == reaction.post %}
                                         {% if reaction.is_like == False %}
-                                        <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Dislike</button>
+                                        <button type='submit' id="dislikepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>
                                         {% else %}
-                                        <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
+                                        <button type='submit' id="dislikepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
                                         {% endif%}
                                     {% endif %}
                                 {% endfor %}
                                 {% else %} 
-                                <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Dislike</button>
+                                <button type='submit' id="dislikepost_id{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
                                 {% endif %}
                                               
                                               

@@ -36,6 +36,39 @@ def upload_image(image):
     files = {'image': image}
     response = requests.post(url, files=files)
     return response.json()['url']
+def notifications(request):
+    # Getting actual number of Users, Anomalies, Events and archives
+    posts=Post.objects.filter(post_owner=request.user)
+    events=Event.objects.filter(post__in=posts)
+    comments_count = Comment.objects.filter(post__in=posts).count()
+    reactions_count = Reaction.objects.filter(post__in=posts).count()
+    participations_count = EventParticipation.objects.filter(event__in=events).count()
+    
+
+
+    # Getting the session stored numbers
+    if not request.session.get('comments_count'):
+        request.session['comments_count'] = comments_count
+    my_comments_count = request.session['comments_count']
+    request.session['comments_count'] = comments_count
+
+    if not request.session.get('reactions_count'):
+        request.session['reactions_count'] = reactions_count
+    my_reactions_count = request.session['reactions_count']
+    request.session['reactions_count'] = reactions_count
+
+    if not request.session.get('participations_count'):
+        request.session['participations_count'] = participations_count
+    my_participations_count = request.session['participations_count']
+    request.session['participations_count'] = participations_count
+
+
+    notifications = {
+        "comments_count": comments_count - my_comments_count,
+        "reactions_count": reactions_count - my_reactions_count,
+        "participations_count": participations_count - my_participations_count,
+    }
+    return notifications
 
 def index(request):
     if request.user.is_authenticated :
@@ -64,11 +97,12 @@ def feed(request):
         posts=Anomaly.objects.filter(archived=False,post__in= postCity)
         anomalySignal=AnomalySignal.objects.filter(user= request.user)
         participant=EventParticipation.objects.filter(user=user)
+        notif = notifications(request)
         date_part=[]
         for part in participant:
                 if part.event.starts_at.date() == datetime.today().date():
                         date_part.append({'event':part.event.post.title,'hour':part.event.starts_at.hour,'minute':part.event.starts_at.minute})
-        print(date_part)
+
 
         user_pic_post=[]
         for post in postCity:
@@ -141,8 +175,9 @@ def feed(request):
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'users':users,'posts':posts,'userId':userId,'comments':comments,'form':form,'form2':form2,'reactions':reactions,
         'like_creat_nember':like_creat_nember,'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user,
-        'anomalySignal':anomalySignal,'date_part':date_part}         
+        'anomalySignal':anomalySignal,'date_part':date_part,'notification':notif}         
         return render(request, 'feed.html', context)
+
 def create_comment(request):
         if request.method == 'POST':
                 post_id=int(request.POST['post_id'])
@@ -157,11 +192,10 @@ def event(request):
         user = request.user
         username = request.user.username
         postCity=Post.objects.filter(city=user.city)
-        events=Event.objects.filter(post__in= postCity)
+        events=Event.objects.filter(post__in= postCity,starts_at__gte = datetime.today())
         nb_participante=[]
         for event in events:
                 nb_participante.append({'event':event,'nb_part':EventParticipation.objects.filter(event=event).count(),'is_part':EventParticipation.objects.filter(event=event,user=request.user)})
-        print(nb_participante)
         user_pic_post=[]
         for post in postCity:
                 user_pic_post.append({'post':post,'post_owner':post.post_owner,'user_pic':base64.urlsafe_b64encode(post.post_owner.username.encode())})
@@ -403,6 +437,8 @@ def comment_delete(request):
     return HttpResponse('')
 
 
+
+
 def dislike_post(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     reaction = Reaction.objects.filter(reaction_owner=request.user, post=post)
@@ -433,6 +469,18 @@ def signaled(request):
     
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+def post_delete(request):
+    post=get_object_or_404(Post, id=request.POST.get('post_id'))
+    anomaly = Anomaly.objects.filter(post=post)
+    event = Event.objects.filter(post=post)
+    if len(anomaly) > 0 :
+        anomaly.delete()
+        post.delete()
+    if len(event) > 0 :
+        event.delete()
+        post.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 def Participate(request):
         if request.method == 'POST':
                 

@@ -10,6 +10,11 @@
                   <h3 class="card-title">
                     {{stats.anomalies}}
                   </h3>
+                  {% if notifications.anomalies_count == 1 %}
+                  <span class="badge badge-danger">{{notifications.anomalies_count}} nouvelle anomalie</span>
+                  {% elif notifications.anomalies_count > 1 %}
+                  <span class="badge badge-danger">{{notifications.anomalies_count}} nouvelles anomalies</span>
+                  {% endif %}
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -28,6 +33,11 @@
                   <h3 class="card-title">
                     {{stats.archives}}
                   </h3>
+                  {% if notifications.archives_count == 1 %}
+                  <span class="badge badge-danger">{{notifications.archives_count}} nouvelle archive</span>
+                  {% elif notifications.archives_count > 1 %}
+                  <span class="badge badge-danger">{{notifications.archives_count}} nouvelles archives</span>
+                  {% endif %}                  
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -44,6 +54,11 @@
                   </div>
                   <p class="card-category">Utilisateurs</p>
                   <h3 class="card-title">{{stats.users}}</h3>
+                  {% if notifications.users_count == 1 %}
+                  <span class="badge badge-danger">{{notifications.users_count}} nouvel utilisateur</span>
+                  {% elif notifications.users_count > 1 %}
+                  <span class="badge badge-danger">{{notifications.users_count}} nouveaux utilisateurs</span>
+                  {% endif %}
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -60,6 +75,11 @@
                   </div>
                   <p class="card-category">Events</p>
                   <h3 class="card-title">{{stats.events}}</h3>
+                  {% if notifications.events_count == 1 %}
+                  <span class="badge badge-danger">{{notifications.events_count}} nouvel événement</span>
+                  {% elif notifications.events_count > 1 %}
+                  <span class="badge badge-danger">{{notifications.events_count}} nouveaux événements</span>
+                  {% endif %}
                 </div>
                 <div class="card-footer">
                   <div class="stats">

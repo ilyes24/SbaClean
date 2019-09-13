@@ -11,8 +11,13 @@
                       <thead class=" text-primary">
                         <th>ID</th>
                         <th>Category</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>Date</th>
                         <th>User</th>
                         <th>Status</th>
+                        <th>Apprové par</th>
+                        <th>Date d'approbation</th>
                         <th>Score</th>
                         <th>Action</th>
                       </thead>
@@ -21,8 +26,13 @@
                         <tr>
                           <td class="text-primary">{{e.post.id}}</td>
                           <td>{{e.post.title}}</td>
+                          <td class="desc" title="{{e.post.description}}">{{e.post.description}}</td>
+                          <td><a href ="{{e.post.image}}" target="blank"><img src="{{e.post.image}}" style="height: 10vw; width: auto; max-width: 10vw;"></a></td>
+                          <td>{{e.starts_at}}</td>
                           <td class="text-primary">{{e.post.post_owner.username}}</td>
                           <td>{{e.status}}</td>
+                          <td>{{e.approved_by}}</td>
+                          <td>{{e.approved_at}}</td>
                           <td>{{e.post.count_reactions}}</td>
                           <td>
                             <!-- <a href="{% url 'dashboard:dashboard_anomalie_edit' e.post.id %}" class="btn btn-warning text-white">Edit</a> -->

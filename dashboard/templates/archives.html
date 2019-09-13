@@ -4,3 +4,11 @@
 {% block content1 %}
 {% include 'includes/table_archives.html' %}
 {% endblock %}
+{% block scripts %}
+<script>
+	$('.desc').each(function(index, el) {
+		if (el.textContent.length > 23)
+			el.textContent = el.textContent.substring(0, 20)+'...';
+	});
+</script>
+{% endblock %}

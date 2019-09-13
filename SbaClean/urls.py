@@ -34,6 +34,8 @@ api_urlpatterns = [
     path('anomalys/', include(('Anomaly.urls', 'Anomaly'), namespace='api-anomaly')),
     path('events/', include(('Event.urls', 'Event'), namespace='api-event')),
     path('mobile/', include('mobile.urls')),
+    path('notification/', include('notification.urls')),
+
 ]
 
 urlpatterns = [

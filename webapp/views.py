@@ -68,7 +68,7 @@ def feed(request):
         for part in participant:
                 if part.event.starts_at.date() == datetime.today().date():
                         date_part.append({'event':part.event.post.title,'hour':part.event.starts_at.hour,'minute':part.event.starts_at.minute})
-        print(date_part)
+
 
         user_pic_post=[]
         for post in postCity:
@@ -143,6 +143,7 @@ def feed(request):
         'like_creat_nember':like_creat_nember,'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user,
         'anomalySignal':anomalySignal,'date_part':date_part}         
         return render(request, 'feed.html', context)
+        
 def create_comment(request):
         if request.method == 'POST':
                 post_id=int(request.POST['post_id'])

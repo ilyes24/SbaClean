@@ -4842,6 +4842,8 @@ a:hover {
 }
 .myAlert-top{
     position: fixed;
+    display: inline-block;
+    vertical-align: top;
     bottom: 5px; 
     left:2%;
     width: 50%;

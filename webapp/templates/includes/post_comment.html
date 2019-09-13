@@ -1,12 +1,38 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
+<div class="myAlert-top">
 {% for date in date_part %}
-<div class="myAlert-top alert alert-success animated fadeInUp">
+<div class="alert alert-success animated fadeInUp">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         Vous etes participé à <a href="#" class="alert-link">{{date.event}}</a> événement aujourduit à <a href="#" class="alert-link">{{date.hour}}h</a>
       </div>
     
 {% endfor %}
+{% if notification.comments_count == 1 %}
+<div class=" alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.comments_count}}</a>  nouveau commentaire</div>
+{% elif notification.comments_count > 1 %}
+<div class=" alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.comments_count}}</a>  nouveaux commentaires</div>
+{% endif %}
+
+{% if notification.reactions_count == 1 %}
+<div class="alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.reactions_count}}</a>  nouvelle reaction</div>
+{% elif notification.reactions_count > 1 %}
+<div class="alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.reactions_count}}</a>  nouvelles reactions</div>
+{% endif %}
+
+{% if notification.participations_count == 1 %}
+<div class=" alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.participations_count}}</a>  nouveau participant</div>
+{% elif notification.participations_count > 1 %}
+<div class=" alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.participations_count}}</a>  nouveaux participants</div>
+{% endif %}
+
+</div>
 <div class="col-lg-6 col-md-8 no-pd">
     <div class="main-ws-sec">
             <div class="post-topbar">

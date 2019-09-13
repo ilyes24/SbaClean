@@ -59,6 +59,7 @@ class MyUserSerializer(serializers.ModelSerializer):
             "city",
             "is_staff",
             "password",
+            "profile_pic_url",
         ]
 
 

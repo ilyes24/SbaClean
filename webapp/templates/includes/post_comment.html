@@ -60,7 +60,7 @@
                         
                     </ul>
                     <ul class="bk-links">
-                            <li id="anomalySignal{{post.id}}"> <form method="post" action="{% url 'signaled' %}">
+                            <li id="anomalySignal{{post.id}}"> <form onsubmit="return confirm('Voulez vous vraiment Signaler ce post??');" method="post" action="{% url 'signaled' %}">
                                     {% csrf_token %}
                                     <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-warning"><i class="la la-bullhorn"></i> Signaler</button>
     
@@ -295,8 +295,11 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <select class="form-control" name="title"  required="" id="id_title" >
-                                <option>Accident de voiture</option>
+                                <option>Accident</option>
+                                <option>Panne</option>
+                                <option>Fuite d'eau</option>
                                 <option>Incendie</option>
+
                               </select>
                         </div>
                         {% for field in form2.visible_fields  %}

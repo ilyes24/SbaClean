@@ -60,6 +60,42 @@ menu = [
     }
 ]
 
+def notifications(request):
+    # Getting actual number of Users, Anomalies, Events and archives
+    users_count = MyUser.objects.all().count()
+    anomalies_count = Anomaly.objects.filter().count()
+    events_count = Event.objects.all().count()
+    archives_count = Anomaly.objects.filter(archived=True).count()
+
+    # Getting the session stored numbers
+    if not request.session.get('users_count'):
+        request.session['users_count'] = users_count
+    my_users_count = request.session['users_count']
+    request.session['users_count'] = users_count
+
+    if not request.session.get('anomalies_count'):
+        request.session['anomalies_count'] = anomalies_count    
+    my_anomalies_count = request.session['anomalies_count']
+    request.session['anomalies_count'] = anomalies_count    
+
+    if not request.session.get('events_count'):
+        request.session['events_count'] = events_count        
+    my_events_count = request.session['events_count']
+    request.session['events_count'] = events_count        
+
+    if not request.session.get('archives_count'):
+        request.session['archives_count'] = archives_count    
+    my_archives_count = request.session['archives_count']
+    request.session['archives_count'] = archives_count    
+
+    notifications = {
+        "users_count": users_count - my_users_count,
+        "anomalies_count": anomalies_count - my_anomalies_count,
+        "events_count": events_count - my_events_count,
+        "archives_count": archives_count - my_archives_count
+    }
+    return notifications
+
 def menu_active(title):
     for item in menu:
         if item["title"] == title:
@@ -70,6 +106,7 @@ def menu_active(title):
 @staff_member_required
 def dashboard_index(request):
     menu_active('Dashboard')
+    notif = notifications(request)
     users_count = MyUser.objects.all().count()
     anomalies_count = Anomaly.objects.filter(archived=False).count()
     events_count = Event.objects.all().count()
@@ -91,7 +128,7 @@ def dashboard_index(request):
         "archives": archives_count,
         "monthly": monthly
     }
-    context = {"menu": menu, "stats": stats, "anomalies": anomalies}
+    context = {"menu": menu, "stats": stats, "anomalies": anomalies, "notifications": notif}
     return render(request, 'index_dashboard.html', context)
 
 @staff_member_required
@@ -169,7 +206,8 @@ def dashboard_events(request):
 
 @staff_member_required
 def dashboard_event_approve(request, eid):
-    event = Event.objects.filter(id=eid)[0].approve()
+    now_time = datetime.now()
+    event = Event.objects.filter(id=eid)[0].approve(request.user, now_time)
     return redirect('dashboard:dashboard_events')
 
 @staff_member_required

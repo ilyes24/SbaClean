@@ -28,7 +28,14 @@
                         <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{post.city.name}}</span></li>
                     </ul>
                     <ul class="bk-links">
-                        
+                        <li> <form onsubmit="return confirm('Voulez vous vraiment supprimer ce post??');" method="post" action="{% url 'post_delete' %}">
+                            {% csrf_token %}
+                            <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-danger"><i class="la la-exclamation"></i>  Supprimé le post</button>
+
+                                  
+                                  
+      
+                    </form></li>
                         
                     </ul>
                 </div>

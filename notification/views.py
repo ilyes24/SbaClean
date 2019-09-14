@@ -7,11 +7,13 @@ from .models import *
 from geopy.distance import geodesic
 from decimal import Decimal
 import datetime# Create your views here.
+import os
+
 def index(request):
     pass
-onesignal_client = onesignal_sdk.Client(user_auth_key="YjI4NzQ0OGMtZWE3Zi00NTM1LTg5OWYtMmZmMjYxMDNlZjZi",
-                                    app_auth_key="ZTc0YzcxNTktYTBkZS00M2VlLWI2MGMtMDM0YjZhMjM4NzMx",
-                                    app_id="9bd315f4-1520-4d10-9994-d2285cd96d03")
+onesignal_client = onesignal_sdk.Client(user_auth_key=os.environ['onesignal_user_auth_key'],
+                                    app_auth_key=os.environ['onesignal_app_auth_key'],
+                                    app_id=os.environ['onesignal_app_id'],)
 
 @csrf_exempt
 def update_posts_notification(request):
@@ -35,6 +37,7 @@ def send_new_anomaly_notification(request):
     user_latitude = request.POST.get('latitude')
     user_longitude = request.POST.get('longitude')
     post_id = request.POST.get('postId')
+    print("post_od"+post_id)
     time = request.POST.get('time')
     start_date = datetime.date(2005, 1, 1)
     anomaly_list = Anomaly.objects.filter(post__created_at__gte = start_date ).filter(post__pk__gt = post_id)
@@ -47,7 +50,7 @@ def send_new_anomaly_notification(request):
     new_notification = onesignal_sdk.Notification(post_body={
     "data": {"id": context[0].pk},
     "headings": {"fr" : "Attention, "+context[0].post.title+" !","en" : "Attention, "+context[0].post.title+" !",},
-    "contents": {"en": context[0].post.title + " a " + distance, "tr": "Mesaj"},
+    "contents": {"en": context[0].post.title + " a " + distance, "fr": context[0].post.title + " a " + distance,},
     "included_segments": ["Active Users"],
     
 })

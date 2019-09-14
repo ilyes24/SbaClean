@@ -480,6 +480,11 @@ def post_delete(request):
         event.delete()
         post.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+def post_edit(request):
+    post=get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.description=request.POST.get('description')
+    post.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def Participate(request):
         if request.method == 'POST':

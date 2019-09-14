@@ -21,6 +21,25 @@
                             <span><img src="{% static 'img/clock.png' %}" alt="">{{post.created_at}}</span>
                         </div>
                     </div>
+                    <div class="ed-opts">
+                            <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                            <ul class="ed-options">
+                                <li><a href="#" title="" id="mod{{post.id}}">Modifier</a></li>
+                                <li>
+                                    <form onsubmit="return confirm('Voulez vous vraiment supprimer ce post??');" method="post" action="{% url 'post_delete' %}" id="yourForm{{post.id}}">
+                                            {% csrf_token %}
+                                            <a href="#" title="" id="sup{{post.id}}" >supprimer</a>
+                                            <input type="text" name="post_id" value="{{post.id}}" hidden>
+                                            <script>
+                                                document.getElementById("sup{{post.id}}").onclick = function() {
+                                                    document.getElementById("yourForm{{post.id}}").submit();
+                                                }
+                                            </script>
+                                    </form>
+                                </li>
+                                
+                            </ul>
+                        </div>
                     
                 </div>
                 <div class="epi-sec">
@@ -28,19 +47,54 @@
                         <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{post.city.name}}</span></li>
                     </ul>
                     <ul class="bk-links">
-                        <li> <form onsubmit="return confirm('Voulez vous vraiment supprimer ce post??');" method="post" action="{% url 'post_delete' %}">
-                            {% csrf_token %}
-                            <button type='submit' name="post_id" value="{{post.id}}" class="btn btn-danger"><i class="la la-exclamation"></i>  Supprimé le post</button>
-
-                                  
-                                  
-      
-                    </form></li>
+                        
                         
                     </ul>
                 </div>
                 <div class="job_descp">
-                    <p>{{post.description}}</p>
+                    <form id="editpost{{post.id}}">
+                            {% csrf_token %}
+                    <p id="p{{post.id}}">{{post.description}}</p>
+                    </form>
+                    <script>
+                    function edit() {
+                        var wdith = $("#p{{post.id}}").css('width');
+                        var p = $("#p{{post.id}}");
+                        var t = p.text().replace("\n", "").replace(/\s{2,}/g, " ").trim();
+                        p.replaceWith('<textarea id="text{{post.id}}" class="autoExpand">' + t + '</textarea> <button type="submit" id="edit{{post.id}}" name="post_id" value="{{post.id}}" class="btn btn-info"> modifier</button>')
+                        $(".autoExpand").css("width", wdith)
+                    }
+                    $("#mod{{post.id}}").click(edit);
+                    $(document).on('submit',"#editpost{{post.id}}", function(e){
+                        e.preventDefault();
+                        $.ajax({
+                            url : "/post_edit/", // the endpoint
+                            type : "POST", // http method
+                            data : {
+                                post_id : $('#edit{{post.id}}').val(),
+                                description:$('#text{{post.id}}').val(),
+                                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                
+                            }, // data sent with the post request
+
+                            // handle a successful response
+                            success : function() {
+                                var ta = $("#text{{post.id}}");
+                                var p2 = ta.val().replace("\n", "").replace(/\s{2,}/g, " ").trim();
+                                ta.replaceWith('<p id="p{{post.id}}">' + p2 + '</p>')
+                                $('#edit{{post.id}}').remove()
+            
+                            },
+
+                            // handle a non-successful response
+                            error : function(xhr,errmsg,err) {
+                                $('#editpost{{post.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                            }
+                        });
+                    });
+                    
+                    </script>
                     <ul>
                       {% if post.image == '/media/images/default.png' %}
                         <li><img width="100%" src="{% static 'img/default.png' %}" alt=""></li>

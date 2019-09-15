@@ -1,12 +1,38 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
+<div class="myAlert-top">
 {% for date in date_part %}
-<div class="myAlert-top alert alert-success animated fadeInUp">
+<div class="alert alert-success animated fadeInUp">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        Vous etes participé à <a href="#" class="alert-link">{{date.event}}</a> événement aujourduit à <a href="#" class="alert-link">{{date.hour}}h</a>
+        Vous avez un événemen <a href="#" class="alert-link">{{date.event}}</a> aujourduit à <a href="#" class="alert-link">{{date.hour}}h</a>
       </div>
     
 {% endfor %}
+{% if notification.comments_count == 1 %}
+<div class=" alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.comments_count}}</a>  nouveau commentaire</div>
+{% elif notification.comments_count > 1 %}
+<div class=" alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.comments_count}}</a>  nouveaux commentaires</div>
+{% endif %}
+
+{% if notification.reactions_count == 1 %}
+<div class="alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.reactions_count}}</a>  nouvelle reaction</div>
+{% elif notification.reactions_count > 1 %}
+<div class="alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.reactions_count}}</a>  nouvelles reactions</div>
+{% endif %}
+
+{% if notification.participations_count == 1 %}
+<div class=" alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.participations_count}}</a>  nouveau participant</div>
+{% elif notification.participations_count > 1 %}
+<div class=" alert alert-success animated fadeInUp">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><a href="#" class="alert-link">{{notification.participations_count}}</a>  nouveaux participants</div>
+{% endif %}
+
+</div>
 <div class="col-lg-6 col-md-8 no-pd">
     <div class="main-ws-sec">
             <div class="post-topbar">
@@ -90,24 +116,99 @@
                         {% endif %}
                     </ul>	
                 </div>
+                <script>
+                    // Submit post on submit
+                    $(document).on('submit',"#like{{post.post.id}}", function(e){
+                        e.preventDefault();
+                        $.ajax({
+                            url : "/like/", // the endpoint
+                            type : "POST", // http method
+                            data : {
+                                post_id : $('#likepost_id{{post.post.id}}').val(),
+                               
+                                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                
+                            }, // data sent with the post request
+
+                            // handle a successful response
+                            success : function() {
+
+                                if($('#likepost_id{{post.post.id}}').attr("class")==="btn btn-default"){
+                                    $("#dislikepost_id{{post.post.id}}").remove();
+                                                   $("#dislike{{post.post.id}}").append('<button type="submit" id="dislikepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n\'aime pas</button>');
+                                                   $("#likepost_id{{post.post.id}}").remove();
+                                                   $("#like{{post.post.id}}").append('<button type="submit" id="likepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>');
+                                               }else{
+                                                
+                                                $("#likepost_id{{post.post.id}}").remove();
+                                                   $("#like{{post.post.id}}").append('<button type="submit" id="likepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J\'aime</button>');
+                                               }
+            
+                            },
+
+                            // handle a non-successful response
+                            error : function(xhr,errmsg,err) {
+                                $('#like{{post.post.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                            }
+                        });
+                    });
+
+                    
+                    $(document).on('submit',"#dislike{{post.post.id}}", function(e){
+                        e.preventDefault();
+                        $.ajax({
+                            url : "/dislike/", // the endpoint
+                            type : "POST", // http method
+                            data : {
+                                post_id : $('#dislikepost_id{{post.post.id}}').val(),
+                               
+                                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                
+                            }, // data sent with the post request
+
+                            // handle a successful response
+                            success : function() {
+
+                                if($('#dislikepost_id{{post.post.id}}').attr("class")==="btn btn-default"){
+                                                   $("#likepost_id{{post.post.id}}").remove();
+                                                   $("#like{{post.post.id}}").append('<button type="submit" id="likepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J\'aime</button>');
+                                                   $("#dislikepost_id{{post.post.id}}").remove();
+                                                   $("#dislike{{post.post.id}}").append('<button type="submit" id="dislikepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>');
+                                               }else{
+                                                
+                                                $("#dislikepost_id{{post.post.id}}").remove();
+                                                   $("#dislike{{post.post.id}}").append('<button type="submit" id="dislikepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n\'aime pas</button>');
+                                               }
+            
+                            },
+
+                            // handle a non-successful response
+                            error : function(xhr,errmsg,err) {
+                                $('#dislike{{post.post.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                            }
+                        });
+                    });
+                    </script>
                 <div class="job-status-bar">
                     <ul class="like-com">
                         <li>
-                            <form method="post" action="{% url 'like_post' %}">
+                            <form id="like{{post.post.id}}">
                                     {% csrf_token %}
                             
                             {% if post.post in like_creat_nember %}
                              {% for reaction in reactions %}
                                 {% if post.post == reaction.post %}
                                     {% if reaction.is_like == True %}
-                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>
+                                    <button type='submit' id="likepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>
                                     {% else %}
-                                    <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
+                                    <button type='submit' id="likepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                                     {% endif%}
                                 {% endif %}
                              {% endfor %}
                             {% else %} 
-                             <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
+                             <button type='submit' id="likepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                             {% endif %}
           
                             
@@ -122,20 +223,20 @@
                             </form>
                         </li>
                         <li>
-                                <form method="post" action="{% url 'dislike_post' %}">
+                                <form id="dislike{{post.post.id}}">
                                         {% csrf_token %}
                                 {% if post.post in like_creat_nember %}
                                 {% for reaction in reactions %}
                                     {% if post.post == reaction.post %}
                                         {% if reaction.is_like == False %}
-                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>
+                                        <button type='submit' id="dislikepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>
                                         {% else %}
-                                        <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
+                                        <button type='submit' id="dislikepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
                                         {% endif%}
                                     {% endif %}
                                 {% endfor %}
                                 {% else %} 
-                                <button type='submit' name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
+                                <button type='submit' id="dislikepost_id{{post.post.id}}" name="post_id" value="{{post.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
                                 {% endif %}
                                               
                                               

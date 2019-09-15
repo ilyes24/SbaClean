@@ -46,3 +46,5 @@ typing-extensions==3.7.4
 uritemplate==3.0.0
 urllib3==1.25.3
 whitenoise==4.1.3
+onesignal-sdk==1.0.0 
+geopy==1.20.0 

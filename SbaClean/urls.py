@@ -34,6 +34,8 @@ api_urlpatterns = [
     path('anomalys/', include(('Anomaly.urls', 'Anomaly'), namespace='api-anomaly')),
     path('events/', include(('Event.urls', 'Event'), namespace='api-event')),
     path('mobile/', include('mobile.urls')),
+    path('notification/', include('notification.urls')),
+
 ]
 
 urlpatterns = [
@@ -59,6 +61,8 @@ urlpatterns = [
     url(r'^like/$',views.like_post,name="like_post"),
     url(r'^dislike/$',views.dislike_post,name="dislike_post"),
     url(r'^signaled/$',views.signaled,name="signaled"),
+    url(r'^post_delete/$',views.post_delete,name="post_delete"),
+    url(r'^post_edit/$',views.post_edit,name="post_edit"),
     url(r'^Myposts/$',views.Myposts,name="Myposts"),
     url(r'^Myreactions/$',views.Myreactions,name="Myreactions"),
     url(r'^comment_delete/$',views.comment_delete,name="comment_delete"),

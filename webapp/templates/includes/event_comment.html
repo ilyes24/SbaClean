@@ -48,12 +48,26 @@
                 </div>
                 <div class="epi-sec">
                     <ul class="descp">
-                            {% for nb_part in nb_participante %}
-                            {% if  event == nb_part.event %}
-                            <li><img src="{% static 'img/icon8.png' %}" alt=""> <span>N° de participants:</span> <span id="span{{event.id}}"> {{nb_part.nb_part}}</span></li>
-                            {% endif  %}
-                            {% endfor %}
-                        
+                            {% if  event.post.post_owner == request.user %}
+                                
+                                {% for nb_part in nb_participante %}
+                                    {% if  event == nb_part.event %}
+                                        <li><img src="{% static 'img/icon8.png' %}" alt=""> <a data-toggle="modal" data-target="#listparticipants{{event.id}}" href="#" title=""><span style="color: #6195FF;">N° de participants:</span> <span id="span{{event.id}}" style="color: #6195FF;"> {{nb_part.nb_part}}</span></a></li>
+                                    {% endif  %}
+                                {% endfor %}
+
+                             
+
+                            {% else %}
+
+                                {% for nb_part in nb_participante %}
+                                        {% if  event == nb_part.event %}
+                                            <li><img src="{% static 'img/icon8.png' %}" alt=""> <span>N° de participants:</span> <span id="span{{event.id}}"> {{nb_part.nb_part}}</span></li>
+                                        {% endif  %}
+                                {% endfor %}
+
+
+                            {% endif %}
                         <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{event.post.city.name}}</span></li>
                     </ul>
                     <ul class="bk-links">
@@ -133,47 +147,132 @@
                         {% endif %}
                     </ul>	
                 </div>
+                <script>
+                    // Submit post on submit
+                    $(document).on('submit',"#like{{event.post.id}}", function(e){
+                        e.preventDefault();
+                        $.ajax({
+                            url : "/like/", // the endpoint
+                            type : "POST", // http method
+                            data : {
+                                post_id : $('#likepost_id{{event.post.id}}').val(),
+                               
+                                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                
+                            }, // data sent with the post request
+
+                            // handle a successful response
+                            success : function() {
+
+                                if($('#likepost_id{{event.post.id}}').attr("class")==="btn btn-default"){
+                                    $("#dislikepost_id{{event.post.id}}").remove();
+                                                   $("#dislike{{event.post.id}}").append('<button type="submit" id="dislikepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n\'aime pas</button>');
+                                                   $("#likepost_id{{event.post.id}}").remove();
+                                                   $("#like{{event.post.id}}").append('<button type="submit" id="likepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>');
+                                               }else{
+                                                
+                                                $("#likepost_id{{event.post.id}}").remove();
+                                                   $("#like{{event.post.id}}").append('<button type="submit" id="likepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J\'aime</button>');
+                                               }
+            
+                            },
+
+                            // handle a non-successful response
+                            error : function(xhr,errmsg,err) {
+                                $('#like{{event.post.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                            }
+                        });
+                    });
+
+                    
+                    $(document).on('submit',"#dislike{{event.post.id}}", function(e){
+                        e.preventDefault();
+                        $.ajax({
+                            url : "/dislike/", // the endpoint
+                            type : "POST", // http method
+                            data : {
+                                post_id : $('#dislikepost_id{{event.post.id}}').val(),
+                               
+                                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
+                                
+                            }, // data sent with the post request
+
+                            // handle a successful response
+                            success : function() {
+
+                                if($('#dislikepost_id{{event.post.id}}').attr("class")==="btn btn-default"){
+                                                   $("#likepost_id{{event.post.id}}").remove();
+                                                   $("#like{{event.post.id}}").append('<button type="submit" id="likepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J\'aime</button>');
+                                                   $("#dislikepost_id{{event.post.id}}").remove();
+                                                   $("#dislike{{event.post.id}}").append('<button type="submit" id="dislikepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>');
+                                               }else{
+                                                
+                                                $("#dislikepost_id{{event.post.id}}").remove();
+                                                   $("#dislike{{event.post.id}}").append('<button type="submit" id="dislikepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n\'aime pas</button>');
+                                               }
+            
+                            },
+
+                            // handle a non-successful response
+                            error : function(xhr,errmsg,err) {
+                                $('#dislike{{event.post.id}}').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button>Oop! Error happend!</div>"); // add the error to the dom
+                                //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                            }
+                        });
+                    });
+                    </script>
                 <div class="job-status-bar">
                     <ul class="like-com">
                         <li>
-                            <form method="post" action="{% url 'like_post' %}">
-                                {% csrf_token %}
-                        
-                        {% if event.post in like_creat_nember %}
-                         {% for reaction in reactions %}
-                            {% if event.post == reaction.post %}
-                                {% if reaction.is_like == True %}
-                                <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>
-                                {% else %}
-                                <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
-                                {% endif%}
-                            {% endif %}
-                         {% endfor %}
-                        {% else %} 
-                         <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
-                        {% endif %}
-                        </form>
-                    </li>
-                    <li>
-                            <form method="post" action="{% url 'dislike_post' %}">
+                            <form id="like{{event.post.id}}">
                                     {% csrf_token %}
+                            
                             {% if event.post in like_creat_nember %}
-                            {% for reaction in reactions %}
+                             {% for reaction in reactions %}
                                 {% if event.post == reaction.post %}
-                                    {% if reaction.is_like == False %}
-                                    <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>
+                                    {% if reaction.is_like == True %}
+                                    <button type='submit' id="likepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-info"><i class="la la-heart"></i> Aimé</button>
                                     {% else %}
-                                    <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
+                                    <button type='submit' id="likepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                                     {% endif%}
                                 {% endif %}
-                            {% endfor %}
+                             {% endfor %}
                             {% else %} 
-                            <button type='submit' name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
+                             <button type='submit' id="likepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> J'aime</button>
                             {% endif %}
-                                          
-                                          
-              
+          
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
                             </form>
+                        </li>
+                        <li>
+                                <form id="dislike{{event.post.id}}">
+                                        {% csrf_token %}
+                                {% if event.post in like_creat_nember %}
+                                {% for reaction in reactions %}
+                                    {% if event.post == reaction.post %}
+                                        {% if reaction.is_like == False %}
+                                        <button type='submit' id="dislikepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-danger"><i class="la la-heart"></i> Pas aimé</button>
+                                        {% else %}
+                                        <button type='submit' id="dislikepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
+                                        {% endif%}
+                                    {% endif %}
+                                {% endfor %}
+                                {% else %} 
+                                <button type='submit' id="dislikepost_id{{event.post.id}}" name="post_id" value="{{event.post.id}}" class="btn btn-default"><i class="la la-heart"></i> Je n'aime pas</button>
+                                {% endif %}
+                                              
+                                              
+                  
+                                </form>
                         </li> 
                         
                         
@@ -313,7 +412,7 @@
              
               <div class="modal-content">
                 <div class="modal-header" style="background-color: #6195FF;">
-                  <h5 class="col-12 modal-title text-center" id="exampleModalLongTitle" style="color: #FFF;">Post a Event</h5>
+                  <h5 class="col-12 modal-title text-center" id="exampleModalLongTitle" style="color: #FFF;">Poster un événement</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -356,7 +455,7 @@
                                         
                                         <div class="col-lg-12">
                                             <ul>
-                                                <li><button class="active" type="submit" value="post">Post</button></li>
+                                                <li><button class="active" type="submit" value="post">Envoyer</button></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -369,3 +468,31 @@
               </div>
             </div>
           </div>
+          {% for event in events %}
+          {% if  event.post.post_owner == request.user %}
+           <!-- Modal -->
+           <div class="modal fade" id="listparticipants{{event.id}}" tabindex="-1" role="dialog" aria-labelledby="listparticipantsTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                 
+                  <div class="modal-content">
+                    <div class="modal-header" style="background-color: #6195FF;">
+                      <h5 class="col-12 modal-title text-center" id="listparticipantsTitle" style="color: #FFF;">List des participants</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                    {% for part in participants %}
+                    {% if  event == part.event %}
+                      <p>-@{{part.user.username}}</p>
+                    {% endif %}
+                    {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+            {% endfor %}

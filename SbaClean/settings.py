@@ -21,14 +21,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'td&7@am*jkdvvp9^li_h9d*t_wdy*ey%6j6c*0h1pwc5pwd9n6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'sbaclean.herokuapp.com',
-]
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
@@ -50,7 +49,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'rest_framework_swagger',
-
+    'notification',
     # Local Apps
     'Address',
     'Accounts',
@@ -112,12 +111,8 @@ WSGI_APPLICATION = 'SbaClean.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sbacleandb',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -153,7 +148,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyApOhXtywkHtI5_9m4yq5GffJpGLEUQsfN'
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyB5R66M43bWRdua0bD3g1w022lHwtUanPk'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 

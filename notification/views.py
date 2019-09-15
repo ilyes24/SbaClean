@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from Anomaly.models import Anomaly
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 import onesignal as onesignal_sdk
@@ -8,12 +8,26 @@ from geopy.distance import geodesic
 from decimal import Decimal
 import datetime# Create your views here.
 import os
+from func_timeout import func_set_timeout
 
 def index(request):
     pass
-onesignal_client = onesignal_sdk.Client(user_auth_key=os.environ['onesignal_user_auth_key'],
-                                    app_auth_key=os.environ['onesignal_app_auth_key'],
-                                    app_id=os.environ['onesignal_app_id'],)
+onesignal_client = onesignal_sdk.Client(user_auth_key=os.environ.get('onesignal_user_auth_key'),
+                                    app_auth_key=os.environ.get('onesignal_app_auth_key'),
+                                    app_id=os.environ.get('onesignal_app_id'),)
+
+
+@csrf_exempt
+def new_user(request):
+    user_id = request.POST['user_id']
+    user_opensignal_id = request.POST['user_opensignal_id']
+
+    user = NotificationUser.objects.get(pk=user_id)
+    if (user == None):
+        user = NotificationUser.objects.create(user_opensignal_id= user_opensignal_id, 
+            user= user_id, latitude="0", longitude="0")
+        user.save()
+    return HttpResponse('')
 
 @csrf_exempt
 def update_posts_notification(request):
@@ -31,32 +45,36 @@ def update_posts_notification(request):
 
             return JsonResponse(context)
 
+@func_set_timeout(45)
 @csrf_exempt
 def send_new_anomaly_notification(request):
     distance = request.POST.get('distance')
     user_latitude = request.POST.get('latitude')
     user_longitude = request.POST.get('longitude')
     post_id = request.POST.get('postId')
-    print("post_od"+post_id)
     time = request.POST.get('time')
     start_date = datetime.date(2005, 1, 1)
     anomaly_list = Anomaly.objects.filter(post__created_at__gte = start_date ).filter(post__pk__gt = post_id)
     context = []
     for anomaly in anomaly_list:
-        if (geodesic((user_latitude, user_longitude),(anomaly.post.latitude,anomaly.post.longitude)).kilometers > Decimal(distance)):
+        if (geodesic((user_latitude, user_longitude),(anomaly.post.latitude,anomaly.post.longitude)).meters > Decimal(distance)):
             context.append(anomaly)
-    print(context)
-    origin = (user_latitude, user_longitude)
-    new_notification = onesignal_sdk.Notification(post_body={
-    "data": {"id": context[0].pk},
-    "headings": {"fr" : "Attention, "+context[0].post.title+" !","en" : "Attention, "+context[0].post.title+" !",},
-    "contents": {"en": context[0].post.title + " a " + distance, "fr": context[0].post.title + " a " + distance,},
-    "included_segments": ["Active Users"],
+    if (len(context) > 0):
+        anomaly = context[0]
+        real_distance = geodesic((user_latitude, user_longitude),(anomaly.post.latitude,anomaly.post.longitude)).meters
+        new_notification = onesignal_sdk.Notification(post_body={
+        "data": {"id": context[0].pk, "postId" : post_id},
+        "headings": {"fr" : "Attention, "+context[0].post.title+" !","en" : "Attention, "+context[0].post.title+" !",},
+        "contents": {"en": context[0].post.title + " a " + str(real_distance) + " métres !",
+             "fr": context[0].post.title + " a " + str(real_distance) + " métres !",},
+        "included_segments": ["Active Users"],
     
-})
-    onesignal_response = onesignal_client.send_notification(new_notification)
-    print(onesignal_response.status_code)
-    print(onesignal_response.json())
-    return JsonResponse({"response": context[0].pk})
+    })
+        timeout = datetime.datetime.now()
+        onesignal_response = onesignal_client.send_notification(new_notification)
+        print(onesignal_response.status_code)
+        print(onesignal_response.json())
+        return HttpResponse('')
+    return HttpResponse('')
 
 # send notification, it will return a response

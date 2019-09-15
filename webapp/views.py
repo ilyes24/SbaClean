@@ -192,7 +192,10 @@ def event(request):
         user = request.user
         username = request.user.username
         postCity=Post.objects.filter(city=user.city)
+        Myposts=Post.objects.filter(post_owner=user)
+        events2=Event.objects.filter(post__in=Myposts)
         events=Event.objects.filter(post__in= postCity,starts_at__gte = datetime.today())
+        participants=EventParticipation.objects.filter(event__in=events2)
         nb_participante=[]
         for event in events:
                 nb_participante.append({'event':event,'nb_part':EventParticipation.objects.filter(event=event).count(),'is_part':EventParticipation.objects.filter(event=event,user=request.user)})
@@ -270,7 +273,7 @@ def event(request):
                 form=UserComment()
                 form2=UserPost()            
         context = {'username':username,'user_pic':user_pic,'events':events,'userId':userId,'users':users,'comments':comments,'form':form,'form2':form2,'reactions':reactions,'like_creat_nember':like_creat_nember,
-        'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user,'nb_participante': nb_participante}         
+        'posts2':posts2,'user_pic_post':user_pic_post,'user_pic_comment':user_pic_comment,'user_pic_user':user_pic_user,'nb_participante': nb_participante,'participants':participants}         
         return render(request, 'event.html', context)
 @login_required
 def Myposts(request):

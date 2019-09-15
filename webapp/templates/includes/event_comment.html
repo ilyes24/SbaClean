@@ -48,12 +48,26 @@
                 </div>
                 <div class="epi-sec">
                     <ul class="descp">
-                            {% for nb_part in nb_participante %}
-                            {% if  event == nb_part.event %}
-                            <li><img src="{% static 'img/icon8.png' %}" alt=""> <span>N° de participants:</span> <span id="span{{event.id}}"> {{nb_part.nb_part}}</span></li>
-                            {% endif  %}
-                            {% endfor %}
-                        
+                            {% if  event.post.post_owner == request.user %}
+                                
+                                {% for nb_part in nb_participante %}
+                                    {% if  event == nb_part.event %}
+                                        <li><img src="{% static 'img/icon8.png' %}" alt=""> <a data-toggle="modal" data-target="#listparticipants{{event.id}}" href="#" title=""><span style="color: #6195FF;">N° de participants:</span> <span id="span{{event.id}}" style="color: #6195FF;"> {{nb_part.nb_part}}</span></a></li>
+                                    {% endif  %}
+                                {% endfor %}
+
+                             
+
+                            {% else %}
+
+                                {% for nb_part in nb_participante %}
+                                        {% if  event == nb_part.event %}
+                                            <li><img src="{% static 'img/icon8.png' %}" alt=""> <span>N° de participants:</span> <span id="span{{event.id}}"> {{nb_part.nb_part}}</span></li>
+                                        {% endif  %}
+                                {% endfor %}
+
+
+                            {% endif %}
                         <li><img src="{% static 'img/icon9.png' %}" alt=""><span>{{event.post.city.name}}</span></li>
                     </ul>
                     <ul class="bk-links">
@@ -398,7 +412,7 @@
              
               <div class="modal-content">
                 <div class="modal-header" style="background-color: #6195FF;">
-                  <h5 class="col-12 modal-title text-center" id="exampleModalLongTitle" style="color: #FFF;">Post a Event</h5>
+                  <h5 class="col-12 modal-title text-center" id="exampleModalLongTitle" style="color: #FFF;">Poster un événement</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -441,7 +455,7 @@
                                         
                                         <div class="col-lg-12">
                                             <ul>
-                                                <li><button class="active" type="submit" value="post">Post</button></li>
+                                                <li><button class="active" type="submit" value="post">Envoyer</button></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -454,3 +468,31 @@
               </div>
             </div>
           </div>
+          {% for event in events %}
+          {% if  event.post.post_owner == request.user %}
+           <!-- Modal -->
+           <div class="modal fade" id="listparticipants{{event.id}}" tabindex="-1" role="dialog" aria-labelledby="listparticipantsTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                 
+                  <div class="modal-content">
+                    <div class="modal-header" style="background-color: #6195FF;">
+                      <h5 class="col-12 modal-title text-center" id="listparticipantsTitle" style="color: #FFF;">List des participants</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                    {% for part in participants %}
+                    {% if  event == part.event %}
+                      <p>-@{{part.user.username}}</p>
+                    {% endif %}
+                    {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+            {% endfor %}

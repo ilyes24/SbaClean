@@ -26,12 +26,13 @@
                             <ul class="ed-options">
                                 <li><a href="#" title="" id="mod{{post.id}}">Modifier</a></li>
                                 <li>
-                                    <form onsubmit="return confirm('Voulez vous vraiment supprimer ce post??');" method="post" action="{% url 'post_delete' %}" id="yourForm{{post.id}}">
+                                    <form  method="post" action="{% url 'post_delete' %}" id="yourForm{{post.id}}">
                                             {% csrf_token %}
                                             <a href="#" title="" id="sup{{post.id}}" >supprimer</a>
                                             <input type="text" name="post_id" value="{{post.id}}" hidden>
                                             <script>
                                                 document.getElementById("sup{{post.id}}").onclick = function() {
+                                                    confirm('Voulez vous vraiment supprimer ce post??');
                                                     document.getElementById("yourForm{{post.id}}").submit();
                                                 }
                                             </script>

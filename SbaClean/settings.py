@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'Post',
     'webapp',
     'dashboard',
+    'notification',
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'webapp/media')

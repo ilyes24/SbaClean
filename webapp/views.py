@@ -194,7 +194,7 @@ def event(request):
         postCity=Post.objects.filter(city=user.city)
         Myposts=Post.objects.filter(post_owner=user)
         events2=Event.objects.filter(post__in=Myposts)
-        events=Event.objects.filter(post__in= postCity,starts_at__gte = datetime.today())
+        events=Event.objects.filter(post__in= postCity,starts_at__gte = datetime.today()).exclude(approved_at=None)
         participants=EventParticipation.objects.filter(event__in=events2)
         nb_participante=[]
         for event in events:

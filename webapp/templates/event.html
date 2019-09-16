@@ -4,7 +4,8 @@
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/feed.css' %}">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet/1/leaflet.css" />
+<script src="https://cdn.jsdelivr.net/leaflet/1/leaflet.js"></script>
 {% endblock %}
 
 
@@ -43,21 +44,100 @@
 {% endblock %}
 
 {% block scripte %}
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5R66M43bWRdua0bD3g1w022lHwtUanPk&amp;libraries=places"></script>
-         
+<script src="https://cdn.jsdelivr.net/npm/places.js@1.16.4"></script>
 <script>
-  google.maps.event.addDomListener(window, 'load', initialize);
-    function initialize() {
-      var input = document.getElementById('autocomplete_search');
-      var autocomplete = new google.maps.places.Autocomplete(input);
-      autocomplete.addListener('place_changed', function () {
-      var place = autocomplete.getPlace();
-      // place variable will have all the information you are looking for.
-      $('#id_latitude').val(place.geometry['location'].lat());
-      $('#id_longitude').val(place.geometry['location'].lng());
-    });
+(function() {
+  var placesAutocomplete = places({
+    appId: 'plRYOX92LH60',
+    apiKey: 'bcbd136f8826254d843299d2767a0612',
+    container: document.querySelector('#input-map')
+  });
+
+  var map = L.map('map-example-container', {
+    scrollWheelZoom: false,
+    zoomControl: false
+  });
+
+  var osmLayer = new L.TileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      minZoom: 1,
+      maxZoom: 13,
+      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+    }
+  );
+
+  var markers = [];
+
+  map.setView(new L.LatLng(0, 0), 1);
+  map.addLayer(osmLayer);
+
+  placesAutocomplete.on('suggestions', handleOnSuggestions);
+  placesAutocomplete.on('cursorchanged', handleOnCursorchanged);
+  placesAutocomplete.on('change', handleOnChange);
+  placesAutocomplete.on('clear', handleOnClear);
+
+  function handleOnSuggestions(e) {
+    markers.forEach(removeMarker);
+    markers = [];
+
+    if (e.suggestions.length === 0) {
+      map.setView(new L.LatLng(0, 0), 1);
+      return;
+    }
+
+    e.suggestions.forEach(addMarker);
+    findBestZoom();
   }
-  </script>
+
+  function handleOnChange(e) {
+    markers
+      .forEach(function(marker, markerIndex) {
+        if (markerIndex === e.suggestionIndex) {
+          markers = [marker];
+          marker.setOpacity(1);
+          findBestZoom();
+        } else {
+          removeMarker(marker);
+        }
+      });
+      $('#id_latitude').val(e.suggestion.latlng.lat);
+    $('#id_longitude').val(e.suggestion.latlng.lng);
+  }
+
+  function handleOnClear() {
+    map.setView(new L.LatLng(0, 0), 1);
+    markers.forEach(removeMarker);
+  }
+
+  function handleOnCursorchanged(e) {
+    markers
+      .forEach(function(marker, markerIndex) {
+        if (markerIndex === e.suggestionIndex) {
+          marker.setOpacity(1);
+          marker.setZIndexOffset(1000);
+        } else {
+          marker.setZIndexOffset(0);
+          marker.setOpacity(0.5);
+        }
+      });
+  }
+
+  function addMarker(suggestion) {
+    var marker = L.marker(suggestion.latlng, {opacity: .4});
+    marker.addTo(map);
+    markers.push(marker);
+  }
+
+  function removeMarker(marker) {
+    map.removeLayer(marker);
+  }
+
+  function findBestZoom() {
+    var featureGroup = L.featureGroup(markers);
+    map.fitBounds(featureGroup.getBounds().pad(0.5), {animate: false});
+  }
+})();
+</script>
   <script>
   $(document)
     .one('focus.autoExpand', 'textarea.autoExpand', function(){

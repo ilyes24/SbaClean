@@ -94,7 +94,7 @@ def feed(request):
         user = request.user
         username = request.user.username
         postCity=Post.objects.filter(city=user.city)
-        posts=Anomaly.objects.filter(archived=False,post__in= postCity)
+        posts=Anomaly.objects.filter(archived=False)
         anomalySignal=AnomalySignal.objects.filter(user= request.user)
         participant=EventParticipation.objects.filter(user=user)
         notif = notifications(request)

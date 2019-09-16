@@ -9,7 +9,7 @@
             {% for post in posts2 %}
         <div class="job-info">
             <div class="job-details">
-                <h3><a href="#post{{post.post.id}}">{{post.post.title}}</a></h3>
+                <h3><a href="#post{{post.post.id}}">{{post.post.title}} (@{{post.post.post_owner.username}})</a></h3>
                 <p>N° de likes: {{post.rank_point}}</p>
             </div>
             

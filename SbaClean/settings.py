@@ -31,6 +31,7 @@ ALLOWED_HOSTS = [
 ]
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'rest_framework_swagger',
-
+    'notification',
     # Local Apps
     'Address',
     'Accounts',
@@ -113,7 +114,7 @@ WSGI_APPLICATION = 'SbaClean.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sbacleandb',
         'USER': 'postgres',
         'PASSWORD': 'root',
@@ -154,7 +155,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyApOhXtywkHtI5_9m4yq5GffJpGLEUQsfN'
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyB5R66M43bWRdua0bD3g1w022lHwtUanPk'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 

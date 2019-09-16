@@ -4840,6 +4840,14 @@ a:hover {
 .autoExpand{
     border: #666666 1px solid;
 }
+.eye {
+  position:absolute;
+  right:0px;
+  top:13px;
+}
+
+#map-example-container {height: 300px};
+                        
 .myAlert-top{
     position: fixed;
     display: inline-block;
